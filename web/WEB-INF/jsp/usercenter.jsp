@@ -17,7 +17,6 @@
 
     <jsp:include page="header.jsp"/>
     <head>
-        <link rel="stylesheet" href="<%=path%>/lib/css/main.css" />
         <script src="<%=path%>/lib/js/skel.min.js"></script>
         <script src="<%=path%>/lib/js/util.js"></script>
         <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
@@ -38,12 +37,12 @@
 
                     <section id="articlebox" class="tiles">
                         <%
-                            for (int i = 1; i <= 0; i++) {
-                                out.print("<article>");
+                            for (int i = 1; i <= 15; i++) {
+                                out.print("<article class=\"style" + (int) (1 + Math.random() * (7 - 1 + 1)) + "\">");
                                 out.print("<span class=\"image\">");
-                                out.print("<img src=\"" + request.getContextPath() + "/images/pic02.jpg\" alt=\"\"/>");
+                                out.print("<img src=\"" + request.getContextPath() + "/images/pic0" + (int) (1 + Math.random() * (9 - 1 + 1)) + ".jpg\" alt=\"\"/>");
                                 out.print("</span>");
-                                out.print("<a href=\"index.htm\">");
+                                out.print("<a href=\"te_index.htm\">");
                                 out.print("<h2>Magna</h2>");
                                 out.print(" <div class=\"content\">");
                                 out.print("  <p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>");
@@ -52,20 +51,6 @@
                                 out.print("</article>");
                             }
                         %>
-                    
-                        <article>
-                            <span class="image">
-                                <img src="<%=path%>/images/pic01.jpg" alt="" />
-                            </span>
-                            <a href="index.htm">
-                                <h2>Magna</h2>
-                                <div class="content">
-                                    <p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>
-                                </div>
-                            </a>
-                        </article>
-     
-                            
                     </section>
 
                 </div>

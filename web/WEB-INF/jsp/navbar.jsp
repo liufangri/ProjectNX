@@ -8,13 +8,12 @@
     String path = request.getContextPath();
 %>
 <link href="<%=path%>/lib/css/navbar.css" rel="stylesheet">
-<script src="<%=path%>/lib/js/nacbar.js"></script>
 <script>
-    window.onload = function ()
+    $(document).ready(function ()
     {
         var myDate = new Date();
-        document.getElementById("time").innerHTML = myDate.getFullYear() + "年" + (myDate.getMonth()+1) + "月" + myDate.getDate() + "日";
-    }
+        document.getElementById("time").innerHTML = myDate.getFullYear() + "年" + (myDate.getMonth() + 1) + "月" + myDate.getDate() + "日";
+    })
 </script>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
@@ -25,7 +24,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="login.htm">课程中心</a>
+            <a class="navbar-brand" href="usercenter.htm">课程中心</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -46,7 +45,7 @@
                             <li><a href="#">2017年春季</a></li>
                             <li><a href="#">2017年夏季</a></li>
                         </ul>
-                    </div></a></li>
+                    </div></li>
                 <li><a href="#">系统消息</a></li>
                 <li><button type="button" id="signout" onclick="signout()">注销</button>></li>
             </ul>

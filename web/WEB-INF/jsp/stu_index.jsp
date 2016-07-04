@@ -6,9 +6,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html lang="zh-CN">
     <jsp:include page="header.jsp"/>
-    <script type="text/javascript">
-
-    </script>
     <body>
         <jsp:include page="navbar.jsp"/>
         <div class="container-fluid">
