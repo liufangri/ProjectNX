@@ -6,3 +6,7 @@
 nbproject/private/private.properties
 build/
 dist/ProjectNX.war
+/nbproject/private/
+web/WEB-INF/JSP/hello.jsp
+web/WEB-INF/JSP/testUpload.jsp
+src/java/com/teamnx/controller/TestSomething.java
