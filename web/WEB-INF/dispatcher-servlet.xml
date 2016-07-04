@@ -7,21 +7,23 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
-       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+http://www.springframework.org/schema/mvc
+http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc">
 
     <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
+    <!--注册一个数据库连接池bean-->
+    <bean name="dbcpBean" class="com.teamnx.db.DbcpBean"/>    
 
-    <!--
-    Most controllers will use the ControllerClassNameHandlerMapping above, but
-    for the index controller we are using ParameterizableViewController, so we must
-    define an explicit mapping for it.
-    -->
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
+
                 <prop key="index.htm">indexController</prop>
                 <prop key="usercenter.htm">usercenterController</prop>
-                <prop key="login.htm">loginController</prop>
+                
             </props>
         </property>
     </bean>
@@ -31,16 +33,31 @@
           p:prefix="/WEB-INF/jsp/"
           p:suffix=".jsp" />
 
-    <!--
-    The index controller.
-    -->
     <bean name="indexController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="index" />
+    
+    <bean id = "multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="uploadTempDir" value="/tmp"/>
+        <property name="maxUploadSize" value="2048576"/>
+        <property name="maxInMemorySize" value="524288"/>
+    </bean>
+    <!--注册一个登录控制器-->
+    <bean id="loginController" class="com.teamnx.controller.LoginController">
+        <property name="udi" ref="userDaoImpl"/>
+    </bean>
+    <!--注册一个user的数据库操作类-->
+    <bean id="userDaoImpl" class="com.teamnx.model.UserDaoImpl">
+        <property name="dbcpBean" ref="dbcpBean"/>
+</bean>
+    <context:component-scan base-package="com.teamnx.controller"/>
+    <context:annotation-config/>
+    <mvc:annotation-driven/>
+
+
     <bean name="usercenterController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="usercenter" />
-    <bean name="loginController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="login" />
+    
 </beans>
