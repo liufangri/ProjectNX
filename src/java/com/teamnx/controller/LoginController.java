@@ -8,7 +8,7 @@ package com.teamnx.controller;
 import com.teamnx.model.User;
 import com.teamnx.model.UserDaoImpl;
 import com.teamnx.util.MD5;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,22 +28,21 @@ public class LoginController {
      * @author Y400
      * @param
      */
-    @RequestMapping(value = "loginAction")
-    public ModelAndView loginAction(User user, HttpServletResponse response) throws Exception {
-	ModelAndView mav = new ModelAndView("usercenter");
+    @RequestMapping(value = {"/loginAction"})
+    public ModelAndView loginAction(User user, HttpSession session) {
+	ModelAndView mav = new ModelAndView("login");
 	User findedUser = udi.findUserById(user.getId());
 	if (findedUser != null) {
 	    String password = MD5.Md5_16(user.getPassword());
 	    if (password.equals(findedUser.getPassword())) {
+		mav.setViewName("usercenter");
 		mav.addObject("user", findedUser);
 	    } else {
-		response.getWriter().print("\"status\":fail");
-		throw new Exception();
+		mav.addObject("error_message", "用户名或密码错误");
 	    }
 
 	} else {
-	    response.getWriter().print("\"status\":fail");
-	    throw new Exception();
+	    mav.addObject("error_message", "用户名或密码错误");
 	}
 	return mav;
     }
@@ -66,5 +65,9 @@ public class LoginController {
     public void jumpToLoginPage(ModelAndView mav) {
 	User user = new User();
 	mav.addObject("user", user);
+    }
+
+    public void setUdi(UserDaoImpl udi) {
+	this.udi = udi;
     }
 }

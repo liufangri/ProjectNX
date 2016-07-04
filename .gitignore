@@ -12,3 +12,4 @@ web/WEB-INF/jsp/hello.jsp
 nbproject/private/private.properties
 dist/ProjectNX.war
 nbproject/private/
+/dist/

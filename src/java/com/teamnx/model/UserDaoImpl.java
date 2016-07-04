@@ -55,4 +55,8 @@ public class UserDaoImpl implements UserDao {
 
     }
 
+    public void setDbcpBean(DbcpBean dbcpBean) {
+	this.dbcpBean = dbcpBean;
+    }
+
 }
