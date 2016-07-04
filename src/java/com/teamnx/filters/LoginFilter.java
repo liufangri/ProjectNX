@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Y400
  */
-@WebFilter(filterName = "LoginFilter", urlPatterns = {"/*"})
+@WebFilter(filterName = "LoginFilter", urlPatterns = {"*.htm"})
 public class LoginFilter implements Filter {
 
     private static final boolean debug = false;
@@ -158,8 +158,14 @@ public class LoginFilter implements Filter {
 
 	try {
 	    HttpSession session = ((HttpServletRequest) request).getSession();
-	    if (session.getAttribute("is_login") == null) {
-		((HttpServletResponse) response).sendRedirect("login.htm");
+	    Boolean isLogin = (Boolean) session.getAttribute("is_login");
+	    HttpServletRequest req = (HttpServletRequest) request;
+	    String path = req.getServletPath();
+	    if (isLogin == null || !isLogin) {
+		if (!path.equals("/login.htm") && !path.equals("/loginAction.htm")) {
+		    wrappedResponse.sendRedirect("login.htm");
+		}
+		session.setAttribute("is_login", Boolean.FALSE);
 	    }
 
 	    chain.doFilter(wrappedRequest, wrappedResponse);
