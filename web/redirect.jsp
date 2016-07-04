@@ -7,7 +7,7 @@ servlet but should be the only JSP outside of WEB-INF.
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    if((Boolean)session.getAttribute("is_login")){
+    if((Boolean)session.getAttribute("is_login")==null){
         session.setAttribute("is_login", false);
     }
 %>

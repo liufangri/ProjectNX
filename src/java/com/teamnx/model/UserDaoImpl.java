@@ -44,7 +44,6 @@ public class UserDaoImpl implements UserDao {
 	//测试用
 	dbcpBean.shutDownDataSource();
 	//正常使用时使用
-	//
 //	try {
 //
 //	    connection.close();

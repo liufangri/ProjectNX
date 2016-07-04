@@ -4,6 +4,7 @@
     Author     : coco
 --%>
 <!DOCTYPE HTML>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!--
         Phantom by HTML5 UP
         html5up.net | @ajlkn
@@ -40,7 +41,7 @@
                                 <img src="<%=path%>/images/pic01.jpg" alt="" />
                             </span>
                             <a href="index.htm">
-                                <h2>Magna</h2>
+                                <h2>首页</h2>
                                 <div class="content">
                                     <p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>
                                 </div>
