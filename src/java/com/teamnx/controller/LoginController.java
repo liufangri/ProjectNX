@@ -26,7 +26,8 @@ public class LoginController {
      * 处理登录操作
      *
      * @author Y400
-     * @param
+     * @param user
+     * @param session
      */
     @RequestMapping(value = {"/loginAction"})
     public ModelAndView loginAction(User user, HttpSession session) {
@@ -35,6 +36,8 @@ public class LoginController {
 	if (findedUser != null) {
 	    String password = MD5.Md5_16(user.getPassword());
 	    if (password.equals(findedUser.getPassword())) {
+		session.setAttribute("is_login", Boolean.TRUE);
+
 		mav.setViewName("usercenter");
 		mav.addObject("user", findedUser);
 	    } else {
