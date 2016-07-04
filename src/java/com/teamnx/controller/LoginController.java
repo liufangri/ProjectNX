@@ -7,6 +7,7 @@ package com.teamnx.controller;
 
 import com.teamnx.model.User;
 import com.teamnx.model.UserDaoImpl;
+import com.teamnx.util.MD5;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +31,15 @@ public class LoginController {
     @RequestMapping(value = "loginAction")
     public ModelAndView loginAction(User user, HttpServletResponse response) throws Exception {
 	ModelAndView mav = new ModelAndView("usercenter");
-	//User findedUser = udi.findUserById(user.getId());
-	User findedUser = null;
+	User findedUser = udi.findUserById(user.getId());
 	if (findedUser != null) {
+	    String password = MD5.Md5_16(user.getPassword());
+	    if (password.equals(findedUser.getPassword())) {
+		mav.addObject("user", findedUser);
+	    } else {
+		response.getWriter().print("\"status\":fail");
+		throw new Exception();
+	    }
 
 	} else {
 	    response.getWriter().print("\"status\":fail");
