@@ -9,4 +9,6 @@ web/WEB-INF/jsp/testUpload.jsp
 src/java/com/teamnx/controller/TestSomething.java
 src/java/DbcpProperties.properties
 web/WEB-INF/jsp/hello.jsp
-/nbproject/private/
+nbproject/private/private.properties
+dist/ProjectNX.war
+nbproject/private/
