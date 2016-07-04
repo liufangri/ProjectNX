@@ -9,6 +9,10 @@ import com.teamnx.db.DbcpBean;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -52,6 +56,36 @@ public class UserDaoImpl implements UserDao {
 //	}
 	return user;
 
+    }
+
+    public ArrayList<String> findTeachersByCourseId(String id) {
+	ArrayList<String> teacherNames = new ArrayList<String>();
+	Connection connection = dbcpBean.getConnection();
+	String sql = "SELECT user.name FROM(\n"
+		+ "SELECT * FROM teacher_course\n"
+		+ "WHERE course_id = ?\n"
+		+ ")AS teacher_list INNER JOIN user ON teacher_list.teacher_id = user.id";
+	try {
+	    PreparedStatement ps = connection.prepareStatement(sql);
+	    ps.setString(1, id);
+	    ResultSet rs = ps.executeQuery();
+	    while (rs.next()) {
+		String name = rs.getString("name");
+		teacherNames.add(name);
+	    }
+	} catch (SQLException ex) {
+	    Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	}
+	//测试用
+	dbcpBean.shutDownDataSource();
+	//正常使用时使用
+//	try {
+//
+//	    connection.close();
+//	} catch (SQLException ex) {
+//	    Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+//	}
+	return teacherNames;
     }
 
     public void setDbcpBean(DbcpBean dbcpBean) {

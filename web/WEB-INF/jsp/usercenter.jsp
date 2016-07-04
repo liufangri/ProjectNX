@@ -3,9 +3,10 @@
     Created on : 2016-7-3, 16:58:35
     Author     : coco
 --%>
+<%@page import="com.teamnx.model.Course"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!--
         Phantom by HTML5 UP
         html5up.net | @ajlkn
@@ -13,6 +14,7 @@
 -->
 <html>
     <%
+        ArrayList<Course> courses = (ArrayList<Course>) request.getAttribute("student_courses");
         String path = request.getContextPath();
     %>
 
@@ -39,21 +41,22 @@
 
                     <section id="articlebox" class="tiles">
                         <%
-                            for (int i = 1; i <= 0; i++) {
-                                out.print("<article>");
-                                out.print("<span class=\"image\">");
-                                out.print("<img src=\"" + request.getContextPath() + "/images/pic02.jpg\" alt=\"\"/>");
-                                out.print("</span>");
-                                out.print("<a href=\"index.htm\">");
-                                out.print("<h2>Magna</h2>");
-                                out.print(" <div class=\"content\">");
-                                out.print("  <p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>");
-                                out.print("</div>");
-                                out.print(" </a>");
-                                out.print("</article>");
-                            }
+                            for (Course c : courses) {
                         %>
-                    
+                        <article>
+                            <span class="image">
+                                <img src= "<%=request.getContextPath()%>/images/pic02.jpg" alt="..."/>
+                            </span>
+                            <a href="index.htm?id=<%= c.getId() %>">
+                                <h2><%= c.getName() %></h2>
+                                <div class="content">
+                                    <p><%= c.getSchedule() %></p>
+                                </div>
+                            </a>
+                        </article>
+                        <%}
+                        %>
+
                         <article>
                             <span class="image">
                                 <img src="<%=path%>/images/pic01.jpg" alt="" />
@@ -65,8 +68,8 @@
                                 </div>
                             </a>
                         </article>
-     
-                            
+
+
                     </section>
 
                 </div>

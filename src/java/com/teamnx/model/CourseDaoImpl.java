@@ -82,6 +82,7 @@ public class CourseDaoImpl implements CourseDao {
 		Course course = new Course();
 		course.setCategory(rs.getBoolean("category"));
 		course.setDepartment_id(rs.getInt("department_id"));
+		int x = rs.getInt("end_time");
 		course.setEnd_time(rs.getInt("end_time"));
 		course.setId(rs.getString("id"));
 		course.setName(rs.getString("name"));

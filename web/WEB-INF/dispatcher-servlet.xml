@@ -20,7 +20,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-              <prop key="index.htm">indexController</prop>
+                <prop key="index.htm">indexController</prop>
             </props>
         </property>
     </bean>
@@ -45,12 +45,14 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
         <property name="udi" ref="userDaoImpl"/>
     </bean>
     <!--
-注册一个跳转控制器
-包括：
-    usercenter
+        注册一个跳转控制器
+        控制的跳转包括：
+        usercenter.htm
+        index.htm
     -->
     <bean id="redirectController" class="com.teamnx.controller.RedirectController">
         <property name="cdi" ref="courseDaoImpl"/>
+        <property name="udi" ref="userDaoImpl"/>
     </bean>
     <!--注册一个user的数据库操作类-->
     <bean id="userDaoImpl" class="com.teamnx.model.UserDaoImpl">

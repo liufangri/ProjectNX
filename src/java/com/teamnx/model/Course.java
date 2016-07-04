@@ -21,6 +21,7 @@ public class Course {
     private boolean category;
     private int year;
     private int semester;
+    private String teachers;
 
     public String getId() {
 	return id;
@@ -100,5 +101,13 @@ public class Course {
 
     public void setSemester(int semester) {
 	this.semester = semester;
+    }
+
+    public String getTeachers() {
+	return teachers;
+    }
+
+    public void setTeachers(String teachers) {
+	this.teachers = teachers;
     }
 }
