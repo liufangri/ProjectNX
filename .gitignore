@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7b03a4706072f180748b37f48996bea93633e3c5
 nbproject/build-impl.xml
 nbproject/genfiles.properties
 nbproject/private/private.properties
@@ -13,4 +16,8 @@ web/WEB-INF/jsp/hello.jsp
 nbproject/private/private.properties
 dist/ProjectNX.war
 nbproject/private/
+<<<<<<< HEAD
 dist/
+=======
+dist/
+>>>>>>> 7b03a4706072f180748b37f48996bea93633e3c5
