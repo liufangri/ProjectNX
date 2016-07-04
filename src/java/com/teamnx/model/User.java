@@ -11,6 +11,9 @@ package com.teamnx.model;
  */
 public class User {
 
+    static final public int STUDENT = 1;
+    static final public int TEACHER = 2;
+    static final public int ADMIN = 3;
     private String id;
     private String name;
     private String password;

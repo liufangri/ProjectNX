@@ -4,8 +4,11 @@
     Author     : coco
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <%
     String path = request.getContextPath();
+
+    
 %>
 <link href="<%=path%>/lib/css/navbar.css" rel="stylesheet">
 <script>
@@ -13,7 +16,7 @@
     {
         var myDate = new Date();
         document.getElementById("time").innerHTML = myDate.getFullYear() + "年" + (myDate.getMonth() + 1) + "月" + myDate.getDate() + "日";
-    })
+    }
 </script>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
@@ -47,7 +50,8 @@
                         </ul>
                     </div></li>
                 <li><a href="#">系统消息</a></li>
-                <li><button type="button" id="signout" onclick="signout()">注销</button>></li>
+                <li><a href="logout.htm">注销</a></li>
+
             </ul>
             <%--
             <form class="navbar-form navbar-right">
@@ -57,3 +61,4 @@
         </div>
     </div>
 </nav>
+
