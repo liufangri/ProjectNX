@@ -15,15 +15,16 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
 
     <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
     <!--注册一个数据库连接池bean-->
-    <bean name="dbcpBean" class="com.teamnx.db.DbcpBean"/>    
+    <bean name="dbcpBean" class="com.teamnx.db.DbcpBean"/>
 
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
 
-                <prop key="index.htm">indexController</prop>
-                <prop key="usercenter.htm">usercenterController</prop>
-                
+              <prop key="index.htm">indexController</prop>
+              <prop key="usercenter.htm">usercenterController</prop>
+              <prop key="login.htm">loginController</prop>
+
             </props>
         </property>
     </bean>
@@ -36,7 +37,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean name="indexController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="index" />
-    
+
     <bean id = "multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="uploadTempDir" value="/tmp"/>
@@ -55,9 +56,10 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <context:annotation-config/>
     <mvc:annotation-driven/>
 
-
-    <bean name="usercenterController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="usercenter" />
     
+<!--    测试用-->
+     <bean name="usercenterController"
+           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+           p:viewName="usercenter" />
+
 </beans>
