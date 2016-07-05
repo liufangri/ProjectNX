@@ -50,6 +50,32 @@ public class TaskController {
 
 	}
     }
+    
+    @RequestMapping(value = "/changeTaskPage")
+    public void changeTaskPage(Task task, HttpServletRequest request, HttpServletResponse response) throws IOException{
+        
+    }
+    
+    
+    @RequestMapping(value = "/changeTask")
+    public void changeTask(Task task, HttpServletRequest request, HttpServletResponse response) throws IOException{
+	String[] strs = task.getTimeLimit().split(" - ");
+	task.setStartTime(Timestamp.valueOf(strs[0]));
+	task.setDeadline(Timestamp.valueOf(strs[1]));
+	if (task.getCheck() != null) {
+	    task.setText(true);
+	}
+
+	Course course = cdi.findCourseById(task.getCourseId());
+	task.setCategory(course.isCategory());
+	task.setStatus(false);
+	if (tdi.updateTask(task)) {
+	    request.setAttribute("course_id", course.getId());
+	    response.sendRedirect("te_homework.htm?id=" + course.getId());
+	} else {
+
+	}
+    }
 
     public void setTdi(TaskDaoImpl tdi) {
 	this.tdi = tdi;
