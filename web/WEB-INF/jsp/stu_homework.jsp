@@ -46,7 +46,7 @@
                             <td>2016/08/15</td>   
                             <td>2016/09/11</td>  
                             <td>塔利班</td> 
-                            <td>0</td> 
+                            <td><a href="stu_homework_score.htm">305</a></td> 
                         </tr>
                         <%
                             }
