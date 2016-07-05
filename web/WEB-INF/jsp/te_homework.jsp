@@ -44,10 +44,11 @@
                                 &times;
                             </button>
                             <h4 class="modal-title" id="myModalLabel">
-                                模态框（Modal）标题
+                                发布新作业
                             </h4>
                         </div>
                         <div style="margin-bottom: 0px" class="well">
+
                             <fieldset>
                                 <div class="control-group">
                                     <label class="control-label" for="reservationtime">Choose your check-in and check-out times:</label>
@@ -55,6 +56,7 @@
                                         <div class="input-prepend input-group">
                                             <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
                                             <input type="text" style="width: 400px"  name="timeLimit" id="reservationtime" class="form-control span4" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM"/>
+
                                         </div>
                                     </div>
                                 </div>
@@ -72,15 +74,19 @@
                             </script>
                         </div>
                         <div class="modal-body">
-                            <div class="form-group">
-                                <label for="name">作业名</label>
-                                <input type="text" class="form-control" name="name" placeholder="文本输入">
-                            </div>
 
-                            <div class="form-group">
-                                <label for="name">作业介绍</label>
-                                <input type="textarea" class="form-control" rows="9" name=""></textarea>
-                            </div>
+                            <form role="form">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label for="name">作业名称</label>
+                                        <input type="text" class="form-control" placeholder="文本输入">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="name">作业介绍</label>
+                                        <textarea class="form-control" rows="9"></textarea>
+                                    </div>
+                                </form>
 
                         </div>
                         <div class="input-group">
