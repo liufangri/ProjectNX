@@ -165,7 +165,8 @@ public class LoginFilter implements Filter {
 		if (!path.equals("/login.htm") && !path.equals("/loginAction.htm")) {
 		    wrappedResponse.sendRedirect("login.htm");
 		}
-		session.setAttribute("is_login", Boolean.FALSE);
+                //测试用
+		session.setAttribute("is_login", Boolean.TRUE);
 	    }
 
 	    chain.doFilter(wrappedRequest, wrappedResponse);

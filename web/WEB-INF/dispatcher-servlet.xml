@@ -20,7 +20,14 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-                <prop key="index.htm">indexController</prop>
+
+                <prop key="te_studentlist.htm">te_studentListController</prop>
+                <prop key="stu_index.htm">stu_indexController</prop>
+                <prop key="te_index.htm">te_indexController</prop>
+                <prop key="usercenter.htm">userCenterController</prop>
+                <prop key="login.htm">loginController</prop>
+                <prop key="te_homework.htm">te_homeworkController</prop>
+                <prop key="te_homework_list.htm">te_homework_listController</prop>
             </props>
         </property>
     </bean>
@@ -30,9 +37,10 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
           p:prefix="/WEB-INF/jsp/"
           p:suffix=".jsp" />
 
-    <bean name="indexController"
+    <bean name="stu_indexController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="index" />
+          p:viewName="stu_index" />
+ 
 
     <bean id = "multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -58,13 +66,31 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="userDaoImpl" class="com.teamnx.model.UserDaoImpl">
         <property name="dbcpBean" ref="dbcpBean"/>
     </bean>
-    
+
     <!--注册一个course的数据库操作-->
     <bean id="courseDaoImpl" class="com.teamnx.model.CourseDaoImpl">
         <property name="dbcpBean" ref="dbcpBean"/>
     </bean>
+
     <context:component-scan base-package="com.teamnx.controller"/>
     <context:annotation-config/>
     <mvc:annotation-driven/>
 
+  
+    <!--    测试用-->
+    <bean name="userCenterController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="usercenter" />
+    <bean name="te_indexController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="te_index" />
+    <bean name="te_studentListController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="te_studentlist" />
+    <bean name="te_homeworkController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="te_homework" />
+    <bean name="te_homework_listController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="te_homework_list" />
 </beans>

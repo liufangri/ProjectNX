@@ -41,35 +41,34 @@
 
                     <section id="articlebox" class="tiles">
                         <%
+
                             for (Course c : courses) {
                         %>
                         <article>
                             <span class="image">
                                 <img src= "<%=request.getContextPath()%>/images/pic02.jpg" alt="..."/>
                             </span>
-                            <a href="index.htm?id=<%= c.getId() %>">
-                                <h2><%= c.getName() %></h2>
+                            <a href="te_index.htm?id=<%= c.getId()%>">
+                                <h2><%= c.getName()%></h2>
                                 <div class="content">
-                                    <p><%= c.getSchedule() %></p>
+                                    <p><%= c.getSchedule()%></p>
                                 </div>
                             </a>
                         </article>
-                        <%}
+                        <%
+                            }
                         %>
-
                         <article>
                             <span class="image">
                                 <img src="<%=path%>/images/pic01.jpg" alt="" />
                             </span>
-                            <a href="index.htm">
+                            <a href="te_index.htm">
                                 <h2>首页</h2>
                                 <div class="content">
                                     <p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>
                                 </div>
                             </a>
                         </article>
-
-
                     </section>
 
                 </div>

@@ -16,6 +16,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Bootstrap core CSS -->
+   
     <link href="<%=path%>/lib/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="<%=path%>/lib/css/dashboard.css" rel="stylesheet">
