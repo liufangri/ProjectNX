@@ -20,5 +20,9 @@ public interface HomeworkDao {
     public Homework findGroupHomework(String taskId, String studentId);
 
     public Homework findStudentHomework(String taskId, String studentId);
+    
+    public boolean setScore(String homeworkId, int score);
+    
+    public boolean setComment(String homeworkId, String comment);
 
 }

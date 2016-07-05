@@ -19,6 +19,7 @@ public class Homework {
     private int score;
     private String taskId;
     private String text;
+    private String comment;
 
     public String getId() {
 	return id;
@@ -82,5 +83,19 @@ public class Homework {
 
     public void setText(String text) {
 	this.text = text;
+    }
+
+    /**
+     * @return the comment
+     */
+    public String getComment() {
+        return comment;
+    }
+
+    /**
+     * @param comment the comment to set
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }
