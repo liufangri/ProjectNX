@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +25,7 @@ public class TaskDaoImpl implements TaskDao {
     @Override
     public boolean addTask(Task task) {
 	Connection connection = dbcpBean.getConnection();
-	String sql = "INSERT INTO task values (?,?,?,?,?,?,?,?,?)";
+	String sql = "INSERT INTO task values (?,?,?,?,?,?,?,?,?,?,?,?)";
 	PreparedStatement ps;
 	try {
 	    ps = connection.prepareStatement(sql);
@@ -35,11 +34,13 @@ public class TaskDaoImpl implements TaskDao {
 	    ps.setString(3, task.getTeacherId());
 	    ps.setString(4, task.getDescription());
 	    ps.setInt(5, task.getMaxScore());
-	    ps.setTimestamp(6, new Timestamp(task.getStartTime()));
-	    ps.setTimestamp(7, new Timestamp(task.getDeadline()));
+	    ps.setTimestamp(6, task.getStartTime());
+	    ps.setTimestamp(7, task.getDeadline());
 	    ps.setBoolean(8, task.isText());
 	    ps.setBoolean(9, task.isCategory());
 	    ps.setBoolean(10, task.isStatus());
+	    ps.setString(11, task.getName());
+	    ps.setString(12, task.getTeacherName());
 	    ps.execute();
 	    return true;
 	} catch (SQLException ex) {
@@ -59,7 +60,7 @@ public class TaskDaoImpl implements TaskDao {
     public ArrayList<Task> findTasksByCourseId(String courseId) {
 	ArrayList<Task> tasks = new ArrayList<Task>();
 	Connection connection = dbcpBean.getConnection();
-	String sql = "SELECT * FROM task WHERE course_id = ? ORDER BY deadline ASC";
+	String sql = "SELECT * FROM task WHERE course_id = ? ORDER BY start_time ASC";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, courseId);
@@ -71,11 +72,13 @@ public class TaskDaoImpl implements TaskDao {
 		task.setTeacherId(rs.getString("teacher_id"));
 		task.setDescription(rs.getString("description"));
 		task.setMaxScore(rs.getInt("max_score"));
-		task.setStartTime(rs.getTimestamp("start_time").getTime());
-		task.setDeadline(rs.getTimestamp("deadline").getTime());
+		task.setStartTime(rs.getTimestamp("start_time"));
+		task.setDeadline(rs.getTimestamp("deadline"));
 		task.setText(rs.getBoolean("istext"));
 		task.setCategory(rs.getBoolean("category"));
 		task.setStatus(rs.getBoolean("status"));
+		task.setName(rs.getString("name"));
+		task.setTeacherName(rs.getString("teacher_name"));
 		tasks.add(task);
 
 	    }

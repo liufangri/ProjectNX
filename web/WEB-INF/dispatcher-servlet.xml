@@ -46,6 +46,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <!--注册一个老师布置的作业控制器-->
     <bean id="taskController" class="com.teamnx.controller.TaskController">
         <property name="tdi" ref="taskDaoImpl"/>
+        <property name="cdi" ref="courseDaoImpl"/>
     </bean>
     <!--注册一个作业控制器-->
     <bean id="homeworkController" class="com.teamnx.controller.HomeworkController">

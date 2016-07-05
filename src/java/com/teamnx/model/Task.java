@@ -5,6 +5,8 @@
  */
 package com.teamnx.model;
 
+import java.sql.Timestamp;
+
 /**
  *
  * @author Y400
@@ -17,11 +19,14 @@ public class Task {
     private String description;
     private int maxScore;
     private String timeLimit;
-    private long startTime;
-    private long deadline;
+    private Timestamp startTime;
+    private Timestamp deadline;
     private boolean text;
     private boolean category;
     private boolean status;
+    private String[] check;
+    private String name;
+    private String teacherName;
 
     public String getId() {
 	return id;
@@ -63,19 +68,19 @@ public class Task {
 	this.maxScore = maxScore;
     }
 
-    public long getStartTime() {
+    public Timestamp getStartTime() {
 	return startTime;
     }
 
-    public void setStartTime(long startTime) {
+    public void setStartTime(Timestamp startTime) {
 	this.startTime = startTime;
     }
 
-    public long getDeadline() {
+    public Timestamp getDeadline() {
 	return deadline;
     }
 
-    public void setDeadline(long deadline) {
+    public void setDeadline(Timestamp deadline) {
 	this.deadline = deadline;
     }
 
@@ -109,5 +114,29 @@ public class Task {
 
     public void setTimeLimit(String timeLimit) {
 	this.timeLimit = timeLimit;
+    }
+
+    public String[] getCheck() {
+	return check;
+    }
+
+    public void setCheck(String[] check) {
+	this.check = check;
+    }
+
+    public String getName() {
+	return name;
+    }
+
+    public void setName(String name) {
+	this.name = name;
+    }
+
+    public String getTeacherName() {
+	return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+	this.teacherName = teacherName;
     }
 }

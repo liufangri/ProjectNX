@@ -5,10 +5,20 @@
  */
 package com.teamnx.model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Y400
  */
 public interface HomeworkDao {
+
+    public Homework findHomeworkById(String homeworkId);
+
+    public ArrayList<Homework> findHomeworksByCourseId(String courseId);
+
+    public Homework findGroupHomework(String taskId, String studentId);
+
+    public Homework findStudentHomework(String taskId, String studentId);
 
 }

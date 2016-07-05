@@ -104,11 +104,11 @@ public class RedirectController {
 	    mav.addObject("course", c);
 	    switch (user.getCharacter()) {
 		case User.STUDENT:
-		    mav.addObject("id", id);
+		    request.setAttribute("course_id", id);
 		    mav.setViewName("stu_index");
 		    break;
 		case User.TEACHER:
-		    mav.addObject("id", id);
+		    request.setAttribute("course_id", id);
 		    mav.setViewName("te_index");
 		    break;
 	    }
@@ -142,17 +142,43 @@ public class RedirectController {
 	return mav;
     }
 
+    /**
+     * 在跳转到作业页面前的操作
+     *
+     * @param mav
+     * @param request
+     */
     public void toTeacherHomework(ModelAndView mav, HttpServletRequest request) {
 	String courseId = request.getParameter("id");
 	ArrayList<Task> tasks;
 	tasks = tdi.findTasksByCourseId(courseId);
+	request.setAttribute("tasks", tasks);
 	Task task = new Task();
 	mav.addObject("task", task);
+	request.setAttribute("course_id", courseId);
 	//到教师作业页面的别的初始条件
+    }
+
+    @RequestMapping(value = "/stu_homework")
+    public ModelAndView studentHomework(HttpServletRequest request) {
+	ModelAndView mav = new ModelAndView("stu_homework");
+	toStudentHomeWork(mav, request);
+	return mav;
     }
 
     public void setTdi(TaskDaoImpl tdi) {
 	this.tdi = tdi;
+    }
+
+    private void toStudentHomeWork(ModelAndView mav, HttpServletRequest request) {
+	String courseId = request.getParameter("id");
+	ArrayList<Task> tasks;
+	tasks = tdi.findTasksByCourseId(courseId);
+	request.setAttribute("tasks", tasks);
+	Task task = new Task();
+	mav.addObject("task", task);
+	request.setAttribute("course_id", courseId);
+	//到教师作业页面的别的初始条件
     }
 
 }
