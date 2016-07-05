@@ -43,9 +43,8 @@
                         <tr>
                             <td>13218888</td>
                             <td>安拉</td>   
-                            <td>阿西吧</td>  
+                            <td><a href="te_homework_score.htm">阿西吧</td>  
                             <td>998</td>  
-
                         </tr>
                         <%
                             }

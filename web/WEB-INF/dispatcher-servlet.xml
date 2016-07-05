@@ -31,7 +31,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
                 <prop key="te_homework_list.htm">te_homework_listController</prop>
                 <prop key="stu_homework.htm">stu_homeworkController</prop>
                 <prop key="stu_homework_submit.htm">stu_homework_submitController</prop>
-                <prop key="modal.htm">modalController</prop>
+                <prop key="te_homework_score.htm">te_homework_scoreController</prop>
             </props>
         </property>
     </bean>
@@ -106,7 +106,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean name="stu_homeworkController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="stu_homework" />
-    <bean name="modalController"
+    <bean name="te_homework_scoreController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="modal" />
+          p:viewName="te_homework_score" />
 </beans>
