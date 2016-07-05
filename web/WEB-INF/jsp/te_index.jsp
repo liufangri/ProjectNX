@@ -19,7 +19,7 @@
             <h1 class="page-header">课程名字</h1>   
             <h1 class="page-header">上课地点</h1>     
             <h1 class="page-header">课程时间</h1>    
-            <h1 class="page-header">任课老师</h1>    
+            <h1 class="page-header">开始和结束时间</h1>    
         </div>
     </body>
 </html>

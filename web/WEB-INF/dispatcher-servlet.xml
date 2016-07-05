@@ -27,6 +27,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
                 <prop key="usercenter.htm">userCenterController</prop>
                 <prop key="login.htm">loginController</prop>
                 <prop key="te_homework.htm">te_homeworkController</prop>
+                <prop key="te_homework_list.htm">te_homework_listController</prop>
             </props>
         </property>
     </bean>
@@ -89,5 +90,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean name="te_homeworkController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="te_homework" />
-
+    <bean name="te_homework_listController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="te_homework_list" />
 </beans>

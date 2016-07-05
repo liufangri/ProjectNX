@@ -20,6 +20,7 @@
 
     <jsp:include page="header.jsp"/>
     <head>
+        <link rel="stylesheet" href="<%=path%>/lib/css/main.css" />
         <script src="<%=path%>/lib/js/skel.min.js"></script>
         <script src="<%=path%>/lib/js/util.js"></script>
         <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
