@@ -12,6 +12,7 @@
 <%
     String path = request.getContextPath();
     String courseId = (String) request.getAttribute("course_id");
+    Task task = (Task) request.getAttribute("task");
     User user = (User) session.getAttribute("user");
 %>
 <html lang="zh-CN">
@@ -40,9 +41,9 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <mvc:form action="submitHomework.htm" modelAttribute="homework" method="post" cssClass="form">
                 <div style="display:table">
-                    <!--                    <div style="display:table-cell">
-                                            <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href = 'stu_homework.htm?id=<%= task.getCourseId()%>'">
-                                        </div>-->
+                    <div style="display:table-cell">
+                        <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href = 'stu_homework.htm?id=<%= task.getCourseId()%>'">
+                    </div>
                     <div style="padding-left: 12px;display:table-cell">
                         <h1><%= task.getName()%></h1>
                     </div>
@@ -57,11 +58,11 @@
 
                 <div class="form-group">
                     <label for="name">文本作业</label>
-                    <textarea class="form-control" rows="5"></textarea>
+                    <input type="textarea" class="form-control" rows="5" name="text"/>
                 </div> 
                 <div> 
                     <label class="control-label">提交附件</label>
-                    <input id="upload" type="file"  class="file-loading" name="">
+                    <input id="upload" type="file"  class="file-loading" name="uploadFile">
                 </div>
                 <br/>
                 <div class="form-group">
@@ -71,7 +72,7 @@
                     </button>
                 </div> 
 
-                
+
             </mvc:form>
         </div>
     </body>

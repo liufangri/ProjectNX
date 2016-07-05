@@ -265,6 +265,28 @@ public class RedirectController {
         return mav;
     }
 
+    /**
+     * 跳转到学生提交作业页面
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/stu_homework_submit")
+    public ModelAndView toStudentHomeworkSubmitPage(HttpServletRequest request, HttpSession session) {
+	ModelAndView mav = new ModelAndView("stu_homework_submit");
+	User user = (User) session.getAttribute("user");
+	String taskId = request.getParameter("task_id");
+	Task task = tdi.findTaskById(taskId);
+	request.setAttribute("task_id", taskId);
+	request.setAttribute("task", task);
+	Homework homework = hdi.findStudentHomework(taskId, user.getId());
+	if (homework == null) {
+	    homework = new Homework();
+	}
+	mav.addObject("homework", homework);
+	return mav;
+    }
+
     public void setTdi(TaskDaoImpl tdi) {
 	this.tdi = tdi;
     }
