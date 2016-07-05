@@ -14,7 +14,6 @@
         <link rel="stylesheet" type="text/css" media="all" href="<%=path%>/lib/css/daterangepicker-bs3.css" />
         <script type="text/javascript" src="<%=path%>/lib/js/moment.js"></script>
         <script type="text/javascript" src="<%=path%>/lib/js/daterangepicker.js"></script>
-
     </head>
     <body>
         <jsp:include page="navbar.jsp"/>
@@ -27,79 +26,7 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="col-md-offset-10 ">
-                <button class="btn btn-default" data-toggle="modal" 
-                        data-target="#myModal">发布新作业</button>  
-            </div>
-            <div class="modal fade" id="myModal" data-backdrop="false" data-keyboard="false" tabindex="-1" role="dialog" 
-                 aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" 
-                                    data-dismiss="modal" aria-hidden="true">
-                                &times;
-                            </button>
-                            <h4 class="modal-title" id="myModalLabel">
-                                发布新作业
-                            </h4>
-                        </div>
-                        <div style="margin-bottom: 0px" class="well">
-                            <form class="form-horizontal">
-                                <fieldset>
-                                    <div class="control-group">
-                                        <label class="control-label" for="reservationtime">选择起止时间</label>
-                                        <div class="controls">
-                                            <div class="input-prepend input-group">
-                                                <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                                <input type="text" style="width: 400px"  name="reservation" id="reservationtime" class="form-control span4" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </form>
-                            <script type="text/javascript">
-                                $(document).ready(function () {
-                                    $('#reservationtime').daterangepicker({
-                                        timePicker: true,
-                                        timePickerIncrement: 30,
-                                        format: 'MM/DD/YYYY h:mm A'
-                                    }, function (start, end, label) {
-                                        console.log(start.toISOString(), end.toISOString(), label);
-                                    });
-                                });
-                            </script>
-                        </div>
-                        <div class="modal-body">
-                            <form role="form">
-                                <form role="form">
-                                    <div class="form-group">
-                                        <label for="name">作业名称</label>
-                                        <input type="text" class="form-control" placeholder="文本输入">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="name">作业介绍</label>
-                                        <textarea class="form-control" rows="9"></textarea>
-                                    </div>
-                                </form>
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <input type="checkbox">
-                            </span>
-                            <label class="form-control" for="name">是否包括附件</label>
-                        </div><!-- /input-group -->
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" 
-                                    data-dismiss="modal">关闭
-                            </button>
-                            <button type="button" class="btn btn-primary">
-                                提交更改
-                            </button>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal -->
+                <button class="btn btn-default" onclick="javascript:location.href ='te_homework_submit.htm'">发布新作业</button>  
             </div>
             <div class="table-responsive">
                 <table class="table table-striped" cellspacing="0" cellpadding="0">

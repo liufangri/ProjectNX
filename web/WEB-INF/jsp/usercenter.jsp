@@ -27,7 +27,7 @@
         <script src="<%=path%>/lib/js/main.js"></script>
     </head>
     <body>
-        <jsp:include page="navbar.jsp"/>
+        <jsp:include page="navbarcenter.jsp"/>
         <!-- Wrapper -->
         <div id="wrapper">
 

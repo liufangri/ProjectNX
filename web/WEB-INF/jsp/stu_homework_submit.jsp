@@ -33,9 +33,9 @@
             </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-           <div style="display:table">
+            <div style="display:table">
                 <div style="display:table-cell">
-                    <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href='stu_homework.htm'">
+                    <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href = 'stu_homework.htm'">
                 </div>
                 <div style="padding-left: 12px;display:table-cell">
                     <h1>作业名</h1>
