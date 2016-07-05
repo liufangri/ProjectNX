@@ -48,7 +48,6 @@
                             for (ShowHomework sh : showHomeworks) {
                         %>
                         <tr>
-<<<<<<< HEAD
                             <td><a href="stu_homework_submit.htm?taskId=<%= sh.getTaskId()%>"><%= sh.getTaskName()%></a></td>
                             <td><%= sh.getStartTime()%></td>   
                             <td><%= sh.getDeadLine()%></td>  
@@ -58,13 +57,6 @@
                                 未提交<%}%>
                             </td>
                             <td><%= sh.getScore()%></td> 
-=======
-                            <td><a href="stu_homework_submit.htm">加法题</a></td>
-                            <td>2016/08/15</td>   
-                            <td>2016/09/11</td>  
-                            <td>塔利班</td> 
-                            <td><a href="stu_homework_score.htm">305</a></td> 
->>>>>>> whr
                         </tr>
                         <%
                             }

@@ -5,9 +5,12 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="com.teamnx.model.Homework"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="mvc" %>
 <%
     String path = request.getContextPath();
+    String homework_id = (String)request.getAttribute("homework_id");
+    String taskId = (String) request.getAttribute("task_id");
 %>
 <html lang="zh-CN">
     <jsp:include page="header.jsp"/>
@@ -34,23 +37,24 @@
             <div class="clearfix">
                 <button class="btn btn-info">附件下载</button>
             </div>
-            <mvc:form action="" modelAttribute="user" method="post" cssClass="form">
+            <mvc:form action="setHomeworkScore.htm" modelAttribute="homework" method="post" cssClass="form">
                 <div class="clearfix">
                     <div class="col-md-8 column">
                         <h3>作业评语：</h3>
                     </div>
                     <div class="col-md-4 column">
-                        <h4>作业评分：<input type="number" min="1" max="100" /></h4>                    
+                        <h4>作业评分：<input type="number" name="score" min="1" max="100" /></h4>                    
                     </div>
                 </div>
                 <div class="clearfix">
-                    <textarea class="form-control" rows="9">123123</textarea>
+                    <input type="textarea" name="comment" class="form-control">
                 </div>
                 <div class="col-md-4 col-md-push-10 column" style="margin: 5px 0 0 0">
-                    <button class="btn btn-default">返回</button>
-                    <button class="btn btn-primary">提交</button>
-                </div>
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </div><input type="text" hidden="true" value="<%=taskId%>" name="task_id">
+                <input type="text" hidden="true" value="<%=homework_id%>" name="id">
             </mvc:form>
+            <button onclick="javascript:location.href = 'te_homework_list.htm?taskId=<%=taskId%>'" class="btn btn-default">返回</button>
         </div>
     </body>
 </html>

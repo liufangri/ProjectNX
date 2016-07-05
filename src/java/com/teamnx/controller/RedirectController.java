@@ -201,25 +201,7 @@ public class RedirectController {
 	return mav;
     }
 
-    /**
-     * 处理到提交作业的页面的跳转
-     *
-     * @return
-     */
-    @RequestMapping(value = "/stu_homework_submit")
-    public ModelAndView toStudentHomeworkSubmit(HttpServletRequest request) {
-	String taskId = (String) request.getParameter("taskId");
-	Task task = tdi.findTaskById(taskId);
-	Course course = cdi.findCourseById(task.getCourseId());
 
-	ModelAndView mav = new ModelAndView("stu_homework_submit");
-	Homework homework = new Homework();
-	mav.addObject("homework", homework);
-	request.setAttribute("course_id", task.getCourseId());
-	request.setAttribute("course", course);
-	request.setAttribute("task", task);
-	return mav;
-    }
 
     /**
      * 去添加作业页面
@@ -283,7 +265,7 @@ public class RedirectController {
 	if (homework == null) {
 	    homework = new Homework();
 	}
-	mav.addObject("homework", homework);
+	mav.addObject("homework", homework );
 	return mav;
     }
 

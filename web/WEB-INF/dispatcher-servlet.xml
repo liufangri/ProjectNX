@@ -22,8 +22,8 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
             <props>
                 <prop key="te_studentlist.htm">te_studentListController</prop>
                 <prop key="te_homework_list.htm">te_homework_listController</prop>
-                <prop key="stu_homework_submit.htm">stu_homework_submitController</prop>
-<!--                <prop key="modal.htm">modalController</prop>-->
+                
+                <!--                <prop key="modal.htm">modalController</prop>-->
             </props>
         </property>
     </bean>
@@ -36,7 +36,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id = "multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="uploadTempDir" value="/tmp"/>
-        <property name="maxUploadSize" value="2048576"/>
+        <property name="maxUploadSize" value="20485760"/>
         <property name="maxInMemorySize" value="524288"/>
     </bean>
     <!--注册一个登录控制器-->
@@ -51,6 +51,8 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <!--注册一个作业控制器-->
     <bean id="homeworkController" class="com.teamnx.controller.HomeworkController">
         <property name="hdi" ref="homeworkDaoImpl"/>
+        <property name="cdi" ref="courseDaoImpl"/>
+        <property name="udi" ref="userDaoImpl"/>
     </bean>
     <!--
         注册一个跳转控制器
@@ -94,10 +96,5 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean name="te_homework_listController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="te_homework_list" />
-    <bean name="te_homework_submitController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="te_homework_submit" />
-    <bean name="stu_homework_submitController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="stu_homework_submit" />
+
 </beans>
