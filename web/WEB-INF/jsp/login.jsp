@@ -17,26 +17,25 @@
         <link rel="stylesheet" href="<%=path%>/lib/css/style.css" />
         <title>课程中心 - 登录</title>
     </head>
-    <body style="background-color: yellow">
+    <body style="background-color: white">
         <div class="login">
             <div class="container">
-                <div class="clearfix"><a class="logo" href="/opencourse/" ></a></div>
                 <div class="login-box" >
                     <div class="l"><img src="<%=path%>/images/image-16.png"/></div>
-                    <div class="r" style=" background-color: white" >
+                    <div class="r" style=" " >
                         <div class="login-tab">
                             <div class="hd">
-                                <ul><li class="on">统一认证登录</li></ul>
+                                <ul><li class="on">课程中心登录</li></ul>
                             </div>
                             <div class="bd">
                                 <div class="box-1">
                                     <mvc:form action="loginAction.htm" modelAttribute="user" method="post" cssClass="form" onsubmit="return check()">
                                         <dl style="margin-top: 40px;">
-                                            <dt><i class="fa fa-user"></i>账号</dt>
+                                            <dt><span class="glyphicon glyphicon-user"></span>账号</dt>
                                             <dd><input id="eid" name="id" type="text" class="input-text" /></dd>
                                         </dl>
                                         <dl style="margin-top: 40px;">
-                                            <dt><i class="fa fa-lock"></i>密码</dt>
+                                            <dt><span class="glyphicon glyphicon-lock"></span>密码</dt>
                                             <dd><input id="pw" name="password" type="password" class="input-text" /></dd>
                                         </dl>
                                         <div class="submit-box clearfix">
@@ -46,8 +45,7 @@
                                             <a id="errorMessage" style="color:red">${error_message}</a>
                                         </div>
                                     </mvc:form>
-                                    <p style="padding-top: 5px;color:#ffa88f">注：请使用统一认证的账号密码登录，登录后在首页菜单栏点击“后台”即可进入后台系统</p>
-                                </div>
+                                    </div>
                             </div>
                         </div>
                     </div>

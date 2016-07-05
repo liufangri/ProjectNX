@@ -28,6 +28,8 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
                 <prop key="login.htm">loginController</prop>
                 <prop key="te_homework.htm">te_homeworkController</prop>
                 <prop key="te_homework_list.htm">te_homework_listController</prop>
+                <prop key="stu_homework.htm">stu_homeworkController</prop>
+                <prop key="stu_homework_submit.htm">stu_homework_submitController</prop>
             </props>
         </property>
     </bean>
@@ -93,4 +95,10 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean name="te_homework_listController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="te_homework_list" />
+    <bean name="stu_homework_submitController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="stu_homework_submit" />
+    <bean name="stu_homeworkController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="stu_homework" />
 </beans>

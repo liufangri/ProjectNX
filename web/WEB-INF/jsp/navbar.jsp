@@ -7,8 +7,6 @@
 
 <%
     String path = request.getContextPath();
-
-    
 %>
 <link href="<%=path%>/lib/css/navbar.css" rel="stylesheet">
 <script>
@@ -34,7 +32,7 @@
                 <li><a href="#">教学周次</a></li>
                 <li><a id="time"></a></li>
                 <li><div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle btn-xs" 
+                        <button id="semester" type="button" class="btn btn-default dropdown-toggle btn-xs" 
                                 data-toggle="dropdown">
                             2015年春季 <span class="caret"></span>
                         </button>
@@ -51,7 +49,6 @@
                     </div></li>
                 <li><a href="#">系统消息</a></li>
                 <li><a href="logout.htm">注销</a></li>
-
             </ul>
             <%--
             <form class="navbar-form navbar-right">

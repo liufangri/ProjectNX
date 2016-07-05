@@ -40,14 +40,14 @@
                                 &times;
                             </button>
                             <h4 class="modal-title" id="myModalLabel">
-                                模态框（Modal）标题
+                                发布新作业
                             </h4>
                         </div>
                         <div style="margin-bottom: 0px" class="well">
                             <form class="form-horizontal">
                                 <fieldset>
                                     <div class="control-group">
-                                        <label class="control-label" for="reservationtime">Choose your check-in and check-out times:</label>
+                                        <label class="control-label" for="reservationtime">选择起止时间</label>
                                         <div class="controls">
                                             <div class="input-prepend input-group">
                                                 <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
@@ -73,12 +73,12 @@
                             <form role="form">
                                 <form role="form">
                                     <div class="form-group">
-                                        <label for="name">标签</label>
+                                        <label for="name">作业名称</label>
                                         <input type="text" class="form-control" placeholder="文本输入">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="name">大文本框</label>
+                                        <label for="name">作业介绍</label>
                                         <textarea class="form-control" rows="9"></textarea>
                                     </div>
                                 </form>
