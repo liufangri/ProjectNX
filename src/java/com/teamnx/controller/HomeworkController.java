@@ -7,6 +7,7 @@ package com.teamnx.controller;
 
 import com.teamnx.model.HomeworkDaoImpl;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *
@@ -19,5 +20,10 @@ public class HomeworkController {
 
     public void setHdi(HomeworkDaoImpl hdi) {
 	this.hdi = hdi;
+    }
+
+    @RequestMapping(value = "/submitHomework")
+    public void submitHomework() {
+
     }
 }

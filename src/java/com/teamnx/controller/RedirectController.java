@@ -7,6 +7,9 @@ package com.teamnx.controller;
 
 import com.teamnx.model.Course;
 import com.teamnx.model.CourseDaoImpl;
+import com.teamnx.model.Homework;
+import com.teamnx.model.HomeworkDaoImpl;
+import com.teamnx.model.ShowHomework;
 import com.teamnx.model.Task;
 import com.teamnx.model.TaskDaoImpl;
 import com.teamnx.model.User;
@@ -31,6 +34,7 @@ public class RedirectController {
     private CourseDaoImpl cdi;
     private UserDaoImpl udi;
     private TaskDaoImpl tdi;
+    private HomeworkDaoImpl hdi;
 
     /**
      * 跳转到不同的usercenter
@@ -159,10 +163,61 @@ public class RedirectController {
 	//到教师作业页面的别的初始条件
     }
 
+    /**
+     * 处理到学生作业页面的跳转
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/stu_homework")
-    public ModelAndView studentHomework(HttpServletRequest request) {
+    public ModelAndView studentHomework(HttpServletRequest request, HttpSession session) {
 	ModelAndView mav = new ModelAndView("stu_homework");
-	toStudentHomeWork(mav, request);
+	String courseId = request.getParameter("id");
+	User user = (User) session.getAttribute("user");
+	ArrayList<Task> tasks;
+	tasks = tdi.findTasksByCourseId(courseId);
+	ArrayList<ShowHomework> showHomeworks = new ArrayList<ShowHomework>();
+	for (Task t : tasks) {
+	    Homework homework = hdi.findStudentHomework(t.getId(), user.getId());
+	    ShowHomework sh = new ShowHomework();
+	    sh.setDeadLine(t.getDeadline().toString());
+	    sh.setStartTime(t.getStartTime().toString());
+	    sh.setTaskId(t.getId());
+	    sh.setTaskName(t.getName());
+	    if (homework == null) {
+		sh.setState(false);
+	    } else {
+		sh.setState(true);
+		sh.setHomeworkId(homework.getId());
+		sh.setScore(homework.getScore());
+	    }
+	    showHomeworks.add(sh);
+	}
+	request.setAttribute("tasks", tasks);
+	request.setAttribute("show_homeworks", showHomeworks);
+	Task task = new Task();
+	mav.addObject("task", task);
+	request.setAttribute("course_id", courseId);
+	return mav;
+    }
+
+    /**
+     * 处理到提交作业的页面的跳转
+     *
+     * @return
+     */
+    @RequestMapping(value = "/stu_homework_submit")
+    public ModelAndView toStudentHomeworkSubmit(HttpServletRequest request) {
+	String taskId = (String) request.getParameter("taskId");
+	Task task = tdi.findTaskById(taskId);
+	Course course = cdi.findCourseById(task.getCourseId());
+
+	ModelAndView mav = new ModelAndView("stu_homework_submit");
+	Homework homework = new Homework();
+	mav.addObject("homework", homework);
+	request.setAttribute("course_id", task.getCourseId());
+	request.setAttribute("course", course);
+	request.setAttribute("task", task);
 	return mav;
     }
 
@@ -170,15 +225,8 @@ public class RedirectController {
 	this.tdi = tdi;
     }
 
-    private void toStudentHomeWork(ModelAndView mav, HttpServletRequest request) {
-	String courseId = request.getParameter("id");
-	ArrayList<Task> tasks;
-	tasks = tdi.findTasksByCourseId(courseId);
-	request.setAttribute("tasks", tasks);
-	Task task = new Task();
-	mav.addObject("task", task);
-	request.setAttribute("course_id", courseId);
-	//到教师作业页面的别的初始条件
+    public void setHdi(HomeworkDaoImpl hdi) {
+	this.hdi = hdi;
     }
 
 }

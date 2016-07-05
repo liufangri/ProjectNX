@@ -96,4 +96,36 @@ public class TaskDaoImpl implements TaskDao {
 	this.dbcpBean = dbcpBean;
     }
 
+    @Override
+    public Task findTaskById(String taskId) {
+	Task task = null;
+	Connection connection = dbcpBean.getConnection();
+	String sql = "SELECT * FROM task WHERE id = ?";
+	try {
+	    PreparedStatement ps = connection.prepareStatement(sql);
+	    ps.setString(1, taskId);
+	    ResultSet rs = ps.executeQuery();
+	    while (rs.next()) {
+		task = new Task();
+		task.setId(rs.getString("id"));
+		task.setCourseId(rs.getString("course_id"));
+		task.setTeacherId(rs.getString("teacher_id"));
+		task.setDescription(rs.getString("description"));
+		task.setMaxScore(rs.getInt("max_score"));
+		task.setStartTime(rs.getTimestamp("start_time"));
+		task.setDeadline(rs.getTimestamp("deadline"));
+		task.setText(rs.getBoolean("istext"));
+		task.setCategory(rs.getBoolean("category"));
+		task.setStatus(rs.getBoolean("status"));
+		task.setName(rs.getString("name"));
+		task.setTeacherName(rs.getString("teacher_name"));
+	    }
+	} catch (SQLException ex) {
+	    Logger.getLogger(TaskDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	} finally {
+	    dbcpBean.shutDownDataSource();
+	    return task;
+	}
+    }
+
 }

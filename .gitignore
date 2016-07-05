@@ -14,5 +14,3 @@ dist/ProjectNX.war
 nbproject/private/
 dist/
 web/WEB-INF/jsp/.LCKnavstudentcolumn.jsp
-build.xml
-nbproject\ant-deploy.xml

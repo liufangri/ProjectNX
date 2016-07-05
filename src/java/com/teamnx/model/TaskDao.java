@@ -15,6 +15,8 @@ public interface TaskDao {
 
     public boolean addTask(Task task);
 
+    public Task findTaskById(String taskId);
+
     public boolean updateTask(Task task);
 
     public ArrayList<Task> findTasksByCourseId(String courseId);
