@@ -56,6 +56,12 @@
                     <label class="control-label">提交附件</label>
                     <input id="upload" type="file"  class="file-loading">
                 </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary">
+                        返回
+                    </button>
+                </div> 
             </mvc:form>
         </div>
     </body>
