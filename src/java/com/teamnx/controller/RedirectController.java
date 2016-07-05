@@ -246,12 +246,11 @@ public class RedirectController {
      */
     @RequestMapping(value = "/te_task_modify")
     public ModelAndView toTeacherTaskModifyPage(HttpServletRequest request) {
-	ModelAndView mav = new ModelAndView("te_homework_submit");
+	ModelAndView mav = new ModelAndView("te_homework_change");
 	String taskId = request.getParameter("taskId");
 	Task task = tdi.findTaskById(taskId);
 	mav.addObject("task", task);
-	request.setAttribute("task", task);
-	request.setAttribute("course_id", task.getId());
+	request.setAttribute("course_id", task.getCourseId());
 	return mav;
     }
 
