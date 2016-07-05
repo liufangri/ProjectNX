@@ -48,11 +48,18 @@
                             for (Homework h : homeworks) {
                         %>
                         <tr>
+<<<<<<< HEAD
                             <td><%=h.getStudentId()%></td>
                             <td><%=h.getStudentName()%></td>   
                             <td></td>  
                             <td><%=""+h.getScore()%></td>  
 
+=======
+                            <td>13218888</td>
+                            <td>安拉</td>   
+                            <td><a href="te_homework_score.htm">阿西吧</td>  
+                            <td>998</td>  
+>>>>>>> whr
                         </tr>
                         <%
                             }
