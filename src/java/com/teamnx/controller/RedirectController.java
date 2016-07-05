@@ -34,7 +34,6 @@ public class RedirectController {
      * @param request
      * @param response
      * @param session
-     * @param user
      * @return
      */
     @RequestMapping(value = "usercenter")
@@ -47,6 +46,7 @@ public class RedirectController {
 		    studentCenter(request, user.getId());
 		    break;
 		case User.TEACHER:
+		    teacherCenter(request, user.getId());
 		    break;
 		case User.ADMIN:
 		    break;
@@ -94,6 +94,18 @@ public class RedirectController {
 
     public void setUdi(UserDaoImpl udi) {
 	this.udi = udi;
+    }
+
+    private void teacherCenter(HttpServletRequest request, String id) {
+	ArrayList<Course> courses = cdi.findCoursesByTeacherId(id);
+	request.setAttribute("student_courses", courses);
+//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @RequestMapping(value = "/te_homework")
+    public ModelAndView teacherHomework() {
+	ModelAndView mav = new ModelAndView("te_homework");
+	return mav;
     }
 
 }

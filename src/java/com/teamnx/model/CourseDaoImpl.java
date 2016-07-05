@@ -137,7 +137,6 @@ public class CourseDaoImpl implements CourseDao {
 		course.setStart_time(rs.getInt("start_time"));
 		course.setYear(rs.getInt("year"));
 		courses.add(course);
-		courses.add(course);
 	    }
 	} catch (SQLException ex) {
 	    Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
