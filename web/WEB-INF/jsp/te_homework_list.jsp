@@ -3,8 +3,18 @@
     Created on : 2016-7-4, 22:15:55
     Author     : coco
 --%>
+
+<%@page import="com.teamnx.model.Task"%>
+<%@page import="com.teamnx.model.Homework"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html lang="zh-CN">
+    <%
+        String path = request.getContextPath();
+        String courseId = (String) request.getAttribute("course_id");
+        ArrayList<Homework> homeworks = (ArrayList<Homework>) request.getAttribute("homeworks");
+        Task task = (Task) request.getAttribute("task");
+    %>
     <jsp:include page="header.jsp"/>
     <body>
         <jsp:include page="navbar.jsp"/>
@@ -18,13 +28,12 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div style="display:table">
                 <div style="display:table-cell">
-                    <button class="btn btn-default" onclick="javascript:location.href = 'te_homework.htm'"> <span class="glyphicon glyphicon-chevron-left"></span>返回列表</button>
+                    <button class="btn btn-default" onclick="javascript:location.href = 'te_homework.htm?id=<%=courseId%>'"> <span class="glyphicon glyphicon-chevron-left"></span>返回列表</button>
                 </div>
                 <div style="padding-left: 12px;display:table-cell">
-                    <h1> 作业名</h1>
+                    <h1><%= task.getName()%></h1>
                 </div>
             </div>
-
 
             <div class="table-responsive">
                 <table class="table table-striped" cellspacing="0" cellpadding="0">
@@ -38,13 +47,13 @@
                     </thead>
                     <tbody>
                         <%
-                            for (int i = 1; i < 200; i++) {
+                            for (Homework h : homeworks) {
                         %>
                         <tr>
-                            <td>13218888</td>
-                            <td>安拉</td>   
-                            <td>阿西吧</td>  
-                            <td>998</td>  
+                            <td><a href="scoreHomework.htm?homeworkId=<%=h.getId()%>"><%=h.getStudentId()%></a></td>
+                            <td><%=h.getStudentName()%></td>   
+                            <td></td>  
+                            <td><%=h.getScore()%></td>  
 
                         </tr>
                         <%

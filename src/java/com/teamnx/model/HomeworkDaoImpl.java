@@ -86,6 +86,39 @@ public class HomeworkDaoImpl implements HomeworkDao {
     }
 
     @Override
+    public ArrayList<Homework> findHomeworksByTaskId(String taskId) {
+	ArrayList<Homework> homeworks = new ArrayList<Homework>();
+	Connection connection = dbcpBean.getConnection();
+	String sql = "SELECT * FROM homework WHERE task_id=?";
+	try {
+	    PreparedStatement ps = connection.prepareStatement(sql);
+	    ps.setString(1, taskId);
+	    ResultSet rs = ps.executeQuery();
+	    while (rs.next()) {
+
+		Homework homework = new Homework();
+		homework.setId(rs.getString("id"));
+		homework.setCourseId(rs.getString("course_id"));
+		homework.setStudentId(rs.getString("student_id"));
+		homework.setGroupId(rs.getString("group_id"));
+		homework.setFilePath(rs.getString("file_path"));
+		homework.setScore(rs.getInt("score"));
+		homework.setTaskId(rs.getString("task_id"));
+		homework.setText(rs.getString("text"));
+		homework.setComment(rs.getString("comment"));
+		homework.setStudentName(rs.getString("student_name"));
+		homeworks.add(homework);
+	    }
+	} catch (SQLException ex) {
+	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	} finally {
+	    dbcpBean.shutDownDataSource();
+	    return homeworks;
+	}
+
+    }
+
+    @Override
     public Homework findGroupHomework(String taskId, String studentId) {
 	Homework homework = null;
 	Connection connection = dbcpBean.getConnection();
@@ -98,14 +131,19 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	    ps.setString(1, studentId);
 	    ps.setString(2, taskId);
 	    ResultSet rs = ps.executeQuery();
-	    homework = new Homework();
-	    homework.setId(rs.getString("id"));
-	    homework.setStudentId(rs.getString("student_id"));
-	    homework.setGroupId(rs.getString("group_id"));
-	    homework.setFilePath(rs.getString("file_path"));
-	    homework.setScore(rs.getInt("score"));
-	    homework.setTaskId(rs.getString("task_id"));
-	    homework.setText(rs.getString("text"));
+	    while (rs.next()) {
+		homework = new Homework();
+		homework.setId(rs.getString("id"));
+		homework.setCourseId(rs.getString("course_id"));
+		homework.setStudentId(rs.getString("student_id"));
+		homework.setGroupId(rs.getString("group_id"));
+		homework.setFilePath(rs.getString("file_path"));
+		homework.setScore(rs.getInt("score"));
+		homework.setTaskId(rs.getString("task_id"));
+		homework.setText(rs.getString("text"));
+		homework.setComment(rs.getString("comment"));
+		homework.setStudentName(rs.getString("student_name"));
+	    }
 	} catch (SQLException ex) {
 	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -120,20 +158,25 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	Homework homework = null;
 	Connection connection = dbcpBean.getConnection();
 	String sql = "SELECT * FROM homework\n"
-		+ "WHERE task_id = ? AND user_id = ?";
+		+ "WHERE task_id = ? AND student_id = ?;";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
-	    ps.setString(1, studentId);
-	    ps.setString(2, taskId);
+	    ps.setString(1, taskId);
+	    ps.setString(2, studentId);
 	    ResultSet rs = ps.executeQuery();
-	    homework = new Homework();
-	    homework.setId(rs.getString("id"));
-	    homework.setStudentId(rs.getString("student_id"));
-	    homework.setGroupId(rs.getString("group_id"));
-	    homework.setFilePath(rs.getString("file_path"));
-	    homework.setScore(rs.getInt("score"));
-	    homework.setTaskId(rs.getString("task_id"));
-	    homework.setText(rs.getString("text"));
+	    while (rs.next()) {
+		homework = new Homework();
+		homework.setId(rs.getString("id"));
+		homework.setCourseId(rs.getString("course_id"));
+		homework.setStudentId(rs.getString("student_id"));
+		homework.setGroupId(rs.getString("group_id"));
+		homework.setFilePath(rs.getString("file_path"));
+		homework.setScore(rs.getInt("score"));
+		homework.setTaskId(rs.getString("task_id"));
+		homework.setText(rs.getString("text"));
+		homework.setComment(rs.getString("comment"));
+		homework.setStudentName(rs.getString("student_name"));
+	    }
 	} catch (SQLException ex) {
 	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -145,23 +188,22 @@ public class HomeworkDaoImpl implements HomeworkDao {
 
     @Override
     public boolean setScore(String homeworkId, int score) {
+
 	Connection connection = dbcpBean.getConnection();
-	String sql = "SET homework score = ? WHERE id = ?";
+	String sql = "UPDATE homework SET score = ? WHERE id = ?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
-	    ps.setString(1, "" + score);
+	    ps.setInt(1, score);
+	    ps.setString(2, homeworkId);
+	    ps.executeUpdate();
 	    return true;
 	} catch (SQLException ex) {
 	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-	    dbcpBean.shutDownDataSource();
 	    return false;
-
+	} finally {
+	    dbcpBean.shutDownDataSource();
 	}
-    }
 
-    @Override
-    public boolean setComment(String homeworkId, String comment) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -191,4 +233,21 @@ public class HomeworkDaoImpl implements HomeworkDao {
 
     }
 
+    @Override
+    public boolean setComment(String homeworkId, String comment) {
+	Connection connection = dbcpBean.getConnection();
+	String sql = "UPDATE homework SET comment = ? WHERE id = ?";
+	try {
+	    PreparedStatement ps = connection.prepareStatement(sql);
+	    ps.setString(1, comment);
+	    ps.setString(2, homeworkId);
+	    ps.executeUpdate();
+	    return true;
+	} catch (SQLException ex) {
+	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    return false;
+	} finally {
+	    dbcpBean.shutDownDataSource();
+	}
+    }
 }

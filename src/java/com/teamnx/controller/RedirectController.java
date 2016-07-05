@@ -229,7 +229,26 @@ public class RedirectController {
 	ModelAndView mav = new ModelAndView("te_homework_change");
 	String taskId = request.getParameter("taskId");
 	Task task = tdi.findTaskById(taskId);
-	mav.addObject("task", task);
+	request.setAttribute("origin_task", task);
+	mav.addObject("task", new Task());
+	request.setAttribute("course_id", task.getCourseId());
+	return mav;
+    }
+
+    /**
+     * 去教师的作业提交列表
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/te_homework_list")
+    public ModelAndView toTeacherHomeworkPage(HttpServletRequest request) {
+	ModelAndView mav = new ModelAndView("te_homework_list");
+	String taskId = request.getParameter("taskId");
+	Task task = tdi.findTaskById(taskId);
+	request.setAttribute("task", task);
+	ArrayList<Homework> homeworks = hdi.findHomeworksByTaskId(taskId);
+	request.setAttribute("homeworks", homeworks);
 	request.setAttribute("course_id", task.getCourseId());
 	return mav;
     }

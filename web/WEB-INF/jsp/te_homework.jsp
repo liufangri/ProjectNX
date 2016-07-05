@@ -3,6 +3,9 @@
     Created on : 2016-7-4, 20:55:52
     Author     : coco
 --%>
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.logging.SimpleFormatter"%>
 <%@page import="org.apache.coyote.RequestGroupInfo"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.teamnx.model.Task"%>
@@ -15,6 +18,7 @@
         User user = (User) session.getAttribute("user");
         ArrayList<Task> tasks = (ArrayList<Task>) request.getAttribute("tasks");
         String courseId = (String) request.getAttribute("course_id");
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm");
     %>
     <jsp:include page="header.jsp"/>
 
@@ -56,11 +60,11 @@
                         %>
                         <tr>
                             <td><a href="te_task_modify.htm?taskId=<%= t.getId()%>"><%= t.getName()%></a></td>
-                            <td><%= t.getStartTime().toString()%></td>   
-                            <td><%= t.getDeadline().toString()%></td>  
+                            <td><%= sdf.format(new Date(t.getStartTime().getTime()))%></td>   
+                            <td><%= sdf.format(new Date(t.getDeadline().getTime()))%></td>  
                             <td><%= t.getTeacherName()%></td>  
 
-                            <td><a href="te_homework_list.htm">已提交名单</a></td>
+                            <td><a href="te_homework_list.htm?taskId=<%= t.getId()%>">已提交名单</a></td>
                         </tr>
                         <%
                             }

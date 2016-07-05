@@ -24,6 +24,8 @@ public interface HomeworkDao {
     public boolean setScore(String homeworkId, int score);
 
     public boolean setComment(String homeworkId, String comment);
+    
+    public ArrayList<Homework> findHomeworksByTaskId(String courseId);
 
     public boolean insert(Homework homework);
 }

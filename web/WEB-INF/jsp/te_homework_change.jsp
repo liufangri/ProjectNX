@@ -14,6 +14,7 @@
         String path = request.getContextPath();
         String courseId = (String) request.getAttribute("course_id");
         User user = (User) session.getAttribute("user");
+        Task task = (Task) request.getAttribute("origin_task");
     %>
     <jsp:include page="header.jsp"/>
     <head>
@@ -43,7 +44,7 @@
                         <div class="col-md-10 column">
                             <div class="form-group">
                                 <label for="name">作业名称</label>
-                                <input type="text" class="form-control" placeholder="文本输入" name="name" value="${task.name}">
+                                <input type="text" class="form-control" placeholder="文本输入" name="name" value="<%= task.getName()%>">
                             </div>
                         </div>
                     </div>
@@ -51,24 +52,24 @@
                         <div class="col-md-10 column">
                             <div class="form-group">
                                 <label for="name">作业介绍</label>
-                                <input type="textarea" class="form-control" name="description" value="${task.description}">
+                                <input type="textarea" class="form-control" name="description" value="<%= task.getDescription()%>">
                             </div>
                         </div>
                     </div>
                     <div class="row clearfix">
                         <div class="col-md-10 column">
                             <div style="margin-bottom: 0px" class="well">
-                                    <fieldset>
-                                        <div class="control-group">
-                                            <label class="control-label" for="reservationtime">选择起止时间</label>
-                                            <div class="controls">
-                                                <div class="input-prepend input-group">
-                                                    <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                                    <input type="text" style="width: 400px"  name="timeLimit" id="reservationtime" class="form-control span4" value="2016-07-01 12:00:00 - 2016-07-02 00:00:00"/>
-                                                </div>
+                                <fieldset>
+                                    <div class="control-group">
+                                        <label class="control-label" for="reservationtime">选择起止时间</label>
+                                        <div class="controls">
+                                            <div class="input-prepend input-group">
+                                                <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                                                <input type="text" style="width: 400px"  name="timeLimit" id="reservationtime" class="form-control span4" value="2016-07-01 12:00:00 - 2016-07-02 00:00:00"/>
                                             </div>
                                         </div>
-                                    </fieldset>
+                                    </div>
+                                </fieldset>
                                 <a href="stu_index.jsp"></a>
                                 <script type="text/javascript">
                                     $(document).ready(function () {
@@ -88,7 +89,7 @@
                         <div class="col-md-10 column">
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <input type="checkbox" checked="${ task.text }">
+                                    <input type="checkbox" checked="<%= task.isCategory() %>">
                                 </span>
                                 <label class="form-control" for="name">是否包括附件</label>
                             </div> 
@@ -102,6 +103,7 @@
                         <input type="text" hidden="true" value="<%= courseId%>" name="courseId"/>
                         <input type="text" hidden="true" value="<%= user.getId()%>" name="teacherId"/>
                         <input type="text" hidden="true"value="<%= user.getName()%>" name="teacherName"/>
+                        <input type="text" hidden="true" value="<%= task.getId()%>" name="id"/>
                         <div class="col-md-2 column">
                             <input type="submit" value="提交" class="btn btn-primary" />
                         </div>

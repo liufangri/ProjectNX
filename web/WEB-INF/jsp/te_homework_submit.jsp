@@ -45,7 +45,7 @@
                         <div class="col-md-10 column">
                             <div class="form-group">
                                 <label for="name">作业名称</label>
-                                <input type="text" class="form-control" placeholder="文本输入" name="name">
+                                <input type="text" class="form-control" placeholder="文本输入" name="name"/>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                         <div class="col-md-10 column">
                             <div class="form-group">
                                 <label for="name">作业介绍</label>
-                                <input type="textarea" class="form-control" name="description"></textarea>
+                                <input type="textarea" class="form-control" name="description"/>
                             </div>
                         </div>
                     </div>
@@ -90,14 +90,16 @@
                         <div class="col-md-10 column">
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <input type="checkbox" checked="${ task.text }">
+                                    <input type="checkbox" name="check"/>
                                 </span>
                                 <label class="form-control" for="name">是否包括附件</label>
                             </div> 
+                            <input type="submit" value="提交" class="btn btn-primary" />
                         </div>
                     </div>
                     <div class="row clearfix">
                         <div class="col-md-6 column">
+
                         </div>
                         <div class="col-md-2 column">
                         </div>
@@ -105,7 +107,7 @@
                         <input type="text" hidden="true" value="<%= user.getId()%>" name="teacherId"/>
                         <input type="text" hidden="true"value="<%= user.getName()%>" name="teacherName"/>
                         <div class="col-md-2 column">
-                            <input type="submit" value="提交" class="btn btn-primary" />
+
                         </div>
                     </div>
                 </mvc:form>

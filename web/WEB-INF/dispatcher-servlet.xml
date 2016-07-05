@@ -53,6 +53,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
         <property name="hdi" ref="homeworkDaoImpl"/>
         <property name="cdi" ref="courseDaoImpl"/>
         <property name="udi" ref="userDaoImpl"/>
+        <property name="tdi" ref="taskDaoImpl"/>
     </bean>
     <!--
         注册一个跳转控制器
