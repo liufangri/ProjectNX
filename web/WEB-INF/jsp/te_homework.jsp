@@ -4,11 +4,13 @@
     Author     : coco
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="mvc" %>
 <html lang="zh-CN">
     <%
         String path = request.getContextPath();
     %>
     <jsp:include page="header.jsp"/>
+    
     <head>
         <link href="<%=path%>/lib/css/dashboard.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" media="all" href="<%=path%>/lib/css/daterangepicker-bs3.css" />
@@ -33,6 +35,8 @@
             <div class="modal fade" id="myModal" data-backdrop="false" data-keyboard="false" tabindex="-1" role="dialog" 
                  aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
+                    <!--在这里写form-->
+                    <mvc:form action="addTask.htm" modelAttribute="task" method="post">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" 
@@ -44,19 +48,17 @@
                             </h4>
                         </div>
                         <div style="margin-bottom: 0px" class="well">
-                            <form class="form-horizontal">
-                                <fieldset>
-                                    <div class="control-group">
-                                        <label class="control-label" for="reservationtime">Choose your check-in and check-out times:</label>
-                                        <div class="controls">
-                                            <div class="input-prepend input-group">
-                                                <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                                <input type="text" style="width: 400px"  name="reservation" id="reservationtime" class="form-control span4" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM"/>
-                                            </div>
+                            <fieldset>
+                                <div class="control-group">
+                                    <label class="control-label" for="reservationtime">Choose your check-in and check-out times:</label>
+                                    <div class="controls">
+                                        <div class="input-prepend input-group">
+                                            <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                                            <input type="text" style="width: 400px"  name="timeLimit" id="reservationtime" class="form-control span4" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM"/>
                                         </div>
                                     </div>
-                                </fieldset>
-                            </form>
+                                </div>
+                            </fieldset>
                             <script type="text/javascript">
                                 $(document).ready(function () {
                                     $('#reservationtime').daterangepicker({
@@ -70,18 +72,16 @@
                             </script>
                         </div>
                         <div class="modal-body">
-                            <form role="form">
-                                <form role="form">
-                                    <div class="form-group">
-                                        <label for="name">标签</label>
-                                        <input type="text" class="form-control" placeholder="文本输入">
-                                    </div>
+                            <div class="form-group">
+                                <label for="name">作业名</label>
+                                <input type="text" class="form-control" name="name" placeholder="文本输入">
+                            </div>
 
-                                    <div class="form-group">
-                                        <label for="name">大文本框</label>
-                                        <textarea class="form-control" rows="9"></textarea>
-                                    </div>
-                                </form>
+                            <div class="form-group">
+                                <label for="name">作业介绍</label>
+                                <input type="textarea" class="form-control" rows="9" name=""></textarea>
+                            </div>
+
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon">
@@ -99,6 +99,8 @@
                             </button>
                         </div>
                     </div><!-- /.modal-content -->
+                    <!--关闭form-->
+                </mvc:form>
                 </div><!-- /.modal -->
             </div>
             <div class="table-responsive">

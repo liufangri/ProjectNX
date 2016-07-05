@@ -5,6 +5,7 @@
  */
 package com.teamnx.controller;
 
+import com.teamnx.model.TaskDaoImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,10 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Y400
  */
 @Controller
-public class HomeWorkController {
+public class TaskController {
 
-    @RequestMapping(value = "/addHomework")
-    public void addHomework() {
+    private TaskDaoImpl tdi;
 
+    @RequestMapping(value = "/addTask")
+    public void addTask() {
+
+    }
+
+    public void setTdi(TaskDaoImpl tdi) {
+	this.tdi = tdi;
     }
 }

@@ -9,7 +9,7 @@ package com.teamnx.model;
  *
  * @author Y400
  */
-public class HomeWork {
+public class Homework {
 
     private String id;
     private String studentId;

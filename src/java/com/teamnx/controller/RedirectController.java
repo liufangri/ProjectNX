@@ -7,6 +7,8 @@ package com.teamnx.controller;
 
 import com.teamnx.model.Course;
 import com.teamnx.model.CourseDaoImpl;
+import com.teamnx.model.Task;
+import com.teamnx.model.TaskDaoImpl;
 import com.teamnx.model.User;
 import com.teamnx.model.UserDaoImpl;
 import java.io.IOException;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
+ * 处理所有页面跳转的请求
  *
  * @author Y400
  */
@@ -27,6 +30,7 @@ public class RedirectController {
 
     private CourseDaoImpl cdi;
     private UserDaoImpl udi;
+    private TaskDaoImpl tdi;
 
     /**
      * 跳转到不同的usercenter
@@ -72,23 +76,46 @@ public class RedirectController {
 	this.cdi = cdi;
     }
 
+    /**
+     * 处理到index页的跳转
+     *
+     * @param request
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "index")
     public ModelAndView toIndex(HttpServletRequest request, HttpSession session) {
-	ModelAndView mav = new ModelAndView("index");
+	User user = (User) session.getAttribute("user");
+	ModelAndView mav = new ModelAndView();
 	if ((Boolean) session.getAttribute("is_login") == null) {
 	    session.setAttribute("is_login", false);
 
 	}
-
 	String id = request.getParameter("id");
-	Course c = cdi.findCourseById(id);
-	ArrayList<String> teacherName = udi.findTeachersByCourseId(id);
-	String names = "";
-	for (String a : teacherName) {
-	    names += a + " ";
+	if (id != null) {
+	    Course c = cdi.findCourseById(id);
+	    ArrayList<String> teacherName = udi.findTeachersByCourseId(id);
+	    String names = "";
+	    for (String a : teacherName) {
+		names += a + " ";
+	    }
+	    c.setTeachers(names);
+	    request.setAttribute("current_course", c);
+	    mav.addObject("course", c);
+	    switch (user.getCharacter()) {
+		case User.STUDENT:
+		    mav.addObject("id", id);
+		    mav.setViewName("stu_index");
+		    break;
+		case User.TEACHER:
+		    mav.addObject("id", id);
+		    mav.setViewName("te_index");
+		    break;
+	    }
+	} else {
+	    mav.setViewName("login");
 	}
-	c.setTeachers(names);
-	mav.addObject("course", c);
+
 	return mav;
     }
 
@@ -102,10 +129,30 @@ public class RedirectController {
 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * 处理到老师的作业页面的跳转
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/te_homework")
-    public ModelAndView teacherHomework() {
+    public ModelAndView teacherHomwork(HttpServletRequest request) {
 	ModelAndView mav = new ModelAndView("te_homework");
+	toTeacherHomework(mav, request);
 	return mav;
+    }
+
+    public void toTeacherHomework(ModelAndView mav, HttpServletRequest request) {
+	String courseId = request.getParameter("id");
+	ArrayList<Task> tasks;
+	tasks = tdi.findTasksByCourseId(courseId);
+	Task task = new Task();
+	mav.addObject("task", task);
+	//到教师作业页面的别的初始条件
+    }
+
+    public void setTdi(TaskDaoImpl tdi) {
+	this.tdi = tdi;
     }
 
 }

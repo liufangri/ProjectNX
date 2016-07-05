@@ -5,17 +5,10 @@
  */
 package com.teamnx.model;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author Y400
  */
-public interface TaskDao {
+public interface HomeworkDao {
 
-    public boolean addTask(Task task);
-
-    public boolean updateTask(Task task);
-
-    public ArrayList<Task> findTasksByCourseId(String courseId);
 }

@@ -48,7 +48,7 @@
                             <span class="image">
                                 <img src= "<%=request.getContextPath()%>/images/pic02.jpg" alt="..."/>
                             </span>
-                            <a href="te_index.htm?id=<%= c.getId()%>">
+                            <a href="index.htm?id=<%= c.getId()%>">
                                 <h2><%= c.getName()%></h2>
                                 <div class="content">
                                     <p><%= c.getSchedule()%></p>

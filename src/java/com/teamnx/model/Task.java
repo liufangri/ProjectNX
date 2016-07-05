@@ -16,6 +16,7 @@ public class Task {
     private String teacherId;
     private String description;
     private int maxScore;
+    private String timeLimit;
     private long startTime;
     private long deadline;
     private boolean text;
@@ -100,5 +101,13 @@ public class Task {
 
     public void setStatus(boolean status) {
 	this.status = status;
+    }
+
+    public String getTimeLimit() {
+	return timeLimit;
+    }
+
+    public void setTimeLimit(String timeLimit) {
+	this.timeLimit = timeLimit;
     }
 }

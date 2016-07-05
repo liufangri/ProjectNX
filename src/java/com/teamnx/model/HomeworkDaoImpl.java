@@ -5,17 +5,18 @@
  */
 package com.teamnx.model;
 
-import java.util.ArrayList;
+import com.teamnx.db.DbcpBean;
 
 /**
  *
  * @author Y400
  */
-public interface TaskDao {
+public class HomeworkDaoImpl implements HomeworkDao {
 
-    public boolean addTask(Task task);
+    private DbcpBean dbcpBean;
 
-    public boolean updateTask(Task task);
+    public void setDbcpBean(DbcpBean dbcpBean) {
+	this.dbcpBean = dbcpBean;
+    }
 
-    public ArrayList<Task> findTasksByCourseId(String courseId);
 }
