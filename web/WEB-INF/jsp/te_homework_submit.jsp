@@ -13,6 +13,7 @@
         String path = request.getContextPath();
         String courseId = (String) request.getAttribute("course_id");
         User user = (User) session.getAttribute("user");
+        Task task = (Task) request.getAttribute("task");
     %>
     <jsp:include page="header.jsp"/>
     <head>
@@ -37,6 +38,8 @@
                         <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href = 'te_homework.htm?id=<%=courseId%>'">
                     </div>
                 </div>
+
+
                 <mvc:form action="addTask.htm" modelAttribute="user" method="post" cssClass="form">
                     <div class="row clearfix">
                         <div class="col-md-10 column">
@@ -57,17 +60,17 @@
                     <div class="row clearfix">
                         <div class="col-md-10 column">
                             <div style="margin-bottom: 0px" class="well">
-                                    <fieldset>
-                                        <div class="control-group">
-                                            <label class="control-label" for="reservationtime">选择起止时间</label>
-                                            <div class="controls">
-                                                <div class="input-prepend input-group">
-                                                    <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                                    <input type="text" style="width: 400px"  name="timeLimit" id="reservationtime" class="form-control span4" value="2016-07-01 12:00:00 - 2016-07-02 00:00:00"/>
-                                                </div>
+                                <fieldset>
+                                    <div class="control-group">
+                                        <label class="control-label" for="reservationtime">选择起止时间</label>
+                                        <div class="controls">
+                                            <div class="input-prepend input-group">
+                                                <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                                                <input type="text" style="width: 400px"  name="timeLimit" id="reservationtime" class="form-control span4" value="2016-07-01 12:00:00 - 2016-07-02 00:00:00"/>
                                             </div>
                                         </div>
-                                    </fieldset>
+                                    </div>
+                                </fieldset>
                                 <a href="stu_index.jsp"></a>
                                 <script type="text/javascript">
                                     $(document).ready(function () {
