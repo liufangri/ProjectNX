@@ -20,6 +20,7 @@ public class Homework {
     private String taskId;
     private String text;
     private String comment;
+    private String student_name;
 
     public String getId() {
 	return id;
@@ -89,13 +90,21 @@ public class Homework {
      * @return the comment
      */
     public String getComment() {
-        return comment;
+	return comment;
     }
 
     /**
      * @param comment the comment to set
      */
     public void setComment(String comment) {
-        this.comment = comment;
+	this.comment = comment;
+    }
+
+    public String getStudent_name() {
+	return student_name;
+    }
+
+    public void setStudent_name(String student_name) {
+	this.student_name = student_name;
     }
 }

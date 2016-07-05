@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <mvc:form action="submitHomework.htm" modelAttribute="homework" method="post" cssClass="form">
+            <mvc:form action="submitHomework.htm" modelAttribute="homework" method="post" cssClass="form" enctype="multipart/form-data">
                 <div style="display:table">
                     <div style="display:table-cell">
                         <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href = 'stu_homework.htm?id=<%= task.getCourseId()%>'">
@@ -65,6 +65,11 @@
                     <input id="upload" type="file"  class="file-loading" name="uploadFile">
                 </div>
                 <br/>
+                <input type="text" hidden="true" name="courseId" value="<%=courseId%>"/>
+                <input type="text" hidden="true" name="taskId" value="<%=task.getId()%>"/>
+                <input type="text" hidden="true" name="studentId" value="<%=user.getId()%>"/>
+                <input type="text"hidden="true"name="student_name"value="<%=user.getName()%>"/>
+
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary" value="提交">
                     <button type="button" class="btn btn-primary" onclick="javascript:location.href = 'stu_homework.htm?id=<%= task.getCourseId()%>'">

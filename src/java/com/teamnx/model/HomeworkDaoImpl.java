@@ -142,26 +142,53 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	    return homework;
 	}
     }
-    
-    @Override
-    public boolean setScore(String homeworkId, int score){
-        Connection connection = dbcpBean.getConnection();
-        String sql = "SET homework score = ? WHERE id = ?";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, ""+score);
-            return true;
-        }catch (SQLException ex) {
-            	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-                    dbcpBean.shutDownDataSource();
-                    return false;
 
-        }
+    @Override
+    public boolean setScore(String homeworkId, int score) {
+	Connection connection = dbcpBean.getConnection();
+	String sql = "SET homework score = ? WHERE id = ?";
+	try {
+	    PreparedStatement ps = connection.prepareStatement(sql);
+	    ps.setString(1, "" + score);
+	    return true;
+	} catch (SQLException ex) {
+	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    dbcpBean.shutDownDataSource();
+	    return false;
+
+	}
     }
 
     @Override
     public boolean setComment(String homeworkId, String comment) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean insert(Homework homework) {
+	Connection connection = dbcpBean.getConnection();
+	String sql = "INSERT INTO homework VALUES (?,?,?,?,?,?,?,?,?,?)";
+	try {
+	    PreparedStatement ps = connection.prepareStatement(sql);
+	    ps.setString(1, homework.getId());
+	    ps.setString(2, homework.getStudentId());
+	    ps.setString(3, homework.getGroupId());
+	    ps.setString(4, homework.getCourseId());
+	    ps.setString(5, homework.getFilePath());
+	    ps.setInt(6, homework.getScore());
+	    ps.setString(7, homework.getTaskId());
+	    ps.setString(8, homework.getText());
+	    ps.setString(9, homework.getComment());
+	    ps.setString(10, homework.getStudent_name());
+	    ps.executeUpdate();
+	    return true;
+	} catch (SQLException ex) {
+	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    return false;
+	} finally {
+	    dbcpBean.shutDownDataSource();
+	}
+
     }
 
 }
