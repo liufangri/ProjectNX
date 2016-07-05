@@ -44,7 +44,7 @@
                             for (int i = 1; i < 200; i++) {
                         %>
                         <tr>
-                            <td>加法题</td>
+                            <td><a href="te_homework_submit.htm">加法题</a></td>
                             <td>2016/08/15</td>   
                             <td>2016/09/11</td>  
                             <td>塔利班</td>  
