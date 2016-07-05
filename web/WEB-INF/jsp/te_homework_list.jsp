@@ -3,8 +3,16 @@
     Created on : 2016-7-4, 22:15:55
     Author     : coco
 --%>
+
+<%@page import="com.teamnx.model.Homework"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html lang="zh-CN">
+    <%
+        String path = request.getContextPath();
+        String courseId = (String) request.getAttribute("course_id");
+        ArrayList<Homework> homeworks = (ArrayList<Homework>) request.getAttribute("homeworks");
+    %>
     <jsp:include page="header.jsp"/>
     <body>
         <jsp:include page="navbar.jsp"/>
@@ -25,7 +33,6 @@
                 </div>
             </div>
 
-
             <div class="table-responsive">
                 <table class="table table-striped" cellspacing="0" cellpadding="0">
                     <thead>
@@ -38,13 +45,13 @@
                     </thead>
                     <tbody>
                         <%
-                            for (int i = 1; i < 200; i++) {
+                            for (Homework h : homeworks) {
                         %>
                         <tr>
-                            <td>13218888</td>
-                            <td>安拉</td>   
-                            <td>阿西吧</td>  
-                            <td>998</td>  
+                            <td><%=h.getStudentId()%></td>
+                            <td><%=h.getStudentName()%></td>   
+                            <td></td>  
+                            <td><%=""+h.getScore()%></td>  
 
                         </tr>
                         <%

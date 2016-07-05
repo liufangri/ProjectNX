@@ -253,6 +253,17 @@ public class RedirectController {
 	request.setAttribute("course_id", task.getCourseId());
 	return mav;
     }
+    
+    @RequestMapping(value = "/te_homework_list")
+    public ModelAndView toTeacherHomeworkPage(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("te_homework_list");
+        String taskId = request.getParameter("taskId");
+        Task task = tdi.findTaskById(taskId);
+        ArrayList<Homework> homeworks = hdi.findHomeworksByTaskId(taskId);
+        mav.addObject("homeworks", homeworks);
+        request.setAttribute("course_id", task.getCourseId());
+        return mav;
+    }
 
     public void setTdi(TaskDaoImpl tdi) {
 	this.tdi = tdi;

@@ -60,7 +60,7 @@
                             <td><%= t.getDeadline().toString()%></td>  
                             <td><%= t.getTeacherName()%></td>  
 
-                            <td><a href="te_homework_list.htm">已提交名单</a></td>
+                            <td><a href="te_homework_list.htm?taskId=<%= t.getId()%>">已提交名单</a></td>
                         </tr>
                         <%
                             }
