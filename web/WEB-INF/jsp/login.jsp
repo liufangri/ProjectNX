@@ -11,18 +11,19 @@
     <%
         String path = request.getContextPath();
     %>
-    
+
     <jsp:include page="header.jsp"/>
     <head>
         <link rel="stylesheet" href="<%=path%>/lib/css/style.css" />
         <title>课程中心 - 登录</title>
     </head>
-    <body style="background-color: white">
+    <body>
+        <div style="background-image:url('<%=path%>/images/login_background.png')" class="bg"></div>
         <div class="login">
             <div class="container">
                 <div class="login-box" >
                     <div class="l"><img src="<%=path%>/images/image-16.png"/></div>
-                    <div class="r" style=" " >
+                    <div class="r"  >
                         <div class="login-tab">
                             <div class="hd">
                                 <ul><li class="on">课程中心登录</li></ul>
@@ -45,7 +46,7 @@
                                             <a id="errorMessage" style="color:red">${error_message}</a>
                                         </div>
                                     </mvc:form>
-                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

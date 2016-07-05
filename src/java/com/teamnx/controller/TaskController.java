@@ -31,7 +31,6 @@ public class TaskController {
     @RequestMapping(value = "/addTask")
     public void addTask(Task task, HttpServletRequest request, HttpServletResponse response) throws IOException {
 	String str = task.getName() + new Date().getTime();
-
 	task.setId(MD5.Md5_16(str));
 	String[] strs = task.getTimeLimit().split(" - ");
 	task.setStartTime(Timestamp.valueOf(strs[0]));
@@ -50,15 +49,9 @@ public class TaskController {
 
 	}
     }
-    
-    @RequestMapping(value = "/changeTaskPage")
-    public void changeTaskPage(Task task, HttpServletRequest request, HttpServletResponse response) throws IOException{
-        
-    }
-    
-    
+
     @RequestMapping(value = "/changeTask")
-    public void changeTask(Task task, HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void changeTask(Task task, HttpServletRequest request, HttpServletResponse response) throws IOException {
 	String[] strs = task.getTimeLimit().split(" - ");
 	task.setStartTime(Timestamp.valueOf(strs[0]));
 	task.setDeadline(Timestamp.valueOf(strs[1]));

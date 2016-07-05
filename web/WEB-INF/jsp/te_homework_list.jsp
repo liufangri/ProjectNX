@@ -18,7 +18,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div style="display:table">
                 <div style="display:table-cell">
-                    <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href='te_homework.htm'">
+                    <button class="btn btn-default" onclick="javascript:location.href = 'te_homework.htm'"> <span class="glyphicon glyphicon-chevron-left"></span>返回列表</button>
                 </div>
                 <div style="padding-left: 12px;display:table-cell">
                     <h1> 作业名</h1>

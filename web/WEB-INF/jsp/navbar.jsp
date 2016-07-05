@@ -14,7 +14,38 @@
     {
         var myDate = new Date();
         document.getElementById("time").innerHTML = myDate.getFullYear() + "年" + (myDate.getMonth() + 1) + "月" + myDate.getDate() + "日";
+        if ("${param.page}" !== 'usercenter')
+        {
+            $("#semester").hide();
+        } else
+        {
+            $("#backtocenter").hide();
+        }
     })
+    function goTopEx() {
+        var obj = document.getElementById("goTopBtn");
+        function getScrollTop() {
+            return document.documentElement.scrollTop + document.body.scrollTop;
+        }
+        function setScrollTop(value) {
+            if (document.documentElement.scrollTop) {
+                document.documentElement.scrollTop = value;
+            } else {
+                document.body.scrollTop = value;
+            }
+        }
+        window.onscroll = function () {
+            getScrollTop() > 0 ? obj.style.display = "" : obj.style.display = "none";
+        }
+        obj.onclick = function () {
+            var goTop = setInterval(scrollMove, 10);
+            function scrollMove() {
+                setScrollTop(getScrollTop() / 1.1);
+                if (getScrollTop() < 1)
+                    clearInterval(goTop);
+            }
+        }
+    }
 </script>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
@@ -31,31 +62,20 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">教学周次</a></li>
                 <li><a id="time"></a></li>
-                <li><div class="btn-group">
-                        <button id="semester" type="button" class="btn btn-default dropdown-toggle btn-xs" 
-                                data-toggle="dropdown">
-                            2015年春季 <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">2015年春季</a></li>
-                            <li><a href="#">2015年夏季</a></li>
-                            <li><a href="#">2015年秋季</a></li>
-                            <li><a href="#">2016年春季</a></li>
-                            <li><a href="#">2016年夏季</a></li>
-                            <li><a href="#">2016年秋季</a></li>
-                            <li><a href="#">2017年春季</a></li>
-                            <li><a href="#">2017年夏季</a></li>
-                        </ul>
-                    </div></li>
+                <li>
+                    <a id="backtocenter" href="usercenter.htm">返回课程页面</a>
+                </li>
                 <li><a href="#">系统消息</a></li>
                 <li><a href="logout.htm">注销</a></li>
             </ul>
-            <%--
+            <%-- 课程搜索暂时不做
             <form class="navbar-form navbar-right">
                 <input type="text" class="form-control" placeholder="Search...">
             </form>
             --%>
         </div>
     </div>
+        <div style="display: none" id="goTopBtn"><image src="<%=path%>/images/up.png" /></div>  
 </nav>
+<script type=text/javascript>goTopEx();</script>  
 

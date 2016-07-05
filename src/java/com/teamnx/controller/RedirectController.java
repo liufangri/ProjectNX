@@ -221,6 +221,39 @@ public class RedirectController {
 	return mav;
     }
 
+    /**
+     * 去添加作业页面
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/te_homework_add")
+    public ModelAndView toTeacherTaskAddPage(HttpServletRequest request) {
+	ModelAndView mav = new ModelAndView("te_homework_submit");
+	Task task = new Task();
+	mav.addObject("task", task);
+	String courseId = request.getParameter("id");
+	request.setAttribute("course_id", courseId);
+	return mav;
+
+    }
+
+    /**
+     * 去修改作业要求页面
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/te_task_modify")
+    public ModelAndView toTeacherTaskModifyPage(HttpServletRequest request) {
+	ModelAndView mav = new ModelAndView("te_homework_submit");
+	String taskId = request.getParameter("taskId");
+	Task task = tdi.findTaskById(taskId);
+	mav.addObject("task", task);
+	request.setAttribute("course_id", task.getId());
+	return mav;
+    }
+
     public void setTdi(TaskDaoImpl tdi) {
 	this.tdi = tdi;
     }

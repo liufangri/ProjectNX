@@ -18,6 +18,7 @@
         <li id="index"><a href="index.htm?id=<%=courseId%>">课程信息 <span class="sr-only">(current)</span></a></li>
         <li id="reports"><a href="stu_homework.htm?id=<%=courseId%>">作业</a></li>
         <li><a href="#">课程资源</a></li>
+
         <li><a href="#">团队</a></li>
         <li><a href="#">留言板</a></li>
     </ul>
