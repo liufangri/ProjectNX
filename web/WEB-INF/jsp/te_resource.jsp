@@ -1,5 +1,5 @@
 <%-- 
-    Document   : stu_resource.jsp
+    Document   : te_resource.jsp
     Created on : 2016-7-5, 23:18:57
     Author     : coco
 --%>
@@ -26,7 +26,7 @@
         <jsp:include page="navbar.jsp"/>
         <div class="container-fluid">
             <div class="row">
-                <jsp:include page="navstudentcolumn.jsp">
+                <jsp:include page="navteachercolumn.jsp">
                     <jsp:param name="type" value="resource"/>
                 </jsp:include>
             </div>
