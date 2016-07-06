@@ -17,6 +17,7 @@ import java.util.Set;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -163,10 +164,12 @@ public class LoginFilter implements Filter {
 	    String path = req.getServletPath();
 	    if (isLogin == null || !isLogin) {
 		if (!path.equals("/login.htm") && !path.equals("/loginAction.htm")) {
-		    wrappedResponse.sendRedirect("login.htm");
+		    RequestDispatcher rd = req.getRequestDispatcher("login.htm");
+		    rd.forward(request, response);
+
 		}
-                //测试用
-		session.setAttribute("is_login", Boolean.TRUE);
+		//测试用
+		session.setAttribute("is_login", Boolean.FALSE);
 	    }
 
 	    chain.doFilter(wrappedRequest, wrappedResponse);

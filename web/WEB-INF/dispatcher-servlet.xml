@@ -20,14 +20,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-
                 <prop key="te_studentlist.htm">te_studentListController</prop>
-                <prop key="stu_index.htm">stu_indexController</prop>
-                <prop key="te_index.htm">te_indexController</prop>
-                <prop key="usercenter.htm">userCenterController</prop>
-                <prop key="login.htm">loginController</prop>
-                <prop key="te_homework.htm">te_homeworkController</prop>
-                <prop key="te_homework_submit.htm">te_homework_submitController</prop>
                 <prop key="te_homework_list.htm">te_homework_listController</prop>
                 <prop key="te_homework_score.htm">te_homework_scoreController</prop>
                 <prop key="stu_homework.htm">stu_homeworkController</prop>
@@ -44,30 +37,40 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
           p:prefix="/WEB-INF/jsp/"
           p:suffix=".jsp" />
 
-    <bean name="stu_indexController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="stu_index" />
- 
-
     <bean id = "multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="uploadTempDir" value="/tmp"/>
-        <property name="maxUploadSize" value="2048576"/>
+        <property name="maxUploadSize" value="20485760"/>
         <property name="maxInMemorySize" value="524288"/>
     </bean>
     <!--注册一个登录控制器-->
     <bean id="loginController" class="com.teamnx.controller.LoginController">
         <property name="udi" ref="userDaoImpl"/>
     </bean>
+    <!--注册一个老师布置的作业控制器-->
+    <bean id="taskController" class="com.teamnx.controller.TaskController">
+        <property name="tdi" ref="taskDaoImpl"/>
+        <property name="cdi" ref="courseDaoImpl"/>
+    </bean>
+    <!--注册一个作业控制器-->
+    <bean id="homeworkController" class="com.teamnx.controller.HomeworkController">
+        <property name="hdi" ref="homeworkDaoImpl"/>
+        <property name="cdi" ref="courseDaoImpl"/>
+        <property name="udi" ref="userDaoImpl"/>
+        <property name="tdi" ref="taskDaoImpl"/>
+    </bean>
     <!--
         注册一个跳转控制器
         控制的跳转包括：
         usercenter.htm
         index.htm
+        te_homework.htm
     -->
     <bean id="redirectController" class="com.teamnx.controller.RedirectController">
         <property name="cdi" ref="courseDaoImpl"/>
         <property name="udi" ref="userDaoImpl"/>
+        <property name="tdi" ref="taskDaoImpl"/>
+        <property name="hdi" ref="homeworkDaoImpl"/>
     </bean>
     <!--注册一个user的数据库操作类-->
     <bean id="userDaoImpl" class="com.teamnx.model.UserDaoImpl">
@@ -78,25 +81,23 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="courseDaoImpl" class="com.teamnx.model.CourseDaoImpl">
         <property name="dbcpBean" ref="dbcpBean"/>
     </bean>
-
+    <!--注册一个task的数据库操作-->
+    <bean id="taskDaoImpl" class="com.teamnx.model.TaskDaoImpl">
+        <property name="dbcpBean" ref="dbcpBean"/>
+    </bean>
+    <!--注册一个homework的数据库操作-->
+    <bean id="homeworkDaoImpl" class="com.teamnx.model.HomeworkDaoImpl">
+        <property name="dbcpBean" ref="dbcpBean"/>
+    </bean>
     <context:component-scan base-package="com.teamnx.controller"/>
     <context:annotation-config/>
     <mvc:annotation-driven/>
 
   
     <!--    测试用-->
-    <bean name="userCenterController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="usercenter" />
-    <bean name="te_indexController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="te_index" />
     <bean name="te_studentListController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="te_studentlist" />
-    <bean name="te_homeworkController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="te_homework" />
     <bean name="te_homework_listController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="te_homework_list" />
@@ -121,5 +122,4 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
      <bean name="te_resourceController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="te_resource" />
-    
 </beans>

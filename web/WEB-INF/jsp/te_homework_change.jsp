@@ -1,8 +1,9 @@
 <%-- 
-    Document   : te_homework_submit
-    Created on : 2016-7-5, 20:37:13
-    Author     : coco
+    Document   : te_homework_change
+    Created on : 2016-7-5, 23:54:31
+    Author     : JOHNKYON
 --%>
+
 <%@page import="com.teamnx.model.User"%>
 <%@page import="com.teamnx.model.Task"%>
 <%@page import="com.teamnx.model.Course"%>
@@ -13,7 +14,7 @@
         String path = request.getContextPath();
         String courseId = (String) request.getAttribute("course_id");
         User user = (User) session.getAttribute("user");
-        Task task = (Task) request.getAttribute("task");
+        Task task = (Task) request.getAttribute("origin_task");
     %>
     <jsp:include page="header.jsp"/>
     <head>
@@ -38,14 +39,12 @@
                         <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href = 'te_homework.htm?id=<%=courseId%>'">
                     </div>
                 </div>
-
-
-                <mvc:form action="addTask.htm" modelAttribute="user" method="post" cssClass="form">
+                <mvc:form action="changeTask.htm" modelAttribute="user" method="post" cssClass="form">
                     <div class="row clearfix">
                         <div class="col-md-10 column">
                             <div class="form-group">
                                 <label for="name">作业名称</label>
-                                <input type="text" class="form-control" placeholder="文本输入" name="name"/>
+                                <input type="text" class="form-control" placeholder="文本输入" name="name" value="<%= task.getName()%>">
                             </div>
                         </div>
                     </div>
@@ -53,7 +52,7 @@
                         <div class="col-md-10 column">
                             <div class="form-group">
                                 <label for="name">作业介绍</label>
-                                <input type="textarea" class="form-control" name="description"/>
+                                <input type="textarea" class="form-control" name="description" value="<%= task.getDescription()%>">
                             </div>
                         </div>
                     </div>
@@ -90,24 +89,23 @@
                         <div class="col-md-10 column">
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <input type="checkbox" name="check"/>
+                                    <input type="checkbox" checked="<%= task.isCategory() %>">
                                 </span>
                                 <label class="form-control" for="name">是否包括附件</label>
                             </div> 
-                            <input type="submit" value="提交" class="btn btn-primary" />
                         </div>
                     </div>
                     <div class="row clearfix">
                         <div class="col-md-6 column">
-
                         </div>
                         <div class="col-md-2 column">
                         </div>
                         <input type="text" hidden="true" value="<%= courseId%>" name="courseId"/>
                         <input type="text" hidden="true" value="<%= user.getId()%>" name="teacherId"/>
                         <input type="text" hidden="true"value="<%= user.getName()%>" name="teacherName"/>
+                        <input type="text" hidden="true" value="<%= task.getId()%>" name="id"/>
                         <div class="col-md-2 column">
-
+                            <input type="submit" value="提交" class="btn btn-primary" />
                         </div>
                     </div>
                 </mvc:form>

@@ -3,10 +3,16 @@
     Created on : 2016-7-4, 20:55:52
     Author     : coco
 --%>
+<%@page import="com.teamnx.model.ShowHomework"%>
+<%@page import="com.teamnx.model.Task"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html lang="zh-CN">
     <%
         String path = request.getContextPath();
+        ArrayList<Task> tasks = (ArrayList<Task>) request.getAttribute("tasks");
+        ArrayList<ShowHomework> showHomeworks = (ArrayList<ShowHomework>) request.getAttribute("show_homeworks");
+        String courseId = (String) request.getAttribute("course_id");
     %>
     <jsp:include page="header.jsp"/>
     <head>
@@ -39,14 +45,18 @@
                     </thead>
                     <tbody>
                         <%
-                            for (int i = 1; i < 200; i++) {
+                            for (ShowHomework sh : showHomeworks) {
                         %>
                         <tr>
-                            <td><a href="stu_homework_submit.htm">加法题</a></td>
-                            <td>2016/08/15</td>   
-                            <td>2016/09/11</td>  
-                            <td>塔利班</td> 
-                            <td><a href="stu_homework_score.htm">305</a></td> 
+                            <td><a href="stu_homework_submit.htm?taskId=<%= sh.getTaskId()%>"><%= sh.getTaskName()%></a></td>
+                            <td><%= sh.getStartTime()%></td>   
+                            <td><%= sh.getDeadLine()%></td>  
+                            <td><% if (sh.getState()) { %>
+                                已提交
+                                <%  } else {%>
+                                未提交<%}%>
+                            </td>
+                            <td><%= sh.getScore()%></td> 
                         </tr>
                         <%
                             }

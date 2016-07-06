@@ -4,11 +4,10 @@
     Author     : coco
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    
-%>
+
 <html lang="zh-CN">
     <jsp:include page="header.jsp"/>
+    
     <body>
         <jsp:include page="navbar.jsp"/>
         <div class="container-fluid">
