@@ -28,7 +28,7 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="clearfix">
-                <button class="btn btn-default" onclick="javascript:location.href = 'te_homework_list.htm'"> <span class="glyphicon glyphicon-chevron-left"></span>返回列表</button>
+                <button class="btn btn-default" onclick="javascript:location.href = 'te_homework_list.htm?taskId=<%=taskId%>'"> <span class="glyphicon glyphicon-chevron-left"></span>返回列表</button>
             </div>
             <h1>作业评分</h1>
 
