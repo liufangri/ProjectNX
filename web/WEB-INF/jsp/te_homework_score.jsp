@@ -4,6 +4,7 @@
     Author     : tmc
 --%>
 
+<%@page import="java.io.File"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.teamnx.model.Homework"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="mvc" %>
@@ -36,11 +37,12 @@
                 <textarea class="form-control" readonly rows="15">abcd</textarea>
             </div>  
             <%
-                if (originHomework.getFilePath() != null && originHomework.getFilePath() == "") {
+                if (originHomework.getFilePath() != null && originHomework.getFilePath() != "") {
 
+                    File file = new File(originHomework.getFilePath());
             %>
             <div class="clearfix">
-                <button class="btn btn-info">附件下载</button>
+                <lable style="margin-right: 20px"><%= file.getName()%></lable><button class="btn btn-info" onclick="javascript:location.href = 'download.htm?homeworkId=<%= originHomework.getId()%>'">附件下载</button>
             </div>
             <%}%>
             <mvc:form action="setHomeworkScore.htm" modelAttribute="homework" method="post" cssClass="form">

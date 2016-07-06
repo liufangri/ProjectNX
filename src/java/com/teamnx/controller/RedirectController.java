@@ -272,7 +272,29 @@ public class RedirectController {
 	if (homework == null) {
 	    homework = new Homework();
 	}
+	request.setAttribute("origin_homework", homework);
 	mav.addObject("homework", homework);
+	return mav;
+    }
+
+    /**
+     * 学生查看详细分数页面
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/stu_homework_score")
+    public ModelAndView toStudentScorePage(HttpServletRequest request, HttpServletResponse response) {
+	ModelAndView mav = new ModelAndView("stu_homework_score");
+	String homeworkId = request.getParameter("homework_id");
+
+	Homework homework = hdi.findHomeworkById(homeworkId);
+	Task task = tdi.findTaskById(homework.getTaskId());
+
+	request.setAttribute("origin_homework", homework);
+	mav.addObject("homework", homework);
+	mav.addObject("task", task);
 	return mav;
     }
 

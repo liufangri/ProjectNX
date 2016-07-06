@@ -36,7 +36,7 @@ public class TaskController {
 	task.setStartTime(Timestamp.valueOf(strs[0]));
 	task.setDeadline(Timestamp.valueOf(strs[1]));
 	if (task.getCheck() != null) {
-	    task.setText(true);
+	    task.setText(false);
 	}
 
 	Course course = cdi.findCourseById(task.getCourseId());

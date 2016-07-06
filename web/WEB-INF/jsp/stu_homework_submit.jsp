@@ -4,6 +4,9 @@
     Author     : coco
 --%>
 
+<%@page import="java.util.Date"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="com.teamnx.model.Homework"%>
 <%@page import="com.teamnx.model.User"%>
 <%@page import="com.teamnx.model.Task"%>
 <%@page import="com.teamnx.model.Course"%>
@@ -14,6 +17,10 @@
     String courseId = (String) request.getAttribute("course_id");
     Task task = (Task) request.getAttribute("task");
     User user = (User) session.getAttribute("user");
+    Homework origin_homework = (Homework) request.getAttribute("origin_homework");
+    Homework homework = (Homework) request.getAttribute("homework");
+    Timestamp currentTimestamp = new Timestamp(new Date().getTime());
+    boolean hide = currentTimestamp.after(task.getDeadline());
 %>
 <html lang="zh-CN">
     <jsp:include page="header.jsp"/>
@@ -53,17 +60,30 @@
                     <h1>作业描述</h1>   
                 </div>
                 <div class="form-group">
+                    <label for="name" <%if (hide) {%>hidden="hidden"<%}%>>可更改</label>
+                    <label for="name"<%if (!hide) {%>hidden="hidden"<%}%>>作业已超过可提交时间</label>
+
+                </div> 
+                <div class="form-group">
                     <textarea  class="form-control" readonly rows="12" ><%= task.getDescription()%></textarea>
                 </div>  
 
                 <div class="form-group">
                     <label for="name">文本作业</label>
-                    <input type="textarea" class="form-control" rows="5" name="text"/>
+                    <input type="textarea" class="form-control" rows="5" name="text" value="${homework.text}" <%if (hide) {%>disabled="disabled"<%};%>/>
                 </div> 
+
+                <%if (!task.isText()) {
+
+                %>
                 <div> 
+
                     <label class="control-label">提交附件</label>
-                    <input id="upload" type="file"  class="file-loading" name="uploadFile">
+                    <input id="upload" type="file"  class="file-loading" name="uploadFile" <%if (hide) {%>disabled="disabled"<%}%> >
                 </div>
+                <%
+                    }
+                %>
                 <br/>
                 <input type="text" hidden="true" name="courseId" value="<%=courseId%>"/>
                 <input type="text" hidden="true" name="taskId" value="<%=task.getId()%>"/>
@@ -71,7 +91,9 @@
                 <input type="text"hidden="true"name="student_name"value="<%=user.getName()%>"/>
 
                 <div class="form-group">
-                    <input type="submit" class="btn btn-primary" value="提交">
+                    <input type="submit" class="btn btn-primary" 
+                           <%if (hide) {%>disabled="disabled"<%}%>
+                           value="提交">
                     <button type="button" class="btn btn-primary" onclick="javascript:location.href = 'stu_homework.htm?id=<%= task.getCourseId()%>'">
                         返回
                     </button>

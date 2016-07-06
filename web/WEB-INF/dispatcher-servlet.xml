@@ -20,14 +20,6 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-                <prop key="te_studentlist.htm">te_studentListController</prop>
-                <prop key="te_homework_list.htm">te_homework_listController</prop>
-                <prop key="te_homework_score.htm">te_homework_scoreController</prop>
-                <prop key="stu_homework.htm">stu_homeworkController</prop>
-                <prop key="stu_homework_submit.htm">stu_homework_submitController</prop>
-                <prop key="stu_homework_score.htm">stu_homework_scoreController</prop>
-                <prop key="stu_resource.htm">stu_resourceController</prop>
-                <prop key="te_resource.htm">te_resourceController</prop>
             </props>
         </property>
     </bean>
@@ -42,6 +34,11 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
         <property name="uploadTempDir" value="/tmp"/>
         <property name="maxUploadSize" value="20485760"/>
         <property name="maxInMemorySize" value="524288"/>
+    </bean>
+    <!--注册一个下载控制器-->
+    <bean id="downloadController" class="com.teamnx.controller.DownloadController">
+        <property name="hdi" ref="homeworkDaoImpl"/>
+        <property name="rdi" ref="resourceDaoImpl"/>
     </bean>
     <!--注册一个登录控制器-->
     <bean id="loginController" class="com.teamnx.controller.LoginController">
@@ -89,37 +86,15 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="homeworkDaoImpl" class="com.teamnx.model.HomeworkDaoImpl">
         <property name="dbcpBean" ref="dbcpBean"/>
     </bean>
+    <!--注册一个resource的数据库操作-->
+    <bean id="resourceDaoImpl" class="com.teamnx.model.ResourceDaoImpl">
+        <property name="dbcpBean" ref="dbcpBean"/>
+    </bean>
     <context:component-scan base-package="com.teamnx.controller"/>
     <context:annotation-config/>
     <mvc:annotation-driven/>
 
   
     <!--    测试用-->
-    <bean name="te_studentListController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="te_studentlist" />
-    <bean name="te_homework_listController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="te_homework_list" />
-    <bean name="te_homework_submitController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="te_homework_submit" />
-    <bean name="stu_homework_submitController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="stu_homework_submit" />
-    <bean name="stu_homeworkController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="stu_homework" />
-     <bean name="stu_homework_scoreController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="stu_homework_score" />
-    <bean name="te_homework_scoreController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="te_homework_score" />
-    <bean name="stu_resourceController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="stu_resource" />
-     <bean name="te_resourceController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="te_resource" />
+    
 </beans>

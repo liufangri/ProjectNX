@@ -9,6 +9,7 @@ import com.teamnx.model.Course;
 import com.teamnx.model.CourseDaoImpl;
 import com.teamnx.model.Homework;
 import com.teamnx.model.HomeworkDaoImpl;
+import com.teamnx.model.Task;
 import com.teamnx.model.TaskDaoImpl;
 import com.teamnx.model.User;
 import com.teamnx.model.UserDaoImpl;
@@ -43,14 +44,51 @@ public class HomeworkController {
     @RequestMapping(value = "/submitHomework")
     public void submitHomework(Homework homework, HttpServletRequest request, HttpServletResponse response,
 	    MultipartFile uploadFile, HttpSession session) throws IOException {
-	String id = MD5.Md5_16(homework.getTaskId() + homework.getStudent_name() + new Date().getTime());
-	homework.setId(id);
 	Course course = cdi.findCourseById(homework.getCourseId());
 	User user = udi.findUserById(homework.getStudentId());
+	Task task = tdi.findTaskById(homework.getTaskId());
+	if (homework.getId() == null) {
+	    String id = MD5.Md5_16(homework.getTaskId() + homework.getStudent_name() + new Date().getTime());
+	    homework.setId(id);
+	    if (!course.isCategory()) {
+		//是分组
+	    } else if (task.isText() || uploadFile.isEmpty()) {
+		if (hdi.insert(homework)) {
+		    response.sendRedirect("stu_homework.htm?id=" + homework.getCourseId());
+		} else {
 
-	if (!course.isCategory()) {
+		}
+	    } else {
+
+		String realPath = session.getServletContext().getRealPath("/WEB-INF")
+			+ "\\homework\\" + homework.getTaskId() + "\\" + uploadFile.getOriginalFilename();
+		File file = new File(realPath);
+		if (!file.exists()) {
+		    file.mkdirs();
+		} else {
+		    //已存在相同的文件
+		}
+		uploadFile.transferTo(file);
+		homework.setFilePath(realPath);
+
+		if (hdi.insert(homework)) {
+		    response.sendRedirect("stu_homework.htm?id=" + homework.getCourseId());
+		} else {
+		    file.delete();
+		}
+	    }
+	} else if (!course.isCategory()) {
 	    //是分组
+	} else if (!course.isCategory()) {
+	    //是分组
+	} else if (task.isText() || uploadFile.isEmpty()) {
+	    if (hdi.insert(homework)) {
+		response.sendRedirect("stu_homework.htm?id=" + homework.getCourseId());
+	    } else {
+
+	    }
 	} else {
+
 	    String realPath = session.getServletContext().getRealPath("/WEB-INF")
 		    + "\\homework\\" + homework.getTaskId() + "\\" + uploadFile.getOriginalFilename();
 	    File file = new File(realPath);
@@ -61,12 +99,14 @@ public class HomeworkController {
 	    }
 	    uploadFile.transferTo(file);
 	    homework.setFilePath(realPath);
-	    if (hdi.insert(homework)) {
+
+	    if (hdi.update(homework)) {
 		response.sendRedirect("stu_homework.htm?id=" + homework.getCourseId());
 	    } else {
 		file.delete();
 	    }
 	}
+
     }
 
     public void setCdi(CourseDaoImpl cdi) {

@@ -250,4 +250,9 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	    dbcpBean.shutDownDataSource();
 	}
     }
+
+    @Override
+    public boolean update(Homework homework) {
+	return true;
+    }
 }
