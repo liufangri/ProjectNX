@@ -3,9 +3,15 @@
     Created on : 2016-7-4, 20:41:36
     Author     : coco
 --%>
+<%@page import="com.teamnx.model.User"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html lang="zh-CN">
     <jsp:include page="header.jsp"/>
+    <%
+        String courseId = (String) request.getAttribute("course_id");
+        ArrayList<User> students = (ArrayList<User>) request.getAttribute("students");
+    %>
     <body>
         <jsp:include page="navbar.jsp"/>
         <div class="container-fluid">
@@ -27,11 +33,11 @@
                     </thead>
                     <tbody>
                         <%
-                            for (int i = 1; i < 200; i++) {
+                            for (User student : students) {
                         %>
                         <tr>
-                            <td>1,001</td>
-                            <td>Lorem</td>   
+                            <td><%= student.getId()%></td>
+                            <td><%= student.getName()%></td>   
                         </tr>
                         <%
                             }

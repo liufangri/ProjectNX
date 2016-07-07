@@ -4,6 +4,7 @@
     Author     : coco
 --%>
 
+<%@page import="java.io.File"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="com.teamnx.model.Homework"%>
@@ -49,7 +50,7 @@
             <mvc:form action="submitHomework.htm" modelAttribute="homework" method="post" cssClass="form" enctype="multipart/form-data">
                 <div style="display:table">
                     <div style="display:table-cell">
-                        <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href = 'stu_homework.htm?id=<%= task.getCourseId()%>'">
+                        <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href = 'stu_homework.htm?course_id=<%= task.getCourseId()%>'">
                     </div>
                     <div style="padding-left: 12px;display:table-cell">
                         <h1><%= task.getName()%></h1>
@@ -60,8 +61,8 @@
                     <h1>作业描述</h1>   
                 </div>
                 <div class="form-group">
-                    <label for="name" <%if (hide) {%>hidden="hidden"<%}%>>可更改</label>
-                    <label for="name"<%if (!hide) {%>hidden="hidden"<%}%>>作业已超过可提交时间</label>
+                    <label for="name" <%if (hide) {%>hidden="hidden"<%}%>>当前作业目前可以更改</label>
+                    <label class="text-danger" for="name"<%if (!hide) {%>hidden="hidden"<%}%>>作业已超过可提交时间</label>
 
                 </div> 
                 <div class="form-group">
@@ -77,7 +78,13 @@
 
                 %>
                 <div> 
-
+                    <% if (origin_homework.getFilePath() != null) {
+                            File file = new File(origin_homework.getFilePath());
+                    %>
+                    <div class="clearfix">
+                        <lable style="margin-right: 20px"><%= file.getName()%></lable><a href="download.htm?homeworkId=<%= origin_homework.getId()%>"><button type="button" class="btn btn-info" >附件下载</button></a>
+                    </div>
+                    <%}%>
                     <label class="control-label">提交附件</label>
                     <input id="upload" type="file"  class="file-loading" name="uploadFile" <%if (hide) {%>disabled="disabled"<%}%> >
                 </div>
@@ -85,16 +92,17 @@
                     }
                 %>
                 <br/>
-                <input type="text" hidden="true" name="courseId" value="<%=courseId%>"/>
-                <input type="text" hidden="true" name="taskId" value="<%=task.getId()%>"/>
-                <input type="text" hidden="true" name="studentId" value="<%=user.getId()%>"/>
-                <input type="text"hidden="true"name="student_name"value="<%=user.getName()%>"/>
+<!--                <input type="text" hidden="hidden" name="id" value="<%= origin_homework.getId()%>"/>-->
+                <input type="text" hidden="hidden" name="courseId" value="<%=courseId%>"/>
+                <input type="text" hidden="hidden" name="taskId" value="<%=task.getId()%>"/>
+                <input type="text" hidden="hidden" name="studentId" value="<%=user.getId()%>"/>
+                <input type="text"hidden="hidden"name="studentName"value="<%=user.getName()%>"/>
 
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary" 
                            <%if (hide) {%>disabled="disabled"<%}%>
                            value="提交">
-                    <button type="button" class="btn btn-primary" onclick="javascript:location.href = 'stu_homework.htm?id=<%= task.getCourseId()%>'">
+                    <button type="button" class="btn btn-primary" onclick="javascript:location.href = 'stu_homework.htm?course_id=<%= task.getCourseId()%>'">
                         返回
                     </button>
                 </div> 

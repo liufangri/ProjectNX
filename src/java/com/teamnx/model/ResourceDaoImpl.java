@@ -44,7 +44,11 @@ public class ResourceDaoImpl implements ResourceDao {
 	    return false;
 
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	}
 
     }
@@ -63,7 +67,11 @@ public class ResourceDaoImpl implements ResourceDao {
 	    return false;
 
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	}
     }
 
@@ -81,7 +89,11 @@ public class ResourceDaoImpl implements ResourceDao {
 	    return false;
 
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	}
     }
 
@@ -101,7 +113,11 @@ public class ResourceDaoImpl implements ResourceDao {
 	    return false;
 
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	}
     }
 
@@ -124,7 +140,11 @@ public class ResourceDaoImpl implements ResourceDao {
 	    return false;
 
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	}
     }
 
@@ -153,7 +173,11 @@ public class ResourceDaoImpl implements ResourceDao {
 	    Logger.getLogger(ResourceDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	    return resources;
 	}
 
@@ -183,7 +207,11 @@ public class ResourceDaoImpl implements ResourceDao {
 	    Logger.getLogger(ResourceDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	    return resources;
 	}
     }
@@ -212,7 +240,11 @@ public class ResourceDaoImpl implements ResourceDao {
 	    Logger.getLogger(ResourceDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	    return resources;
 	}
     }
@@ -239,8 +271,20 @@ public class ResourceDaoImpl implements ResourceDao {
 	    }
 	} catch (SQLException ex) {
 	    Logger.getLogger(ResourceDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	} finally {
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+	    return resource;
+
 	}
-	return resource;
+    }
+
+    @Override
+    public boolean deleteMultyResources(String[] ids) {
+	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

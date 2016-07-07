@@ -48,13 +48,16 @@ public class RedirectController {
     public ModelAndView toUserCenter(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 	User user = (User) session.getAttribute("user");
 	ModelAndView mav = new ModelAndView("usercenter");
+	ArrayList<Course> courses;
 	if (user != null) {
 	    switch (user.getCharacter()) {
 		case User.STUDENT:
-		    studentCenter(request, user.getId());
+		    courses = cdi.findCoursesByStudentId(user.getId());
+		    request.setAttribute("courses", courses);
 		    break;
 		case User.TEACHER:
-		    teacherCenter(request, user.getId());
+		    courses = cdi.findCoursesByTeacherId(user.getId());
+		    request.setAttribute("courses", courses);
 		    break;
 		case User.ADMIN:
 		    break;
@@ -63,17 +66,6 @@ public class RedirectController {
 	    response.sendRedirect("login.htm");
 	}
 	return mav;
-    }
-
-    /**
-     * 跳转到学生中心
-     *
-     * @param request
-     * @param id
-     */
-    private void studentCenter(HttpServletRequest request, String id) {
-	ArrayList<Course> courses = cdi.findCoursesByStudentId(id);
-	request.setAttribute("student_courses", courses);
     }
 
     public void setCdi(CourseDaoImpl cdi) {
@@ -91,46 +83,42 @@ public class RedirectController {
     public ModelAndView toIndex(HttpServletRequest request, HttpSession session) {
 	User user = (User) session.getAttribute("user");
 	ModelAndView mav = new ModelAndView();
-	if ((Boolean) session.getAttribute("is_login") == null) {
-	    session.setAttribute("is_login", false);
+	String courseId = request.getParameter("course_id");
+	if (user != null) {
 
-	}
-	String id = request.getParameter("id");
-	if (id != null) {
-	    Course c = cdi.findCourseById(id);
-	    ArrayList<String> teacherName = udi.findTeachersByCourseId(id);
-	    String names = "";
-	    for (String a : teacherName) {
-		names += a + " ";
+	    Course c = cdi.findCourseById(courseId);
+	    if (c != null) {
+		ArrayList<String> teacherName = udi.findTeachersByCourseId(courseId);
+		String names = "";
+		for (String a : teacherName) {
+		    names += a + " ";
+		}
+		c.setTeachers(names);
+		request.setAttribute("current_course", c);
+		mav.addObject("course", c);
+		switch (user.getCharacter()) {
+		    case User.STUDENT:
+			request.setAttribute("course_id", courseId);
+			mav.setViewName("stu_index");
+			break;
+		    case User.TEACHER:
+			request.setAttribute("course_id", courseId);
+			mav.setViewName("te_index");
+			break;
+		}
+	    } else {
+		//找不到课程
+		mav.setViewName("login");
 	    }
-	    c.setTeachers(names);
-	    request.setAttribute("current_course", c);
-	    mav.addObject("course", c);
-	    switch (user.getCharacter()) {
-		case User.STUDENT:
-		    request.setAttribute("course_id", id);
-		    mav.setViewName("stu_index");
-		    break;
-		case User.TEACHER:
-		    request.setAttribute("course_id", id);
-		    mav.setViewName("te_index");
-		    break;
-	    }
+	    //用户信息在session中被删除了，返回到登录页面
 	} else {
 	    mav.setViewName("login");
 	}
-
 	return mav;
     }
 
     public void setUdi(UserDaoImpl udi) {
 	this.udi = udi;
-    }
-
-    private void teacherCenter(HttpServletRequest request, String id) {
-	ArrayList<Course> courses = cdi.findCoursesByTeacherId(id);
-	request.setAttribute("student_courses", courses);
-//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -142,25 +130,14 @@ public class RedirectController {
     @RequestMapping(value = "/te_homework")
     public ModelAndView teacherHomwork(HttpServletRequest request) {
 	ModelAndView mav = new ModelAndView("te_homework");
-	toTeacherHomework(mav, request);
-	return mav;
-    }
-
-    /**
-     * 在跳转到作业页面前的操作
-     *
-     * @param mav
-     * @param request
-     */
-    public void toTeacherHomework(ModelAndView mav, HttpServletRequest request) {
-	String courseId = request.getParameter("id");
+	String courseId = request.getParameter("course_id");
 	ArrayList<Task> tasks;
 	tasks = tdi.findTasksByCourseId(courseId);
 	request.setAttribute("tasks", tasks);
 	Task task = new Task();
 	mav.addObject("task", task);
 	request.setAttribute("course_id", courseId);
-	//到教师作业页面的别的初始条件
+	return mav;
     }
 
     /**
@@ -172,32 +149,36 @@ public class RedirectController {
     @RequestMapping(value = "/stu_homework")
     public ModelAndView studentHomework(HttpServletRequest request, HttpSession session) {
 	ModelAndView mav = new ModelAndView("stu_homework");
-	String courseId = request.getParameter("id");
+	String courseId = request.getParameter("course_id");
 	User user = (User) session.getAttribute("user");
-	ArrayList<Task> tasks;
-	tasks = tdi.findTasksByCourseId(courseId);
-	ArrayList<ShowHomework> showHomeworks = new ArrayList<ShowHomework>();
-	for (Task t : tasks) {
-	    Homework homework = hdi.findStudentHomework(t.getId(), user.getId());
-	    ShowHomework sh = new ShowHomework();
-	    sh.setDeadLine(t.getDeadline().toString());
-	    sh.setStartTime(t.getStartTime().toString());
-	    sh.setTaskId(t.getId());
-	    sh.setTaskName(t.getName());
-	    if (homework == null) {
-		sh.setState(false);
-	    } else {
-		sh.setState(true);
-		sh.setHomeworkId(homework.getId());
-		sh.setScore(homework.getScore());
+	if (user != null) {
+	    ArrayList<Task> tasks;
+	    tasks = tdi.findTasksByCourseId(courseId);
+	    ArrayList<ShowHomework> showHomeworks = new ArrayList<ShowHomework>();
+	    for (Task t : tasks) {
+		Homework homework = hdi.findStudentHomework(t.getId(), user.getId());
+		ShowHomework sh = new ShowHomework();
+		sh.setDeadLine(t.getDeadline().toString());
+		sh.setStartTime(t.getStartTime().toString());
+		sh.setTaskId(t.getId());
+		sh.setTaskName(t.getName());
+		if (homework == null) {
+		    sh.setState(false);
+		} else {
+		    sh.setState(true);
+		    sh.setHomeworkId(homework.getId());
+		    sh.setScore(homework.getScore());
+		}
+		showHomeworks.add(sh);
 	    }
-	    showHomeworks.add(sh);
+	    request.setAttribute("tasks", tasks);
+	    request.setAttribute("show_homeworks", showHomeworks);
+	    Task task = new Task();
+	    mav.addObject("task", task);
+	    request.setAttribute("course_id", courseId);
+	} else {
+	    mav.setViewName("login");
 	}
-	request.setAttribute("tasks", tasks);
-	request.setAttribute("show_homeworks", showHomeworks);
-	Task task = new Task();
-	mav.addObject("task", task);
-	request.setAttribute("course_id", courseId);
 	return mav;
     }
 
@@ -212,7 +193,7 @@ public class RedirectController {
 	ModelAndView mav = new ModelAndView("te_homework_submit");
 	Task task = new Task();
 	mav.addObject("task", task);
-	String courseId = request.getParameter("id");
+	String courseId = request.getParameter("course_id");
 	request.setAttribute("course_id", courseId);
 	return mav;
 
@@ -227,10 +208,9 @@ public class RedirectController {
     @RequestMapping(value = "/te_task_modify")
     public ModelAndView toTeacherTaskModifyPage(HttpServletRequest request) {
 	ModelAndView mav = new ModelAndView("te_homework_change");
-	String taskId = request.getParameter("taskId");
+	String taskId = request.getParameter("task_id");
 	Task task = tdi.findTaskById(taskId);
-	request.setAttribute("origin_task", task);
-	mav.addObject("task", new Task());
+	mav.addObject("task", task);
 	request.setAttribute("course_id", task.getCourseId());
 	return mav;
     }
@@ -244,7 +224,7 @@ public class RedirectController {
     @RequestMapping(value = "/te_homework_list")
     public ModelAndView toTeacherHomeworkPage(HttpServletRequest request) {
 	ModelAndView mav = new ModelAndView("te_homework_list");
-	String taskId = request.getParameter("taskId");
+	String taskId = request.getParameter("task_id");
 	Task task = tdi.findTaskById(taskId);
 	request.setAttribute("task", task);
 	ArrayList<Homework> homeworks = hdi.findHomeworksByTaskId(taskId);
@@ -263,7 +243,7 @@ public class RedirectController {
     public ModelAndView toStudentHomeworkSubmitPage(HttpServletRequest request, HttpSession session) {
 	ModelAndView mav = new ModelAndView("stu_homework_submit");
 	User user = (User) session.getAttribute("user");
-	String taskId = request.getParameter("taskId");
+	String taskId = request.getParameter("task_id");
 	Task task = tdi.findTaskById(taskId);
 	request.setAttribute("task_id", taskId);
 	request.setAttribute("course_id", task.getCourseId());
@@ -288,13 +268,51 @@ public class RedirectController {
     public ModelAndView toStudentScorePage(HttpServletRequest request, HttpServletResponse response) {
 	ModelAndView mav = new ModelAndView("stu_homework_score");
 	String homeworkId = request.getParameter("homework_id");
-
 	Homework homework = hdi.findHomeworkById(homeworkId);
 	Task task = tdi.findTaskById(homework.getTaskId());
-
+	String courseId = task.getCourseId();
 	request.setAttribute("origin_homework", homework);
+	request.setAttribute("course_id", courseId);
 	mav.addObject("homework", homework);
 	mav.addObject("task", task);
+	return mav;
+    }
+
+    /**
+     * 跳转到查看选修这门课所有学生的页面
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/te_studentlist")
+    public ModelAndView toStudentListPage(HttpServletRequest request) {
+	ModelAndView mav = new ModelAndView("te_studentlist");
+	String courseId = request.getParameter("course_id");
+	ArrayList<User> students = udi.findStudentsByCourseId(courseId);
+	request.setAttribute("course_id", courseId);
+	request.setAttribute("students", students);
+	return mav;
+    }
+
+    /**
+     * 跳转到给学生打分页面
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/scoreHomework")
+    public ModelAndView scoreHomework(HttpServletRequest request) {
+	ModelAndView mav = new ModelAndView("te_homework_score");
+	String homeworkId = request.getParameter("homework_id");
+	Homework homework = hdi.findHomeworkById(homeworkId);
+	String taskId = homework.getTaskId();
+	Task task = (Task) tdi.findTaskById(taskId);
+	request.setAttribute("homework_id", homeworkId);
+	request.setAttribute("course_id", homework.getCourseId());
+	request.setAttribute("task_id", taskId);
+	request.setAttribute("origin_homework", homework);
+	request.setAttribute("task", task);
+	mav.addObject("homework", new Homework());
 	return mav;
     }
 

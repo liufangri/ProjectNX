@@ -14,13 +14,6 @@
     {
         var myDate = new Date();
         document.getElementById("time").innerHTML = myDate.getFullYear() + "年" + (myDate.getMonth() + 1) + "月" + myDate.getDate() + "日";
-        if ("${param.page}" !== 'usercenter')
-        {
-            $("#semester").hide();
-        } else
-        {
-            $("#backtocenter").hide();
-        }
     })
     function goTopEx() {
         var obj = document.getElementById("goTopBtn");
@@ -64,9 +57,9 @@
                 <li><a id="time"></a></li>
                 <li>
                     <div  class="btn-group" >
-                        <button id="semester" type="button" class="btn btn-default dropdown-toggle btn-xs" 
+                        <button id="semester" type="button" class="btn dropdown-toggle " 
                                 data-toggle="dropdown">
-                            2015年春季 <span class="caret"></span>
+                                2015年春季 <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="#">2015年春季</a></li>

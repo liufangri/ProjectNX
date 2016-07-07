@@ -14,13 +14,6 @@
     {
         var myDate = new Date();
         document.getElementById("time").innerHTML = myDate.getFullYear() + "年" + (myDate.getMonth() + 1) + "月" + myDate.getDate() + "日";
-        if ("${param.page}" !== 'usercenter')
-        {
-            $("#semester").hide();
-        } else
-        {
-            $("#backtocenter").hide();
-        }
     })
     function goTopEx() {
         var obj = document.getElementById("goTopBtn");

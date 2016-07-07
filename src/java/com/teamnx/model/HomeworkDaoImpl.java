@@ -49,7 +49,11 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	} catch (SQLException ex) {
 	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	    return homework;
 	}
 
@@ -79,7 +83,11 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	} catch (SQLException ex) {
 	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	    return homeworks;
 	}
 
@@ -112,7 +120,11 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	} catch (SQLException ex) {
 	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	    return homeworks;
 	}
 
@@ -148,7 +160,11 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	    return homework;
 	}
     }
@@ -181,7 +197,11 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	    return homework;
 	}
     }
@@ -201,7 +221,11 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 	    return false;
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	}
 
     }
@@ -221,14 +245,18 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	    ps.setString(7, homework.getTaskId());
 	    ps.setString(8, homework.getText());
 	    ps.setString(9, homework.getComment());
-	    ps.setString(10, homework.getStudent_name());
+	    ps.setString(10, homework.getStudentName());
 	    ps.executeUpdate();
 	    return true;
 	} catch (SQLException ex) {
 	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 	    return false;
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	}
 
     }
@@ -247,12 +275,34 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 	    return false;
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	}
     }
 
     @Override
     public boolean update(Homework homework) {
-	return true;
+	Connection connection = dbcpBean.getConnection();
+	String sql = "UPDATE homework SET file_path = ?,score = 0, text = ? WHERE id = ?";
+	try {
+	    PreparedStatement ps = connection.prepareStatement(sql);
+	    ps.setString(1, homework.getFilePath());
+	    ps.setString(2, homework.getText());
+	    ps.setString(3, homework.getId());
+	    ps.executeUpdate();
+	    return true;
+	} catch (SQLException ex) {
+	    Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    return false;
+	} finally {
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+	}
     }
 }

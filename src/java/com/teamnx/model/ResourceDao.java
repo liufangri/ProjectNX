@@ -19,6 +19,8 @@ public interface ResourceDao {
 
     public boolean delete(Resource resource);
 
+    public boolean deleteMultyResources(String[] ids);
+
     public boolean updatePath(Resource resource);
 
     public boolean updateName(Resource resource);
