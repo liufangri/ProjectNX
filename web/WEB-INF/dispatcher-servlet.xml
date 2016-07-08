@@ -20,12 +20,9 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
+                <!--                开发用-->
                 <prop key="te_studentlist.htm">te_studentListController</prop>
                 <prop key="te_homework_list.htm">te_homework_listController</prop>
-                <prop key="te_homework_score.htm">te_homework_scoreController</prop>
-                <prop key="stu_homework.htm">stu_homeworkController</prop>
-                <prop key="stu_homework_submit.htm">stu_homework_submitController</prop>
-                <prop key="stu_homework_score.htm">stu_homework_scoreController</prop>
                 <prop key="stu_resource.htm">stu_resourceController</prop>
                 <prop key="te_resource.htm">te_resourceController</prop>
             </props>
@@ -101,25 +98,10 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean name="te_homework_listController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="te_homework_list" />
-    <bean name="te_homework_submitController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="te_homework_submit" />
-    <bean name="stu_homework_submitController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="stu_homework_submit" />
-    <bean name="stu_homeworkController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="stu_homework" />
-     <bean name="stu_homework_scoreController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="stu_homework_score" />
-    <bean name="te_homework_scoreController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="te_homework_score" />
     <bean name="stu_resourceController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="stu_resource" />
-     <bean name="te_resourceController"
+    <bean name="te_resourceController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="te_resource" />
 </beans>
