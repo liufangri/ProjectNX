@@ -203,4 +203,8 @@ public class ResourceController {
 	this.cdi = cdi;
     }
 
+    public void setUdi(UserDaoImpl udi) {
+	this.udi = udi;
+    }
+
 }
