@@ -27,16 +27,18 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public boolean insert(Resource resource) {
 	Connection connection = dbcpBean.getConnection();
-	String sql = "INSERT INTO resource VALUES(?,?,?,?,?,?,?)";
+	String sql = "INSERT INTO resource VALUES(?,?,?,?,?,?,?,?,?)";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, resource.getId());
 	    ps.setString(2, resource.getFatherId());
 	    ps.setString(3, resource.getName());
-	    ps.setString(4, resource.getPath());
+	    ps.setTimestamp(4, new Timestamp(resource.getLastChange()));
 	    ps.setString(5, resource.getTeacherId());
-	    ps.setTimestamp(6, new Timestamp(resource.getLastChange()));
-	    ps.setBoolean(7, resource.isFolder());
+	    ps.setString(6, resource.getTeacherName());
+	    ps.setString(7, resource.getPath());
+	    ps.setBoolean(8, resource.isFolder());
+	    ps.setString(9, resource.getCourseId());
 	    ps.executeUpdate();
 	    return true;
 	} catch (SQLException ex) {
@@ -160,13 +162,15 @@ public class ResourceDaoImpl implements ResourceDao {
 	    ResultSet rs = ps.executeQuery();
 	    while (rs.next()) {
 		Resource r = new Resource();
+
 		r.setFatherId(rs.getString("fatherId"));
 		r.setFolder(rs.getBoolean("folder"));
 		r.setId(rs.getString("id"));
 		r.setLastChange(rs.getTimestamp("lastChange").getTime());
 		r.setName(rs.getString("name"));
 		r.setPath(rs.getString("path"));
-		r.setTeacherId(rs.getString("teacherId"));
+		r.setTeacherId(rs.getString("teacher_id"));
+		r.setTeacherName(rs.getString("teacher_name"));
 		resources.add(r);
 	    }
 	} catch (SQLException ex) {
@@ -197,10 +201,13 @@ public class ResourceDaoImpl implements ResourceDao {
 		r.setFatherId(rs.getString("fatherId"));
 		r.setFolder(rs.getBoolean("folder"));
 		r.setId(rs.getString("id"));
-		r.setLastChange(rs.getTimestamp("lastChange").getTime());
+		r.setLastChange(rs.getTimestamp("lastchange").getTime());
 		r.setName(rs.getString("name"));
 		r.setPath(rs.getString("path"));
-		r.setTeacherId(rs.getString("teacherId"));
+		r.setTeacherId(rs.getString("teacher_id"));
+		r.setTeacherName(rs.getString("teacher_name"));
+		r.setCourseId(rs.getString("course_id"));
+
 		resources.add(r);
 	    }
 	} catch (SQLException ex) {
@@ -230,10 +237,12 @@ public class ResourceDaoImpl implements ResourceDao {
 		r.setFatherId(rs.getString("fatherId"));
 		r.setFolder(rs.getBoolean("folder"));
 		r.setId(rs.getString("id"));
-		r.setLastChange(rs.getTimestamp("lastChange").getTime());
+		r.setLastChange(rs.getTimestamp("lastchange").getTime());
 		r.setName(rs.getString("name"));
 		r.setPath(rs.getString("path"));
-		r.setTeacherId(rs.getString("teacherId"));
+		r.setTeacherId(rs.getString("teacher_id"));
+		r.setTeacherName(rs.getString("teacher_name"));
+		r.setCourseId(rs.getString("course_id"));
 		resources.add(r);
 	    }
 	} catch (SQLException ex) {
@@ -253,20 +262,22 @@ public class ResourceDaoImpl implements ResourceDao {
     public Resource findResourceById(String resourceId) {
 	Resource resource = null;
 	Connection connection = dbcpBean.getConnection();
-	String sql = "SELETE * FROM resource WHERE id = ?";
+	String sql = "SELECT * FROM resource WHERE id = ?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, resourceId);
 	    ResultSet rs = ps.executeQuery();
 	    while (rs.next()) {
 		resource = new Resource();
+		resource.setFatherId(rs.getString("father_id"));
+		resource.setFolder(rs.getBoolean("folder"));
 		resource.setId(rs.getString("id"));
+		resource.setLastChange(rs.getTimestamp("lastchange").getTime());
 		resource.setName(rs.getString("name"));
 		resource.setPath(rs.getString("path"));
-		resource.setFatherId(rs.getString("fatherId"));
-		resource.setTeacherId(rs.getString("teacherId"));
-		resource.setLastChange(rs.getTimestamp("lastChange").getTime());
-		resource.setFolder(rs.getBoolean("folder"));
+		resource.setTeacherId(rs.getString("teacher_id"));
+		resource.setTeacherName(rs.getString("teacher_name"));
+		resource.setCourseId(rs.getString("course_id"));
 
 	    }
 	} catch (SQLException ex) {

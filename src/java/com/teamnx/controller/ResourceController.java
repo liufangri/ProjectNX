@@ -80,11 +80,12 @@ public class ResourceController {
 
 		//部分刷新页面也可以
 		if (rdi.insert(folder)) {
-		    response.sendRedirect("resourcepage.htm?folder_id=" + folder.getFatherId());
-
+		    response.sendRedirect("resource.htm?course_id=" + currentResource.getCourseId()
+			    + "&folder_id=" + folder.getFatherId()
+		    );
 		} else {
 		    //插入失败错误处理
-		    response.sendRedirect("resourcepage.htm?folder_id=" + fatherId);
+		    response.sendRedirect("resource.htm?folder_id=" + fatherId);
 		}
 	    }
 	}

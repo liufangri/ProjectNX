@@ -374,12 +374,19 @@ public class RedirectController {
 	resource.setName(name);
 	resource.setFolder(true);
 	resource.setPath("\\" + name);
+	resource.setCourseId(courseId);
 	String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF") + "\\courseResources" + resource.getPath();
 	File file = new File(realPath);
 	if (!file.exists()) {
 	    file.mkdirs();
 	    resource.setLastChange(file.lastModified());
-	    rdi.insert(resource);
+	    if (!rdi.insert(resource)) {
+		//插入数据失败，删除新建的文件夹
+		file.delete();
+	    }
+	} else if (!rdi.insert(resource)) {
+	    //插入数据失败，删除新建的文件夹
+	    file.delete();
 	}
 	return resource;
 
