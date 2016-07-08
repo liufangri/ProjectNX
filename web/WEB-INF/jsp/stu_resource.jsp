@@ -21,6 +21,17 @@
         <title>iBarn</title>
         <link href="<%=path%>/lib/css/resourceindex.css" rel="stylesheet" />
         <script src="<%=path%>/lib/js/file.js"></script>
+        <link href="<%=path%>/lib/css/fileinput.min.css" rel="stylesheet">
+        <script src="<%=path%>/lib/js/fileinput.min.js"></script>
+        <script src="<%=path%>/lib/js/fileinput-zh.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#upload").fileinput({
+                    language: "zh",
+                    fileActionSettings: {showZoom: false},
+                });
+            });
+        </script>
     </head>
     <body>
         <jsp:include page="navbar.jsp"/>
@@ -39,7 +50,7 @@
                         <ul class="buttons pull-left">
                             <li>
                                 <div id="ucontainer">
-                                    <button class="btn btn-info" type="button" onclick="javascript:addFile()">
+                                    <button class="btn btn-info" type="button" data-target="#myModal1" data-toggle="modal">
                                         <i class="icon-cloud-upload"></i>
                                         上传资料                                </button>
                                 </div>
@@ -60,7 +71,7 @@
                                     下载                            </button>
                             </li>
                             <li>
-                                <button class="btn btn-warning" type="button" onclick="modalTrans();$('#sid').val('');" data-toggle="modal">
+                                <button class="btn btn-warning" type="button" onclick="modalTrans(); $('#sid').val('');" data-toggle="modal">
                                     <i class="icon-random"></i>
                                     移动                            </button>
                             </li>
@@ -130,7 +141,25 @@
                     <input type="hidden" id="dirId">
                     <input type="hidden" id="order">
                     <input type="hidden" id="by">
+                    <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal1" class="modal fade in" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header pull-left">
+                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                    <h4 class="modal-title">上传文件</h4>
+                                </div>
+                                <div class="modal-body pull-left">
+                                    <input id="upload" type="file"  class="file-loading" name="uploadFile">
+                                </div>
 
+                                <div class="modal-footer">
+                                    <!--                                测试用-->
+                                    <button type="button" class="btn btn-success" onclick="addFile();">测试</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal2" class="modal fade in" style="display: none;">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -223,10 +252,19 @@
             </div>
         </div>
         <script type="text/javascript">
-            $('body').on('hidden', '.modal', function () {
-                $(this).removeData('modal');
+            $('#myModal5').on('hidden.bs.modal', function () {
+                $(this).find('input').val("");
             });
-//            测试用
+            $('#myModal1').on('hidden.bs.modal', function () {
+                var father = $(this).find(".file-input").parent();
+                $(this).find(".file-input").remove();
+                father.prepend(" <input id=\"upload\" type=\"file\"  class=\"file-loading\" name=\"uploadFile\">");
+                father.prepend("<script> $(\"#upload\").fileinput({language: \"zh\", fileActionSettings: {showZoom: false}, });<\/script>")
+            });
+            //            $().on('hidden', '.modal', function () {
+            //                $(this).removeData('modal');
+            //            });
+            //            测试用
             function addFolder() {
 
                 var i1 = document.createElement("i");
@@ -312,7 +350,7 @@
                 var a2 = document.createElement("a");
                 a2.href = "index.php?a=mdown&ids=190";
                 a2.targett = "_self";
-                a2.innerHTML = "222";
+                a2.innerHTML = $(".file-caption-name").attr("title");
                 var span2 = document.createElement("span2");
                 span2.className = "div_pro";
                 span2.appendChild(a2);
