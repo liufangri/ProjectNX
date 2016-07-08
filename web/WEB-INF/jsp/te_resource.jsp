@@ -22,6 +22,17 @@
         <link href="<%=path%>/lib/css/resourceindex.css" rel="stylesheet" />
         <script src="<%=path%>/lib/js/file.js"></script>
         <script src="<%=path%>/lib/js/bootstrap-treeview.js"></script>
+        <link href="<%=path%>/lib/css/fileinput.min.css" rel="stylesheet">
+        <script src="<%=path%>/lib/js/fileinput.min.js"></script>
+        <script src="<%=path%>/lib/js/fileinput-zh.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#upload").fileinput({
+                    language: "zh",
+                    fileActionSettings: {showZoom: false},
+                });
+            });
+        </script>
     </head>
     <body>
         <jsp:include page="navbar.jsp"/>
@@ -40,8 +51,8 @@
                         <ul class="buttons pull-left">
                             <li>
                                 <div id="ucontainer">
-                                    <button class="btn btn-info" type="button" onclick="javascript:addFile()">
-                                        <i class="icon-cloud-upload"></i>
+                                    <button class="btn btn-success" type="button" data-target="#myModal1" data-toggle="modal">
+                                        <i class="icon-folder-close"></i>
                                         上传资料                                </button>
                                 </div>
                             </li>
@@ -74,7 +85,6 @@
                         <input type="hidden" id="path" name="path" value="">
                         <input type="hidden" id="dpath" name="dpath">
                         <input type="hidden" id="sid" name="sid">
-                        <input type="hidden" id="delid" name="delid">
                     </div>
                     <!--state overview end-->
                     <div class="row">
@@ -90,9 +100,10 @@
                                             <div class="cBox"><input id="chkAll" name="chkAll" type="checkbox"></div>
                                             <div class="name" id="name">名称<div class="seq"></div></div>
                                         </div>
-                                        <div class="listTableTopR pull-right">
 
+                                        <div class="listTableTopR pull-right">
                                             <div class="updateTime" id="ctime">上传时间<div class="seq"></div></div>
+                                            <div class="menu" id="menu">操作<div class="seq"></div></div>
                                         </div>
                                     </div>
                                 </li>
@@ -107,10 +118,23 @@
                                                     <a id="sa_190" target="_self"   href="index.php?path=a" >a</a>
                                                 </span>
                                             </div>
+
                                         </div>
                                         <div class="listTableInR pull-right">
-
                                             <div class="updateTime">2016-07-06 00:59:44</div>
+                                            <div>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-primary dropdown-toggle" 
+                                                            data-toggle="dropdown">
+                                                        菜单 <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="#" onclick="$('#sid').val(190);$('#myModal4').modal('show');" data-toggle="modal"><i class="icon-remove"></i>删除</a></li>
+                                                        <li><a href="#" onclick="$('#sid').val(190);javascript:downloadResource();" data-toggle="modal"><i class="icon-remove"></i>下载</a></li>
+                                                        <li><a href="#" onclick="$('#sid').val('190');modalTrans();" data-toggle="modal"><i class="icon-remove"></i>移动到</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                             <div style="display:none;" class="float_box" id="box_190">
                                                 <ul class="control">
                                                     <li><a href="index.php?a=mdown&ids=190"><i class="icon-download-alt"></i></a></li>
@@ -131,7 +155,25 @@
                     <input type="hidden" id="dirId">
                     <input type="hidden" id="order">
                     <input type="hidden" id="by">
+                    <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal1" class="modal fade in" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header pull-left">
+                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                    <h4 class="modal-title">上传文件</h4>
+                                </div>
+                                <div class="modal-body pull-left">
+                                    <input id="upload" type="file"  class="file-loading" name="uploadFile">
+                                </div>
 
+                                <div class="modal-footer">
+                                    <!--                                测试用-->
+                                    <button type="button" class="btn btn-success" onclick="addFile();">测试</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal2" class="modal fade in" style="display: none;">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -183,7 +225,7 @@
                                     <div class="delText">确定要删除吗？</div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" onclick="javascript:deleteresouce()">确定</button>
+                                    <button type="button" class="btn btn-success" onclick="javascript:deleteResouce()">确定</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                 </div>
                             </div>
@@ -343,18 +385,47 @@
                 document.getElementById("listtable").appendChild(li);
             }
 
-            function deleteresouce()
+            function deleteResouce()
             {
-                $("input[class='classLists']").each(function () {
-                    if ($(this).is(':checked'))
-                    {
-                        $(this).parent().parent().parent().parent().remove();
-                    }
-                });
+                var sid = $('#sid').val();
+                if (sid) {
+                    $("#li_" + sid).remove();
+                } else {
+                    $("input[class='classLists']").each(function () {
+                        if ($(this).is(':checked'))
+                        {
+                            $(this).parent().parent().parent().parent().remove();
+                        }
+                    });
+                }
+            }
+            function downloadResource()
+            {
+                var sid = $('#sid').val();
+                alert(sid);
+                if (sid) {
+//                  加入下载操作
+                } else {
+//                   加入复选框操作
+                }
+            }
+            function transResource()
+            {
+                var sid = $('#sid').val();
+                if (sid) {
+                    //移动操作
+                } else {
+                   //复选框操作
+                }
+                did = $('#dirId').val();
+                if (did.trim() == '') {
+                    alert(this.lang('请选择要转入的目录'));
+                    return false;
+                }
             }
 
 
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~我是一条分界线 ~~~~~~~~~~~ 
             function modalTrans() {
                 $('#myModal3').modal('show');
                 $.ajax({
@@ -366,7 +437,7 @@
                         $('#tree').treeview({data: data});
                         $('#tree').on('nodeSelected', function (event, data) {
                             $('#dirId').val(data.mapId);
-                            $('#dpath').val(data.path);
+//                            $('#dpath').val(data.path);
                         });
                         $('#tree').on('nodeUnselected', function (event, data) {
                             $('#dirId').val('');
@@ -393,10 +464,6 @@
                 $('#aname').val(name);
                 $('#fileId').val(id);
                 $('#myModal2').modal('show');
-            }
-            function modalDel(name) {
-                $('.delText label').text(name);
-                $('#myModal4').modal('show');
             }
             function down() {
                 if (Cookies.get('show') == 'block') {
