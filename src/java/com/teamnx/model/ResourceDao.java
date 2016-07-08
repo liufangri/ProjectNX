@@ -32,4 +32,6 @@ public interface ResourceDao {
     public ArrayList<Resource> findChilds(Resource resource);
 
     public ArrayList<Resource> findChildsByFolderId(String folderId);
+
+    public Resource findCourseRootFolder(String courseId);
 }

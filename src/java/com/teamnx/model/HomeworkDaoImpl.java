@@ -44,6 +44,7 @@ public class HomeworkDaoImpl implements HomeworkDao {
 		homework.setScore(rs.getInt("score"));
 		homework.setTaskId(rs.getString("task_id"));
 		homework.setText(rs.getString("text"));
+		homework.setComment(rs.getString("comment"));
 
 	    }
 	} catch (SQLException ex) {
@@ -78,6 +79,7 @@ public class HomeworkDaoImpl implements HomeworkDao {
 		homework.setScore(rs.getInt("score"));
 		homework.setTaskId(rs.getString("task_id"));
 		homework.setText(rs.getString("text"));
+		homework.setComment(rs.getString("comment"));
 		homeworks.add(homework);
 	    }
 	} catch (SQLException ex) {

@@ -155,7 +155,7 @@ public class ResourceDaoImpl implements ResourceDao {
 
 	ArrayList<Resource> resources = new ArrayList<Resource>();
 	Connection connection = dbcpBean.getConnection();
-	String sql = "SELETE * FROM resource WHERE father_id=?";
+	String sql = "SELECT * FROM resource WHERE father_id=?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, MD5.Md5_16(courseId + "_root"));
@@ -163,7 +163,7 @@ public class ResourceDaoImpl implements ResourceDao {
 	    while (rs.next()) {
 		Resource r = new Resource();
 
-		r.setFatherId(rs.getString("fatherId"));
+		r.setFatherId(rs.getString("father_id"));
 		r.setFolder(rs.getBoolean("folder"));
 		r.setId(rs.getString("id"));
 		r.setLastChange(rs.getTimestamp("lastChange").getTime());
@@ -191,14 +191,14 @@ public class ResourceDaoImpl implements ResourceDao {
     public ArrayList<Resource> findChilds(Resource resource) {
 	ArrayList<Resource> resources = new ArrayList<Resource>();
 	Connection connection = dbcpBean.getConnection();
-	String sql = "SELETE * FROM resource WHERE father_id=?";
+	String sql = "SELECT * FROM resource WHERE father_id=?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, resource.getName());
 	    ResultSet rs = ps.executeQuery();
 	    while (rs.next()) {
 		Resource r = new Resource();
-		r.setFatherId(rs.getString("fatherId"));
+		r.setFatherId(rs.getString("father_id"));
 		r.setFolder(rs.getBoolean("folder"));
 		r.setId(rs.getString("id"));
 		r.setLastChange(rs.getTimestamp("lastchange").getTime());
@@ -227,14 +227,14 @@ public class ResourceDaoImpl implements ResourceDao {
     public ArrayList<Resource> findChildsByFolderId(String folderId) {
 	ArrayList<Resource> resources = new ArrayList<Resource>();
 	Connection connection = dbcpBean.getConnection();
-	String sql = "SELETE * FROM resource WHERE father_id=?";
+	String sql = "SELECT * FROM resource WHERE father_id=?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, folderId);
 	    ResultSet rs = ps.executeQuery();
 	    while (rs.next()) {
 		Resource r = new Resource();
-		r.setFatherId(rs.getString("fatherId"));
+		r.setFatherId(rs.getString("father_id"));
 		r.setFolder(rs.getBoolean("folder"));
 		r.setId(rs.getString("id"));
 		r.setLastChange(rs.getTimestamp("lastchange").getTime());
@@ -296,6 +296,40 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public boolean deleteMultyResources(String[] ids) {
 	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Resource findCourseRootFolder(String courseId) {
+	Resource resource = null;
+	Connection connection = dbcpBean.getConnection();
+	String sql = "SELECT * FROM resource WHERE id = ?";
+	try {
+	    PreparedStatement ps = connection.prepareStatement(sql);
+	    ps.setString(1, MD5.Md5_16(courseId + "_root"));
+	    ResultSet rs = ps.executeQuery();
+	    while (rs.next()) {
+		resource = new Resource();
+		resource.setFatherId(rs.getString("father_id"));
+		resource.setFolder(rs.getBoolean("folder"));
+		resource.setId(rs.getString("id"));
+		resource.setLastChange(rs.getTimestamp("lastchange").getTime());
+		resource.setName(rs.getString("name"));
+		resource.setPath(rs.getString("path"));
+		resource.setTeacherId(rs.getString("teacher_id"));
+		resource.setTeacherName(rs.getString("teacher_name"));
+		resource.setCourseId(rs.getString("course_id"));
+	    }
+	} catch (SQLException ex) {
+	    Logger.getLogger(ResourceDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	} finally {
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(ResourceDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+	    return resource;
+	}
+
     }
 
 }

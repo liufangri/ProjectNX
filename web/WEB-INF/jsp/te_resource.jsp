@@ -4,9 +4,13 @@
     Author     : coco
 --%>
 
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="com.teamnx.model.User"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.teamnx.model.Resource"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="mvc" %>
 
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -14,6 +18,8 @@
         String path = request.getContextPath();
         Resource currentFolder = (Resource) request.getAttribute("current_folder");
         ArrayList<Resource> resources = (ArrayList<Resource>) request.getAttribute("resources");
+        User teacher = (User) session.getAttribute("user");
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm");
     %>
 
     <jsp:include page="header.jsp"/>
@@ -99,8 +105,10 @@
                         <div class="col-lg-12">
                             <!--breadcrumbs start -->
                             <ul class="breadcrumb">
-                                <li><a href=""><i class="icon-mail-reply"></i> 返回上一级</a></li>
-                                <li><a href="te_resource.htm">所有资料</a></li>
+                                <% if (currentFolder.getFatherId() != null) {%>
+                                <li><a href="resource.htm?course_id=<%= currentFolder.getCourseId()%>&folder_id=<%= currentFolder.getFatherId()%>"><i class="icon-mail-reply"></i> 返回上一级</a></li>
+                                    <%}%>
+                                <li><a href="resource.htm?course_id=<%= currentFolder.getCourseId()%>">所有资料</a></li>
                                 <li class="active">当前目录</li>
                             </ul>
                             <!--breadcrumbs end -->
@@ -133,18 +141,18 @@
                                         <div class="listTableInL pull-left">
                                             <div class="cBox"><input name="classLists" id="classLists190" type="checkbox" value="190" class="classLists"></div>
                                             <div class="name">
-                                                <img src="<%=path%>/images/folder.jpg"/> 
-                                                <a target="_self" id="a_190"   href="index.php?path=a">
+                                                <img src="<%=path%>/images/<%if (r.isFolder()) {%>folder.jpg<%}else{%>u247.png<%}%>"/> 
+                                                <a target="_self" id="a_190"   href="<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>">
                                                     <em class="folder"></em>
                                                 </a>
                                                 <span class="div_pro">
-                                                    <a id="sa_190" target="_self"   href="index.php?path=a" ><%= r.getName()%></a>
+                                                    <a id="sa_190"   href="<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>" ><%= r.getName()%></a>
                                                 </span>
                                             </div>
 
                                         </div>
                                         <div class="listTableInR pull-right">
-                                            <div class="updateTime">2016-07-06 00:59:44</div>
+                                            <div class="updateTime"><%= sdf.format(new Date(r.getLastChange()))%></div>
                                             <div>
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-primary dropdown-toggle" 
@@ -160,12 +168,8 @@
                                             </div>
                                             <div style="display:none;" class="float_box" id="box_190">
                                                 <ul class="control">
-                                                    <li><a href="
-                                                           <%if (r.isFolder()) {%>
-                                                           resource.htm?folder_id=<%=r.getId()%>
-                                                           <%} else {%>
-                                                           download.htm?resourceId=<%=r.getId()%>
-                                                           <%}%>"><i class="icon-download-alt"></i></a></li>
+                                                    <li><a href="<%if (r.isFolder()) {%>resource.htm?folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>">
+                                                            <i class="icon-download-alt"></i></a></li>
                                                     <!--<li><a href="#" onclick="modalShare(190, '5a');" data-toggle="modal"><i class="icon-share"></i></a></li>
                                                         <li><a href="#" onclick="modalName(190, 'a');" data-toggle="modal"><i class="icon-edit"></i></a></li>
                                                         <li><a href="#" onclick="$('#sid').val(190);modalTrans();" data-toggle="modal"><i class="icon-random"></i></a></li>
@@ -186,21 +190,27 @@
                     <input type="hidden" id="by">
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal1" class="modal fade in" style="display: none;">
                         <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header pull-left">
-                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                    <h4 class="modal-title">上传文件</h4>
-                                </div>
-                                <div class="modal-body pull-left">
-                                    <input id="upload" type="file"  class="file-loading" name="uploadFile">
-                                </div>
+                            <mvc:form action="uploadFile.htm" enctype="multipart/form-data" method="post" modelAttribute="new_resource">
+                                <div class="modal-content">
+                                    <div class="modal-header pull-left">
+                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                        <h4 class="modal-title">上传文件</h4>
+                                    </div>
+                                    <div class="modal-body pull-left">
+                                        <input id="upload" type="file"  class="file-loading" name="uploadFile">
+                                    </div>
+                                    <input type="text" name="courseId" value="<%= currentFolder.getCourseId()%>" hidden="hidden">
+                                    <input type="text" name="fatherId" value="<%= currentFolder.getId()%>" hidden="hidden">
+                                    <input type="text" name="teacherId" value="<%= teacher.getId()%>" hidden="hidden">
+                                    <input type="text" name="teacherName" value="<%= teacher.getName()%>" hidden="hidden">
 
-                                <div class="modal-footer">
-                                    <!--                                测试用-->
-                                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addFile();">测试</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success" >上传</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    </div>
                                 </div>
-                            </div>
+                            </mvc:form>
                         </div>
                     </div>
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal2" class="modal fade in" style="display: none;">
@@ -265,24 +275,25 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <form action="addNewFolder.htm" method="pose">
-                                
-                                <div class="modal-header pull-left">
-                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                    <h4 class="modal-title">新建文件夹</h4>
-                                </div>
-                                <div class="modal-body pull-left">
-                                    <div>
-                                        <div class="modalTitleSmall pull-left">名称：</div>
-                                        <div class="col-lg-10 marginB10 pull-left">
-                                            <input class="form-control" id="folderName" type="text" placeholder="请输入名称" name="name">
-                                            <input type="text" hidden="hidden" name="current_resource_id" value="<%= currentFolder.getId() %>">
+
+                                    <div class="modal-header pull-left">
+                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                        <h4 class="modal-title">新建文件夹</h4>
+                                    </div>
+                                    <div class="modal-body pull-left">
+                                        <div>
+                                            <div class="modalTitleSmall pull-left">名称：</div>
+                                            <div class="col-lg-10 marginB10 pull-left">
+                                                <input class="form-control" id="folderName" type="text" placeholder="请输入名称" name="name">
+                                                <input type="text" hidden="hidden" name="current_resource_id" value="<%= currentFolder.getId()%>">
+                                                <input type="text" hidden="hidden" name="course_id" value="<%= currentFolder.getCourseId()%>">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success" data-dismiss="modal">确定</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">确定</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>

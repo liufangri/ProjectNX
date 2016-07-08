@@ -15,11 +15,13 @@ import com.teamnx.model.UserDaoImpl;
 import com.teamnx.util.MD5;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -45,6 +47,7 @@ public class ResourceController {
     @RequestMapping(value = "/addNewFolder")
     public void addNewFolder(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 	String name = request.getParameter("name");
+	String courseId = request.getParameter("course_id");
 	String fatherId = request.getParameter("current_resource_id");
 	User teacher = (User) session.getAttribute("user");
 	//检查重名,建议放在前端做。
@@ -66,9 +69,8 @@ public class ResourceController {
 		folder.setName(name);
 		folder.setFatherId(fatherId);
 		folder.setFolder(true);
-		//修改此处的教师id！
+		folder.setCourseId(courseId);
 		folder.setTeacherId(teacher.getId());
-
 		folder.setTeacherName(teacherName);
 		folder.setPath(fatherPath + "\\" + name);
 		String realPath = session.getServletContext().getRealPath("/WEB-INF") + "\\courseResources" + folder.getPath();
@@ -98,7 +100,7 @@ public class ResourceController {
      * @param response
      * @throws IOException
      */
-    @RequestMapping(value = "/preFolder.htm")
+    @RequestMapping(value = "/preFolder")
     public void preFolder(HttpServletRequest request, HttpServletResponse response) throws IOException {
 	String currentResourceId = (String) request.getParameter("current_resource_id");
 	Resource currentResource = rdi.findResourceById(currentResourceId);
@@ -119,8 +121,7 @@ public class ResourceController {
     @RequestMapping(value = "/deleteResource")
     public void deleteResource(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
 	String resourceId = request.getParameter("resource_id");
-	String currentResourceId = request.getParameter("current_resource_id");
-	Resource currentResource = rdi.findResourceById(currentResourceId);
+	Resource currentResource = rdi.findResourceById(resourceId);
 	if (currentResource == null) {
 	    //当前所在文件夹不存在，返回资源首页
 	    response.sendRedirect("resourcepage.htm");
@@ -153,6 +154,42 @@ public class ResourceController {
 	    } else {
 		//数据库删除失败
 	    }
+	}
+    }
+
+    @RequestMapping(value = "/uploadFile")
+    public void uploadFile(Resource resource, HttpServletRequest request,
+	    HttpServletResponse response, MultipartFile uploadFile) throws IOException {
+	String id = MD5.Md5_16(new Date().getTime() + resource.getTeacherName());
+	resource.setId(id);
+	resource.setFolder(false);
+	String name = uploadFile.getOriginalFilename();
+	resource.setName(name);
+	if (name != null && name != "") {
+	    Resource fatherFolder = rdi.findResourceById(resource.getFatherId());
+	    if (fatherFolder != null) {
+		String path = fatherFolder.getPath() + "\\" + name;
+		resource.setPath(path);
+		File file = new File(path);
+		if (file.exists()) {
+		    file.delete();
+		}
+		file.mkdirs();
+		resource.setLastChange(file.lastModified());
+		uploadFile.transferTo(file);
+		if (rdi.insert(resource)) {
+		    response.sendRedirect("resource.htm?course_id=" + resource.getCourseId() + "&folder_id=" + resource.getFatherId());
+		} else {
+		    file.delete();
+		    response.sendRedirect("resource.htm?course_id=" + resource.getCourseId() + "&folder_id=" + resource.getFatherId());
+		}
+	    } else {
+		//父文件夹不存在
+		response.sendRedirect("resource.htm?course_id=" + resource.getCourseId());
+	    }
+	} else {
+	    //文件名错误
+	    response.sendRedirect("resource.htm?course_id=" + resource.getCourseId());
 	}
     }
 

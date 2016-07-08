@@ -337,12 +337,17 @@ public class RedirectController {
 	ArrayList<Resource> resources = null;
 	Resource currentFolder = null;
 	if (folderId == null) {
-	    currentFolder = getRootResource(courseId, request);
-	    resources = new ArrayList<Resource>();
+	    currentFolder = rdi.findCourseRootFolder(courseId);
+	    if (currentFolder == null) {
+		currentFolder = getRootResource(courseId, request);
+		resources = new ArrayList<Resource>();
+	    } else {
+		resources = rdi.findChildsByFolderId(currentFolder.getId());
+	    }
+
 	} else {
 	    currentFolder = rdi.findResourceById(folderId);
-	    resources = rdi.findCourseResources(courseId);
-
+	    resources = rdi.findChildsByFolderId(currentFolder.getId());
 	}
 	request.setAttribute("course_id", courseId);
 	request.setAttribute("current_folder", currentFolder);
@@ -353,6 +358,7 @@ public class RedirectController {
 		break;
 	    case User.TEACHER:
 		mav.setViewName("te_resource");
+		mav.addObject("new_resource", new Resource());
 		break;
 	    case User.ADMIN:
 		break;
