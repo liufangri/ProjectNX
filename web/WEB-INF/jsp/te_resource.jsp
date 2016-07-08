@@ -18,7 +18,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="iBarn">
         <link rel="shortcut icon" href="img/favicon.png">
-        <title>iBarn</title>
         <link href="<%=path%>/lib/css/resourceindex.css" rel="stylesheet" />
         <script src="<%=path%>/lib/js/file.js"></script>
         <script src="<%=path%>/lib/js/bootstrap-treeview.js"></script>
@@ -88,13 +87,22 @@
                     </div>
                     <!--state overview end-->
                     <div class="row">
+                        <div class="col-lg-12">
+                            <!--breadcrumbs start -->
+                            <ul class="breadcrumb">
+                                <li><a href=""><i class="icon-mail-reply"></i> 返回上一级</a></li>
+                                <li><a href="te_resource.htm">所有资料</a></li>
+                                <li class="active">当前目录</li>
+                            </ul>
+                            <!--breadcrumbs end -->
+                        </div>
                         <div class="col-lg-12" id="block" style="display: none;">
                             <ul class="listType pull-left">
                             </ul>
                         </div>
                         <div class="col-lg-12" id="list" >
                             <ul id="listtable" class="listTable pull-left">
-                                <li id="fileList">
+                                <li style="list-style-type:none;" id="fileList">
                                     <div class="listTableTop pull-left">
                                         <div class="listTableTopL pull-left">
                                             <div class="cBox"><input id="chkAll" name="chkAll" type="checkbox"></div>
@@ -108,7 +116,7 @@
                                     </div>
                                 </li>
                                 <!--                                id为文件标识符-->
-                                <li id="li_190">
+                                <li  style="list-style-type:none;" id="li_190">
                                     <div class="listTableIn pull-left">
                                         <div class="listTableInL pull-left">
                                             <div class="cBox"><input name="classLists" id="classLists190" type="checkbox" value="190" class="classLists"></div>
@@ -168,7 +176,7 @@
 
                                 <div class="modal-footer">
                                     <!--                                测试用-->
-                                    <button type="button" class="btn btn-success" onclick="addFile();">测试</button>
+                                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addFile();">测试</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                 </div>
                             </div>
@@ -208,7 +216,7 @@
                                     <div id="tree"></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" onclick="file.trans();">确定</button>
+                                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="file.trans();">确定</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                 </div>
                             </div>
@@ -225,7 +233,7 @@
                                     <div class="delText">确定要删除吗？</div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" onclick="javascript:deleteResouce()">确定</button>
+                                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="javascript:deleteResouce()">确定</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                 </div>
                             </div>
@@ -248,7 +256,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" onclick="addFolder();">确定</button>
+                                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addFolder();">确定</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                 </div>
                             </div>
@@ -256,14 +264,6 @@
                     </div>
                 </section>
             </section>
-            <!--main content end-->
-            <div id="msg_win">
-                <div class="icos"><a id="msg_min" title="最小化" href="javascript:void 0">_</a><a id="msg_close" title="关闭" href="javascript:void 0">×</a></div>
-                <div id="msg_title">上传文件</div>
-                <div id="msg_content">
-                    <ul class="pull-left" id="progress"></ul>
-                </div>
-            </div>
         </div>
         <script type="text/javascript">
             $('body').on('hidden', '.modal', function () {
@@ -324,7 +324,9 @@
                 div8.appendChild(div7);
                 div8.appendChild(div4);
                 var li = document.createElement("li");
+                li.style = "list-style-type:none;";
                 li.appendChild(div8);
+
                 document.getElementById("listtable").appendChild(li);
             }
             function addFile() {
@@ -381,6 +383,7 @@
                 div8.appendChild(div7);
                 div8.appendChild(div4);
                 var li = document.createElement("li");
+                li.style = "list-style-type:none;";
                 li.appendChild(div8);
                 document.getElementById("listtable").appendChild(li);
             }
@@ -415,7 +418,7 @@
                 if (sid) {
                     //移动操作
                 } else {
-                   //复选框操作
+                    //复选框操作
                 }
                 did = $('#dirId').val();
                 if (did.trim() == '') {
