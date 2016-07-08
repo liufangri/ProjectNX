@@ -48,38 +48,13 @@
                     <!--state overview start-->
                     <div class="row state-overview">
                         <ul class="buttons pull-left">
-                            <li>
-                                <div id="ucontainer">
-                                    <button class="btn btn-info" type="button" data-target="#myModal1" data-toggle="modal">
-                                        <i class="icon-cloud-upload"></i>
-                                        上传资料                                </button>
-                                </div>
-                            </li>
-                            <li>
-                                <button class="btn btn-success" type="button" data-target="#myModal5" data-toggle="modal">
-                                    <i class="icon-folder-close"></i>
-                                    新建文件夹                            </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-danger" type="button" data-target="#myModal4" data-toggle="modal">
-                                    <i class="icon-remove"></i>
-                                    删除                            </button>
-                            </li>
+                           
                             <li id="down">
                                 <button class="btn btn-success" type="button" onclick="down();">
                                     <i class="icon-download"></i>
                                     下载                            </button>
                             </li>
-                            <li>
-                                <button class="btn btn-warning" type="button" onclick="modalTrans(); $('#sid').val('');" data-toggle="modal">
-                                    <i class="icon-random"></i>
-                                    移动                            </button>
-                            </li>
-                            <li id="rename" style="display: none;" >
-                                <button class="btn btn-danger" type="button" onclick="modalName(0, '');" data-toggle="modal">
-                                    <i class="icon-edit"></i>
-                                    重命名                            </button>
-                            </li>
+                            
                         </ul>   
                         <input type="hidden" id="path" name="path" value="">
                         <input type="hidden" id="dpath" name="dpath">
@@ -117,9 +92,9 @@
                                                     <a id="sa_190" target="_self"   href="index.php?path=a" >a</a>
                                                 </span>
                                             </div>
+                                            
                                         </div>
                                         <div class="listTableInR pull-right">
-
                                             <div class="updateTime">2016-07-06 00:59:44</div>
                                             <div style="display:none;" class="float_box" id="box_190">
                                                 <ul class="control">
