@@ -4,6 +4,8 @@
     Author     : JOHNKYON
 --%>
 
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.teamnx.model.User"%>
 <%@page import="com.teamnx.model.Task"%>
 <%@page import="com.teamnx.model.Course"%>
@@ -13,8 +15,9 @@
     <%
         String path = request.getContextPath();
         String courseId = (String) request.getAttribute("course_id");
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm");
         User user = (User) session.getAttribute("user");
-        Task task = (Task) request.getAttribute("origin_task");
+        Task task = (Task) request.getAttribute("task");
     %>
     <jsp:include page="header.jsp"/>
     <head>
@@ -36,10 +39,10 @@
             <div class="container">
                 <div class="row clearfix">
                     <div class="col-md-10 column">
-                        <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href = 'te_homework.htm?id=<%=courseId%>'">
+                        <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href = 'te_homework.htm?course_id=<%=courseId%>'">
                     </div>
                 </div>
-                <mvc:form action="changeTask.htm" modelAttribute="user" method="post" cssClass="form">
+                <mvc:form action="changeTask.htm" modelAttribute="task" method="post" cssClass="form">
                     <div class="row clearfix">
                         <div class="col-md-10 column">
                             <div class="form-group">
@@ -65,7 +68,8 @@
                                         <div class="controls">
                                             <div class="input-prepend input-group">
                                                 <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                                <input type="text" style="width: 400px"  name="timeLimit" id="reservationtime" class="form-control span4" value="2016-07-01 12:00:00 - 2016-07-02 00:00:00"/>
+                                                <input type="text" style="width: 400px"  name="timeLimit" id="reservationtime" class="form-control span4" 
+                                                       value="<%=sdf.format(new Date(task.getStartTime().getTime()))%> - <%=sdf.format(new Date(task.getDeadline().getTime()))%>"/>
                                             </div>
                                         </div>
                                     </div>
@@ -76,7 +80,7 @@
                                         $('#reservationtime').daterangepicker({
                                             timePicker: true,
                                             timePickerIncrement: 30,
-                                            format: 'YYYY-MM-DD HH:MM:SS'
+                                            format: 'YYYY-MM-DD HH:mm'
                                         }, function (start, end, label) {
                                             console.log(start.toISOString(), end.toISOString(), label);
                                         });
@@ -89,7 +93,7 @@
                         <div class="col-md-10 column">
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <input type="checkbox" checked="<%= task.isCategory() %>">
+                                    <input type="checkbox" name="check" <%if (!task.isText()) {%> checked="checked"<%}%>>
                                 </span>
                                 <label class="form-control" for="name">是否包括附件</label>
                             </div> 

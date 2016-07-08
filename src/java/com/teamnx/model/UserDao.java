@@ -5,6 +5,8 @@
  */
 package com.teamnx.model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Y400
@@ -12,5 +14,9 @@ package com.teamnx.model;
 public interface UserDao {
 
     public User findUserById(String id);
+
+    public ArrayList<User> findStudentsByCourseId(String courseId);
+
+    public ArrayList<String> findTeachersByCourseId(String courseId);
 
 }

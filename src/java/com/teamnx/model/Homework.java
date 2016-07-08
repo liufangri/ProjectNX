@@ -13,7 +13,6 @@ public class Homework {
 
     private String id;
     private String studentId;
-    private String studentName;
     private String groupId;
     private String courseId;
     private String filePath;
@@ -21,7 +20,7 @@ public class Homework {
     private String taskId;
     private String text;
     private String comment;
-    private String student_name;
+    private String studentName;
 
     public String getId() {
 	return id;
@@ -101,25 +100,12 @@ public class Homework {
 	this.comment = comment;
     }
 
-    public String getStudent_name() {
-	return student_name;
-    }
-
-    public void setStudent_name(String student_name) {
-	this.student_name = student_name;
-    }
-
-    /**
-     * @return the studentName
-     */
     public String getStudentName() {
-        return studentName;
+	return studentName;
     }
 
-    /**
-     * @param studentName the studentName to set
-     */
     public void setStudentName(String studentName) {
-        this.studentName = studentName;
+	this.studentName = studentName;
     }
+
 }

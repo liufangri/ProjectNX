@@ -33,9 +33,11 @@ public class TaskController {
 	String str = task.getName() + new Date().getTime();
 	task.setId(MD5.Md5_16(str));
 	String[] strs = task.getTimeLimit().split(" - ");
-	task.setStartTime(Timestamp.valueOf(strs[0]));
-	task.setDeadline(Timestamp.valueOf(strs[1]));
+	task.setStartTime(Timestamp.valueOf(strs[0] + ":00"));
+	task.setDeadline(Timestamp.valueOf(strs[1] + ":00"));
 	if (task.getCheck() != null) {
+	    task.setText(false);
+	} else {
 	    task.setText(true);
 	}
 
@@ -44,7 +46,7 @@ public class TaskController {
 	task.setStatus(false);
 	if (tdi.addTask(task)) {
 	    request.setAttribute("course_id", course.getId());
-	    response.sendRedirect("te_homework.htm?id=" + course.getId());
+	    response.sendRedirect("te_homework.htm?course_id=" + course.getId());
 	} else {
 
 	}
@@ -53,9 +55,11 @@ public class TaskController {
     @RequestMapping(value = "/changeTask")
     public void changeTask(Task task, HttpServletRequest request, HttpServletResponse response) throws IOException {
 	String[] strs = task.getTimeLimit().split(" - ");
-	task.setStartTime(Timestamp.valueOf(strs[0]));
-	task.setDeadline(Timestamp.valueOf(strs[1]));
+	task.setStartTime(Timestamp.valueOf(strs[0] + ":00"));
+	task.setDeadline(Timestamp.valueOf(strs[1] + ":00"));
 	if (task.getCheck() != null) {
+	    task.setText(false);
+	} else {
 	    task.setText(true);
 	}
 
@@ -64,7 +68,7 @@ public class TaskController {
 	task.setStatus(false);
 	if (tdi.updateTask(task)) {
 	    request.setAttribute("course_id", course.getId());
-	    response.sendRedirect("te_homework.htm?id=" + course.getId());
+	    response.sendRedirect("te_homework.htm?course_id=" + course.getId());
 	} else {
 
 	}

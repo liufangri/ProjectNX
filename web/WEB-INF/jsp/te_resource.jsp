@@ -21,6 +21,7 @@
         <title>iBarn</title>
         <link href="<%=path%>/lib/css/resourceindex.css" rel="stylesheet" />
         <script src="<%=path%>/lib/js/file.js"></script>
+        <script src="<%=path%>/lib/js/bootstrap-treeview.js"></script>
     </head>
     <body>
         <jsp:include page="navbar.jsp"/>
@@ -357,7 +358,7 @@
             function modalTrans() {
                 $('#myModal3').modal('show');
                 $.ajax({
-                    url: 'index.php?a=getTree',
+                    url: 'getall.htm',
                     type: 'POST',
                     dataType: 'json',
                     timeout: 8000,

@@ -3,6 +3,7 @@
     Created on : 2016-7-5, 20:37:13
     Author     : coco
 --%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.teamnx.model.User"%>
 <%@page import="com.teamnx.model.Task"%>
 <%@page import="com.teamnx.model.Course"%>
@@ -14,6 +15,7 @@
         String courseId = (String) request.getAttribute("course_id");
         User user = (User) session.getAttribute("user");
         Task task = (Task) request.getAttribute("task");
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm");
     %>
     <jsp:include page="header.jsp"/>
     <head>
@@ -66,7 +68,7 @@
                                         <div class="controls">
                                             <div class="input-prepend input-group">
                                                 <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                                <input type="text" style="width: 400px"  name="timeLimit" id="reservationtime" class="form-control span4" value="2016-07-01 12:00:00 - 2016-07-02 00:00:00"/>
+                                                <input type="text" style="width: 400px"  name="timeLimit" id="reservationtime" class="form-control span4" value="2016-07-01 12:00 - 2016-07-02 00:00"/>
                                             </div>
                                         </div>
                                     </div>
@@ -77,7 +79,7 @@
                                         $('#reservationtime').daterangepicker({
                                             timePicker: true,
                                             timePickerIncrement: 30,
-                                            format: 'YYYY-MM-DD HH:MM:SS'
+                                            format: 'YYYY-MM-DD HH:mm'
                                         }, function (start, end, label) {
                                             console.log(start.toISOString(), end.toISOString(), label);
                                         });

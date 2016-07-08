@@ -44,20 +44,17 @@ public class UserDaoImpl implements UserDao {
 	    }
 	} catch (Exception e) {
 	    e.printStackTrace();
+	} finally {
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+	    return user;
 	}
-	//测试用
-	dbcpBean.shutDownDataSource();
-	//正常使用时使用
-//	try {
-//
-//	    connection.close();
-//	} catch (SQLException ex) {
-//	    Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-//	}
-	return user;
-
     }
 
+    @Override
     public ArrayList<String> findTeachersByCourseId(String id) {
 	ArrayList<String> teacherNames = new ArrayList<String>();
 	Connection connection = dbcpBean.getConnection();
@@ -75,21 +72,48 @@ public class UserDaoImpl implements UserDao {
 	    }
 	} catch (SQLException ex) {
 	    Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	} finally {
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+	    return teacherNames;
 	}
-	//测试用
-	dbcpBean.shutDownDataSource();
-	//正常使用时使用
-//	try {
-//
-//	    connection.close();
-//	} catch (SQLException ex) {
-//	    Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-//	}
-	return teacherNames;
     }
 
     public void setDbcpBean(DbcpBean dbcpBean) {
 	this.dbcpBean = dbcpBean;
+    }
+
+    @Override
+    public ArrayList<User> findStudentsByCourseId(String courseId) {
+	ArrayList<User> users = new ArrayList<User>();
+	Connection connection = dbcpBean.getConnection();
+	String sql = "select student_course.student_id, user.name \n"
+		+ "from student_course,user\n"
+		+ " where student_course.course_id = ? \n"
+		+ " and student_course.student_id = user.id";
+	try {
+	    PreparedStatement ps = connection.prepareStatement(sql);
+	    ps.setString(1, courseId);
+	    ResultSet rs = ps.executeQuery();
+	    while (rs.next()) {
+		User user = new User();
+		user.setId(rs.getString("student_id"));
+		user.setName(rs.getString("name"));
+		users.add(user);
+	    }
+	} catch (SQLException ex) {
+	    Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	} finally {
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+	    return users;
+	}
     }
 
 }

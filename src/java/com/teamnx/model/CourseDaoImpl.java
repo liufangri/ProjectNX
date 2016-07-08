@@ -47,16 +47,14 @@ public class CourseDaoImpl implements CourseDao {
 	    }
 	} catch (SQLException e) {
 
+	} finally {
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+	    return course;
 	}
-	//测试的时候使用
-	dbcpBean.shutDownDataSource();
-//
-// try {
-//	    connection.close();
-//	} catch (SQLException ex) {
-//	    Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-//	}
-	return course;
     }
 
     @Override
@@ -95,16 +93,14 @@ public class CourseDaoImpl implements CourseDao {
 	    }
 	} catch (SQLException ex) {
 	    Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	} finally {
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+	    return courses;
 	}
-	//测试的时候使用
-	dbcpBean.shutDownDataSource();
-//
-// try {
-//	    connection.close();
-//	} catch (SQLException ex) {
-//	    Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-//	}
-	return courses;
     }
 
     public void setDbcpBean(DbcpBean dbcpBean) {
@@ -140,16 +136,14 @@ public class CourseDaoImpl implements CourseDao {
 	    }
 	} catch (SQLException ex) {
 	    Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	} finally {
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+	    return courses;
 	}
-	//测试的时候使用
-	dbcpBean.shutDownDataSource();
-//
-// try {
-//	    connection.close();
-//	} catch (SQLException ex) {
-//	    Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-//	}
-	return courses;
     }
 
 }

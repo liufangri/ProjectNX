@@ -47,7 +47,11 @@ public class TaskDaoImpl implements TaskDao {
 	    Logger.getLogger(TaskDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 	    return false;
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	}
     }
 
@@ -79,6 +83,12 @@ public class TaskDaoImpl implements TaskDao {
 	} catch (SQLException ex) {
 	    Logger.getLogger(TaskDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 	    return false;
+	} finally {
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	}
     }
 
@@ -111,7 +121,11 @@ public class TaskDaoImpl implements TaskDao {
 	} catch (SQLException ex) {
 	    Logger.getLogger(TaskDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	    return tasks;
 	}
 
@@ -148,7 +162,11 @@ public class TaskDaoImpl implements TaskDao {
 	} catch (SQLException ex) {
 	    Logger.getLogger(TaskDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 	} finally {
-	    dbcpBean.shutDownDataSource();
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	    return task;
 	}
     }

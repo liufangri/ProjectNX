@@ -40,7 +40,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="col-md-offset-10 ">
 
-                <button class="btn btn-default" onclick="javascript:location.href = 'te_homework_add.htm?id=<%= courseId%>'">发布新作业</button>  
+                <button class="btn btn-default" onclick="javascript:location.href = 'te_homework_add.htm?course_id=<%= courseId%>'">发布新作业</button>  
 
             </div>
             <div class="table-responsive">
@@ -59,12 +59,12 @@
                             for (Task t : tasks) {
                         %>
                         <tr>
-                            <td><a href="te_task_modify.htm?taskId=<%= t.getId()%>"><%= t.getName()%></a></td>
+                            <td><a href="te_task_modify.htm?task_id=<%= t.getId()%>"><%= t.getName()%></a></td>
                             <td><%= sdf.format(new Date(t.getStartTime().getTime()))%></td>   
                             <td><%= sdf.format(new Date(t.getDeadline().getTime()))%></td>  
                             <td><%= t.getTeacherName()%></td>  
 
-                            <td><a href="te_homework_list.htm?taskId=<%= t.getId()%>">已提交名单</a></td>
+                            <td><a href="te_homework_list.htm?task_id=<%= t.getId()%>">已提交名单</a></td>
                         </tr>
                         <%
                             }

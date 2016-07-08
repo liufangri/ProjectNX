@@ -99,7 +99,11 @@ public class DbcpBean {
 	    }
 
 	} else {
-	    initDS();
+	    try {
+		connection = DS.getConnection();
+	    } catch (SQLException ex) {
+		Logger.getLogger(DbcpBean.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	}
 	return connection;
     }

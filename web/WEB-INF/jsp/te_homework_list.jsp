@@ -28,7 +28,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div style="display:table">
                 <div style="display:table-cell">
-                    <button class="btn btn-default" onclick="javascript:location.href = 'te_homework.htm?id=<%=courseId%>'"> <span class="glyphicon glyphicon-chevron-left"></span>返回列表</button>
+                    <button class="btn btn-default" onclick="javascript:location.href = 'te_homework.htm?course_id=<%=courseId%>'"> <span class="glyphicon glyphicon-chevron-left"></span>返回列表</button>
                 </div>
                 <div style="padding-left: 12px;display:table-cell">
                     <h1><%= task.getName()%></h1>
@@ -50,7 +50,7 @@
                             for (Homework h : homeworks) {
                         %>
                         <tr>
-                            <td><a href="scoreHomework.htm?homeworkId=<%=h.getId()%>"><%=h.getStudentId()%></a></td>
+                            <td><a href="scoreHomework.htm?homework_id=<%=h.getId()%>"><%=h.getStudentId()%></a></td>
                             <td><%=h.getStudentName()%></td>   
                             <td></td>  
                             <td><%=h.getScore()%></td>  

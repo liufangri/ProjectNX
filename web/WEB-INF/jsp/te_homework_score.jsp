@@ -4,6 +4,8 @@
     Author     : tmc
 --%>
 
+<%@page import="com.teamnx.model.Task"%>
+<%@page import="java.io.File"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.teamnx.model.Homework"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="mvc" %>
@@ -12,6 +14,7 @@
     String homework_id = (String) request.getAttribute("homework_id");
     String taskId = (String) request.getAttribute("task_id");
     Homework originHomework = (Homework) request.getAttribute("origin_homework");
+    Task task = (Task) request.getAttribute("task");
 %>
 <html lang="zh-CN">
     <jsp:include page="header.jsp"/>
@@ -28,19 +31,20 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="clearfix">
-                <button class="btn btn-default" onclick="javascript:location.href = 'te_homework_list.htm?taskId=<%=taskId%>'"> <span class="glyphicon glyphicon-chevron-left"></span>返回列表</button>
+                <button class="btn btn-default" onclick="javascript:location.href = 'te_homework_list.htm?task_id=<%=taskId%>'"> <span class="glyphicon glyphicon-chevron-left"></span>返回列表</button>
             </div>
             <h1>作业评分</h1>
 
             <div class="form-group">
-                <textarea class="form-control" readonly rows="15">abcd</textarea>
+                <textarea class="form-control" readonly rows="15"><%= originHomework.getText() %></textarea>
             </div>  
             <%
-                if (originHomework.getFilePath() != null && originHomework.getFilePath() == "") {
+                if (originHomework.getFilePath() != null && originHomework.getFilePath() != "") {
 
+                    File file = new File(originHomework.getFilePath());
             %>
             <div class="clearfix">
-                <button class="btn btn-info">附件下载</button>
+                <lable style="margin-right: 20px"><%= file.getName()%></lable><button class="btn btn-info" onclick="javascript:location.href = 'download.htm?homeworkId=<%= originHomework.getId()%>'">附件下载</button>
             </div>
             <%}%>
             <mvc:form action="setHomeworkScore.htm" modelAttribute="homework" method="post" cssClass="form">
@@ -60,7 +64,7 @@
                 </div><input type="text" hidden="true" value="<%=taskId%>" name="task_id">
                 <input type="text" hidden="true" value="<%=homework_id%>" name="homework_id">
             </mvc:form>
-            <button onclick="javascript:location.href = 'te_homework_list.htm?homeworkId=<%=homework_id%>'" class="btn btn-default">返回</button>
+            <button onclick="javascript:location.href = 'te_homework_list.htm?task_id=<%=taskId%>'" class="btn btn-default">返回</button>
         </div>
     </body>
 </html>
