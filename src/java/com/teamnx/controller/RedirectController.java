@@ -9,6 +9,8 @@ import com.teamnx.model.Course;
 import com.teamnx.model.CourseDaoImpl;
 import com.teamnx.model.Homework;
 import com.teamnx.model.HomeworkDaoImpl;
+import com.teamnx.model.Resource;
+import com.teamnx.model.ResourceDaoImpl;
 import com.teamnx.model.ShowHomework;
 import com.teamnx.model.Task;
 import com.teamnx.model.TaskDaoImpl;
@@ -35,6 +37,7 @@ public class RedirectController {
     private UserDaoImpl udi;
     private TaskDaoImpl tdi;
     private HomeworkDaoImpl hdi;
+    private ResourceDaoImpl rdi;
 
     /**
      * 跳转到不同的usercenter
@@ -316,12 +319,42 @@ public class RedirectController {
 	return mav;
     }
 
+    /**
+     * 跳转到资源页面
+     *
+     * @param request
+     * @param sessionn
+     * @return
+     */
+    @RequestMapping(value = "/resource")
+    public ModelAndView toResourcePage(HttpServletRequest request, HttpSession sessionn) {
+	String courseId = request.getParameter("course_id");
+	User user = (User) sessionn.getAttribute("user");
+	ModelAndView mav = new ModelAndView();
+	ArrayList<Resource> resources = rdi.findCourseResources(courseId);
+	request.setAttribute("course_id", courseId);
+	request.setAttribute("resources", resources);
+	switch (user.getCharacter()) {
+	    case User.STUDENT:
+		mav.setViewName("stu_resource");
+		break;
+	    case User.TEACHER:
+		mav.setViewName("te_resource");
+	}
+	return mav;
+
+    }
+
     public void setTdi(TaskDaoImpl tdi) {
 	this.tdi = tdi;
     }
 
     public void setHdi(HomeworkDaoImpl hdi) {
 	this.hdi = hdi;
+    }
+
+    public void setRdi(ResourceDaoImpl rdi) {
+	this.rdi = rdi;
     }
 
 }

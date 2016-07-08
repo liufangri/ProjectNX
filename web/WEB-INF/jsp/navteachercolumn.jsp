@@ -19,7 +19,7 @@
     <ul class="nav nav-sidebar">
         <li id="index"><a href="index.htm?course_id=<%= courseId%>">课程信息 <span class="sr-only">(current)</span></a></li>
         <li id="homework"><a href="te_homework.htm?course_id=<%= courseId%>">作业</a></li>
-        <li><a href="te_resource.htm">课程资源</a></li>
+        <li id="resource"><a href="resource.htm?course_id=<%= courseId%>">课程资源</a></li>
         <li><a href="">团队管理</a></li>
         <li id="studentlist"><a href="te_studentlist.htm?course_id=<%= courseId%>">学生名单</a></li>
         <li><a href="">学生留言</a></li>
