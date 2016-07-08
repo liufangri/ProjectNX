@@ -4,12 +4,16 @@
     Author     : coco
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.teamnx.model.Resource"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="zh-CN">
     <%
         String path = request.getContextPath();
+        Resource currentFolder = (Resource) request.getAttribute("current_folder");
+        ArrayList<Resource> resources = (ArrayList<Resource>) request.getAttribute("resources");
     %>
 
     <jsp:include page="header.jsp"/>
@@ -36,6 +40,10 @@
             <section>
                 <section>
                     <!--state overview start-->
+                    <div class="row">
+                        <label class="text-info">目前位置:</label>
+                        <label class="text-info"><%= currentFolder.getPath()%></label> 
+                    </div>
                     <div class="row state-overview">
                         <ul class="buttons pull-left">
                             <li>
@@ -46,9 +54,10 @@
                                 </div>
                             </li>
                             <li>
-                                <button class="btn btn-success" type="button" data-target="#myModal5" data-toggle="modal">
+                                <button class="btn btn-success" type="button" 
+                                        data-target="#myModal5" data-toggle="modal">新建文件夹
                                     <i class="icon-folder-close"></i>
-                                    新建文件夹                            </button>
+                                </button>
                             </li>
                             <li>
                                 <button class="btn btn-danger" type="button" data-target="#myModal4" data-toggle="modal">
@@ -96,34 +105,44 @@
                                         </div>
                                     </div>
                                 </li>
-                                <!--                                id为文件标识符-->
+                                <!--id为文件标识符-->
+                                <!--每个资源项展示位置-->
+                                <% for (Resource r : resources) {%>
                                 <li id="li_190">
                                     <div class="listTableIn pull-left">
                                         <div class="listTableInL pull-left">
                                             <div class="cBox"><input name="classLists" id="classLists190" type="checkbox" value="190" class="classLists"></div>
                                             <div class="name">
-                                                <img src="<%=path%>/images/folder.jpg"> <a target="_self" id="a_190"   href="index.php?path=a"><em class="folder"></em></a>
+                                                <img src="<%=path%>/images/folder.jpg"/> 
+                                                <a target="_self" id="a_190"   href="index.php?path=a">
+                                                    <em class="folder"></em>
+                                                </a>
                                                 <span class="div_pro">
-                                                    <a id="sa_190" target="_self"   href="index.php?path=a" >a</a>
+                                                    <a id="sa_190" target="_self"   href="index.php?path=a" ><%= r.getName()%></a>
                                                 </span>
                                             </div>
                                         </div>
                                         <div class="listTableInR pull-right">
-
                                             <div class="updateTime">2016-07-06 00:59:44</div>
                                             <div style="display:none;" class="float_box" id="box_190">
                                                 <ul class="control">
-                                                    <li><a href="index.php?a=mdown&ids=190"><i class="icon-download-alt"></i></a></li>
-                                                    <!--                                              <li><a href="#" onclick="modalShare(190, '5a');" data-toggle="modal"><i class="icon-share"></i></a></li>
-                                                                                                  <li><a href="#" onclick="modalName(190, 'a');" data-toggle="modal"><i class="icon-edit"></i></a></li>
-                                                                                                  <li><a href="#" onclick="$('#sid').val(190);modalTrans();" data-toggle="modal"><i class="icon-random"></i></a></li>
-                                                                                                  <li><a href="#" onclick="modalDel('a');$('#delid').val(190);" data-toggle="modal"><i class="icon-remove"></i></a></li>-->
+                                                    <li><a href="
+                                                           <%if (r.isFolder()) {%>
+                                                           resource.htm?folder_id=<%=r.getId()%>
+                                                           <%} else {%>
+                                                           download.htm?resourceId=<%=r.getId()%>
+                                                           <%}%>"><i class="icon-download-alt"></i></a></li>
+                                                    <!--<li><a href="#" onclick="modalShare(190, '5a');" data-toggle="modal"><i class="icon-share"></i></a></li>
+                                                        <li><a href="#" onclick="modalName(190, 'a');" data-toggle="modal"><i class="icon-edit"></i></a></li>
+                                                        <li><a href="#" onclick="$('#sid').val(190);modalTrans();" data-toggle="modal"><i class="icon-random"></i></a></li>
+                                                        <li><a href="#" onclick="modalDel('a');$('#delid').val(190);" data-toggle="modal"><i class="icon-remove"></i></a></li>-->
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </li>
-
+                                <% }%>
+                                <!--展示完成-->
                             </ul>
                         </div>
                     </div>
@@ -193,6 +212,8 @@
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal5" class="modal fade in" style="display: none;">
                         <div class="modal-dialog">
                             <div class="modal-content">
+                                <form action="addNewFolder.htm" method="pose">
+                                
                                 <div class="modal-header pull-left">
                                     <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
                                     <h4 class="modal-title">新建文件夹</h4>
@@ -201,14 +222,16 @@
                                     <div>
                                         <div class="modalTitleSmall pull-left">名称：</div>
                                         <div class="col-lg-10 marginB10 pull-left">
-                                            <input class="form-control" id="folderName" type="text" placeholder="请输入名称">
+                                            <input class="form-control" id="folderName" type="text" placeholder="请输入名称" name="name">
+                                            <input type="text" hidden="hidden" name="current_resource_id" value="<%= currentFolder.getId() %>">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" onclick="addFolder();">确定</button>
+                                    <button type="submit" class="btn btn-success" >确定</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                 </div>
+                                </form>
                             </div>
                         </div>
                     </div>

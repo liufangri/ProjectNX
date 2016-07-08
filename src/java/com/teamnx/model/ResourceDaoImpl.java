@@ -27,7 +27,7 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public boolean insert(Resource resource) {
 	Connection connection = dbcpBean.getConnection();
-	String sql = "INSERT INTO resource values(?,?,?,?,?,?,?)";
+	String sql = "INSERT INTO resource VALUES(?,?,?,?,?,?,?)";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, resource.getId());
@@ -37,7 +37,7 @@ public class ResourceDaoImpl implements ResourceDao {
 	    ps.setString(5, resource.getTeacherId());
 	    ps.setTimestamp(6, new Timestamp(resource.getLastChange()));
 	    ps.setBoolean(7, resource.isFolder());
-	    ps.execute();
+	    ps.executeUpdate();
 	    return true;
 	} catch (SQLException ex) {
 	    Logger.getLogger(ResourceDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -78,7 +78,7 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public boolean delete(Resource resource) {
 	Connection connection = dbcpBean.getConnection();
-	String sql = "delete from resource where id = ?";
+	String sql = "DELETE FROM resource WHERE id = ?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, resource.getId());
@@ -100,7 +100,7 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public boolean updatePath(Resource resource) {
 	Connection connection = dbcpBean.getConnection();
-	String sql = "update resource set fath = ?,path= ?  where id = ?";
+	String sql = "UPDATE resource SET father_id = ?,path= ?  WHERE id = ?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, resource.getFatherId());
@@ -128,7 +128,7 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public boolean updateName(Resource resource) {
 	Connection connection = dbcpBean.getConnection();
-	String sql = "update resource set name=?  where id = ?";
+	String sql = "UPDATE resource SET name=?  WHERE id = ?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, resource.getName());
@@ -153,7 +153,7 @@ public class ResourceDaoImpl implements ResourceDao {
 
 	ArrayList<Resource> resources = new ArrayList<Resource>();
 	Connection connection = dbcpBean.getConnection();
-	String sql = "select * from resource where fatherId=?";
+	String sql = "SELETE * FROM resource WHERE father_id=?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, MD5.Md5_16(courseId + "_root"));
@@ -187,7 +187,7 @@ public class ResourceDaoImpl implements ResourceDao {
     public ArrayList<Resource> findChilds(Resource resource) {
 	ArrayList<Resource> resources = new ArrayList<Resource>();
 	Connection connection = dbcpBean.getConnection();
-	String sql = "select * from resource where fatherId=?";
+	String sql = "SELETE * FROM resource WHERE father_id=?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, resource.getName());
@@ -220,7 +220,7 @@ public class ResourceDaoImpl implements ResourceDao {
     public ArrayList<Resource> findChildsByFolderId(String folderId) {
 	ArrayList<Resource> resources = new ArrayList<Resource>();
 	Connection connection = dbcpBean.getConnection();
-	String sql = "select * from resource where fatherId=?";
+	String sql = "SELETE * FROM resource WHERE father_id=?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, folderId);
@@ -253,7 +253,7 @@ public class ResourceDaoImpl implements ResourceDao {
     public Resource findResourceById(String resourceId) {
 	Resource resource = null;
 	Connection connection = dbcpBean.getConnection();
-	String sql = "select * from resource where id = ?";
+	String sql = "SELETE * FROM resource WHERE id = ?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, resourceId);

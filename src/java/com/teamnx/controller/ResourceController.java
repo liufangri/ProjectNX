@@ -18,12 +18,14 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *
  * @author Y400
  */
+@Controller
 public class ResourceController {
 
     private UserDaoImpl udi;
@@ -105,31 +107,6 @@ public class ResourceController {
 	} else {
 	    response.sendRedirect("resourcepage.htm?folder_id=" + currentResource.getFatherId());
 	}
-    }
-
-    /**
-     * 首次进入课程资源首页的处理
-     *
-     * @param courseId
-     * @param request
-     * @return
-     */
-    private Resource getRootResource(String courseId, HttpServletRequest request) {
-	Resource resource = new Resource();
-	String name = courseId + "_root";
-	resource.setId(MD5.Md5_16(name));
-	resource.setName(name);
-	resource.setFolder(true);
-	resource.setPath("\\" + name);
-	String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF") + "\\courseResources" + resource.getPath();
-	File file = new File(realPath);
-	if (!file.exists()) {
-	    file.mkdirs();
-	    resource.setLastChange(file.lastModified());
-	    rdi.insert(resource);
-	}
-	return resource;
-
     }
 
     /**

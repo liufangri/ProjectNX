@@ -16,6 +16,8 @@ import com.teamnx.model.Task;
 import com.teamnx.model.TaskDaoImpl;
 import com.teamnx.model.User;
 import com.teamnx.model.UserDaoImpl;
+import com.teamnx.util.MD5;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
@@ -330,9 +332,20 @@ public class RedirectController {
     public ModelAndView toResourcePage(HttpServletRequest request, HttpSession sessionn) {
 	String courseId = request.getParameter("course_id");
 	User user = (User) sessionn.getAttribute("user");
+	String folderId = request.getParameter("folder_id");
 	ModelAndView mav = new ModelAndView();
-	ArrayList<Resource> resources = rdi.findCourseResources(courseId);
+	ArrayList<Resource> resources = null;
+	Resource currentFolder = null;
+	if (folderId == null) {
+	    currentFolder = getRootResource(courseId, request);
+	    resources = new ArrayList<Resource>();
+	} else {
+	    currentFolder = rdi.findResourceById(folderId);
+	    resources = rdi.findCourseResources(courseId);
+
+	}
 	request.setAttribute("course_id", courseId);
+	request.setAttribute("current_folder", currentFolder);
 	request.setAttribute("resources", resources);
 	switch (user.getCharacter()) {
 	    case User.STUDENT:
@@ -340,8 +353,35 @@ public class RedirectController {
 		break;
 	    case User.TEACHER:
 		mav.setViewName("te_resource");
+		break;
+	    case User.ADMIN:
+		break;
 	}
 	return mav;
+    }
+
+    /**
+     * 首次进入课程资源首页的处理
+     *
+     * @param courseId
+     * @param request
+     * @return
+     */
+    private Resource getRootResource(String courseId, HttpServletRequest request) {
+	Resource resource = new Resource();
+	String name = courseId + "_root";
+	resource.setId(MD5.Md5_16(name));
+	resource.setName(name);
+	resource.setFolder(true);
+	resource.setPath("\\" + name);
+	String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF") + "\\courseResources" + resource.getPath();
+	File file = new File(realPath);
+	if (!file.exists()) {
+	    file.mkdirs();
+	    resource.setLastChange(file.lastModified());
+	    rdi.insert(resource);
+	}
+	return resource;
 
     }
 
