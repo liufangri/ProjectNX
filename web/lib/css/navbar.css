@@ -94,6 +94,11 @@
         margin: 0;
     }  
 
+    .navbar-vertical-left ul.navbar-nav > li {
+            width: 100%;
+            height: auto;
+    }
+
     @media(max-width: 768px) {
         .navbar-vertical-left {
             position: fixed;
@@ -114,6 +119,8 @@
         }
 
         .navbar-vertical-left ul.navbar-nav > li {
+            width: auto;
+            height: auto;
             display: table-cell;
         }
 
