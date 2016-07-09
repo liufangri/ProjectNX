@@ -33,6 +33,7 @@
             $(document).ready(function () {
                 $("#upload").fileinput({
                     language: "zh",
+                    showUpload: false,
                 });
             });
         </script>
