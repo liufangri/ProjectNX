@@ -45,7 +45,7 @@
                             for (ShowGroup sg: showGroups) {
                         %>
                         <tr>
-                            <td><a href=""><%=sg.getName()%></a></td>
+                            <td><a href="studentGroupInfo.htm?course_id=${course_id}&group_id=<%=sg.getGroupId()%>"><%=sg.getName()%></a></td>
                             <td><%=sg.getManager()%></td>   
                             <td><%=sg.getNumber()%>/${max_number}</td>  
                             <td><%=sg.getStatus()%></td>

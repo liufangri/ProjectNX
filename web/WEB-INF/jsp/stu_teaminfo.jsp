@@ -3,10 +3,18 @@
     Created on : 2016-7-4, 20:55:52
     Author     : coco
 --%>
+<%@page import="com.teamnx.model.StudentGroup"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.teamnx.model.Group"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html lang="zh-CN">
     <%
         String path = request.getContextPath();
+        Group group = (Group) request.getAttribute("group");
+        String name = group.getName();
+        String status = (String) request.getAttribute("status");
+        String managerId = group.getManagerId();
+        ArrayList<StudentGroup> studentGroups = (ArrayList<StudentGroup>) request.getAttribute("studentGroups");
     %>
     <jsp:include page="header.jsp"/>
     <head>
@@ -23,10 +31,10 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div>
-                <h3>团队名称：<b>安拉胡阿克巴</b>  状态：<span class="glyphicon glyphicon-user"></span><i style="color: red">组建中</i></h3>
+                <h3>团队名称：<b>${name}</b>  状态：<span class="glyphicon glyphicon-user"></span><i style="color: red">${status}</i></h3>
             </div>
             <div>
-                <button type="button" class="btn btn-default">申请加入</button>
+                <button onClick="location.href='groupApply.htm?course_id=${course_id}&group_id=<%=group.getId()%>'" type="button" class="btn btn-default">申请加入</button>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped" cellspacing="0" cellpadding="0">
@@ -39,12 +47,17 @@
                     </thead>
                     <tbody>
                         <%
-                            for (int i = 0; i < 10; i++) {
+                            for (StudentGroup sg : studentGroups) {
                         %>
                         <tr>
-                            <td>12311231</td>
-                            <td>辛辛那提·穆罕穆德</td>   
-                            <td>负责人</td>
+                            <td><%=sg.getStudentId()%></td>
+                            <td><%=sg.getStudentName()%></td>   
+                            <td><%if (sg.getStudentId().equals(managerId)) {%>
+                                负责人
+                                <%} else {%>
+                                组员
+                                <%}%>
+                            </td>
                         </tr>
                         <%
                             }
@@ -53,7 +66,7 @@
                 </table>
             </div>
             <div>
-                <button type="button" class="btn btn-default">返回</button>
+                <button onClick="location.href='studentGroupList.htm?course_id=${course_id}'" type="button" class="btn btn-default">返回</button>
             </div>
         </div>
     </body>

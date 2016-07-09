@@ -36,7 +36,7 @@
             </a>
         </li>
         <li id="team">
-            <a href="#">
+            <a href="teacherGroupList.htm?course_id=<%= courseId%>">
                 <i class="fa  fa-fw fa-lg fa-group"></i>
                 <span>团队管理</span>
             </a>
