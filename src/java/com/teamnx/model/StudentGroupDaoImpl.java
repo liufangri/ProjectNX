@@ -59,7 +59,25 @@ public class StudentGroupDaoImpl implements StudentGroupDao {
 
     @Override
     public boolean delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection connection = dbcpBean.getConnection();
+        boolean flag = false;
+        String sql = "DELETE FROM student_group WHERE id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, id);
+            ps.executeUpdate();
+            flag = true;
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return flag;
+        }
     }
 
     @Override
@@ -77,7 +95,7 @@ public class StudentGroupDaoImpl implements StudentGroupDao {
         Connection connection = dbcpBean.getConnection();
         ArrayList<StudentGroup> studentGroups = new ArrayList<StudentGroup>();
         String sql = "SELECT * FROM student_group WHERE "
-                + "group_id = ?";
+                + "group_id = ? AND status = True";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, groupId);
@@ -89,6 +107,7 @@ public class StudentGroupDaoImpl implements StudentGroupDao {
                 studentGroup.setGroupId(rs.getString("group_id"));
                 studentGroup.setCourseId(rs.getString("course_id"));
                 studentGroup.setStudentName(rs.getString("student_name"));
+                studentGroup.setStatus(rs.getBoolean("status"));
                 studentGroups.add(studentGroup);
             }
         } catch (SQLException ex) {
@@ -139,7 +158,7 @@ public class StudentGroupDaoImpl implements StudentGroupDao {
             ps.setString(2, courseId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                if(rs.getInt(1)!=0){
+                if (rs.getInt(1) != 0) {
                     flag = true;
                 }
             }
@@ -155,4 +174,152 @@ public class StudentGroupDaoImpl implements StudentGroupDao {
         }
     }
 
+    @Override
+    public ArrayList<StudentGroup> findApplyList(String groupId) {
+        Connection connection = dbcpBean.getConnection();
+        ArrayList<StudentGroup> studentGroups = new ArrayList<StudentGroup>();
+        String sql = "SELECT * FROM student_group WHERE "
+                + "group_id = ? AND status = False";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, groupId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                StudentGroup studentGroup = new StudentGroup();
+                studentGroup.setId(rs.getString("id"));
+                studentGroup.setStudentId(rs.getString("student_id"));
+                studentGroup.setGroupId(rs.getString("group_id"));
+                studentGroup.setCourseId(rs.getString("course_id"));
+                studentGroup.setStudentName(rs.getString("student_name"));
+                studentGroup.setStatus(rs.getBoolean("status"));
+                studentGroups.add(studentGroup);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return studentGroups;
+        }
+    }
+
+    @Override
+    public boolean accpet(String sgId) {
+        Connection connection = dbcpBean.getConnection();
+        boolean flag = false;
+        String sql = "UPDATE student_group SET status = True WHERE id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, sgId);
+            ps.executeUpdate();
+            flag = true;
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return flag;
+        }
+    }
+
+    @Override
+    public StudentGroup findById(String id) {
+        Connection connection = dbcpBean.getConnection();
+        StudentGroup sg = null;
+        String sql = "SELECT * FROM student_group WHERE id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                sg = new StudentGroup();
+                sg.setId(rs.getString("id"));
+                sg.setCourseId(rs.getString("course_id"));
+                sg.setGroupId(rs.getString("group_id"));
+                sg.setStudentId(rs.getString("student_id"));
+                sg.setStudentName(rs.getString("student_name"));
+                sg.setStatus(rs.getBoolean("status"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return sg;
+        }
+    }
+
+    @Override
+    public StudentGroup findByCourseGroup(String courseId, String groupId) {
+        Connection connection = dbcpBean.getConnection();
+        StudentGroup sg = null;
+        String sql = "SELECT * FROM student_group WHERE "
+                + "course_id = ? AND group_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, courseId);
+            ps.setString(2, groupId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                sg = new StudentGroup();
+                sg.setId(rs.getString("id"));
+                sg.setCourseId(rs.getString("course_id"));
+                sg.setGroupId(rs.getString("group_id"));
+                sg.setStudentId(rs.getString("student_id"));
+                sg.setStudentName(rs.getString("student_name"));
+                sg.setStatus(rs.getBoolean("status"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return sg;
+        }
+    }
+
+    @Override
+    public StudentGroup findByStudentGroup(String studentId, String groupId) {
+        Connection connection = dbcpBean.getConnection();
+        StudentGroup sg = null;
+        String sql = "SELECT * FROM student_group WHERE "
+                + "student_id = ? AND group_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, studentId);
+            ps.setString(2, groupId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                sg = new StudentGroup();
+                sg.setId(rs.getString("id"));
+                sg.setCourseId(rs.getString("course_id"));
+                sg.setGroupId(rs.getString("group_id"));
+                sg.setStudentId(rs.getString("student_id"));
+                sg.setStudentName(rs.getString("student_name"));
+                sg.setStatus(rs.getBoolean("status"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return sg;
+        }
+    }
+    
 }
