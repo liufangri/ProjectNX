@@ -79,13 +79,6 @@
 
                 %>
                 <div> 
-                    <% if (origin_homework.getFilePath() != null) {
-                            File file = new File(origin_homework.getFilePath());
-                    %>
-                    <div class="clearfix">
-                        <lable style="margin-right: 20px"><%= file.getName()%></lable><a href="download.htm?homeworkId=<%= origin_homework.getId()%>"><button type="button" class="btn btn-info" >附件下载</button></a>
-                    </div>
-                    <%}%>
                     <label class="control-label">提交附件</label>
                     <input id="upload" type="file"  class="file-loading" name="uploadFile" <%if (hide) {%>disabled="disabled"<%}%> >
                 </div>
@@ -97,8 +90,14 @@
                 <input type="text" hidden="hidden" name="courseId" value="<%=courseId%>"/>
                 <input type="text" hidden="hidden" name="taskId" value="<%=task.getId()%>"/>
                 <input type="text" hidden="hidden" name="studentId" value="<%=user.getId()%>"/>
-                <input type="text"hidden="hidden"name="studentName"value="<%=user.getName()%>"/>
-
+                <input type="text" hidden="hidden" name="studentName" value="<%=user.getName()%>"/>
+                <% if (origin_homework.getFilePath() != null) {
+                        File file = new File(origin_homework.getFilePath());
+                %>
+                <div class="clearfix" style=" margin-bottom:20px;margin-right: 20px">
+                    <label><%= file.getName()%></label><a href="download.htm?homeworkId=<%= origin_homework.getId()%>"><button type="button" class="btn btn-info" >附件下载</button></a>
+                </div>
+                <%}%>
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary" 
                            <%if (hide) {%>disabled="disabled"<%}%>

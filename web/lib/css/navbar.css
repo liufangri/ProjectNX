@@ -99,6 +99,11 @@
             height: auto;
     }
 
+    .navbar-vertical-left ul.navbar-nav > .active > a {
+    color: #fff;
+    background-color: #428bca;
+    }
+
     @media(max-width: 768px) {
         .navbar-vertical-left {
             position: fixed;

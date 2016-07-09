@@ -56,6 +56,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <section>
                 <section>
+                    
                     <!--state overview start-->
                     <div class="row state-overview">
                         <input type="hidden" id="path" name="path" value="">
@@ -64,6 +65,7 @@
                         <input type="hidden" id="delid" name="delid">
                     </div>
                     <!--state overview end-->
+
                     <div class="row">
                         <div class="col-lg-12">
                             <!--breadcrumbs start -->
