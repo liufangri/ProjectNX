@@ -15,6 +15,7 @@
     String taskId = (String) request.getAttribute("task_id");
     Homework originHomework = (Homework) request.getAttribute("origin_homework");
     Task task = (Task) request.getAttribute("task");
+    String courseId = (String) request.getAttribute("course_id");
 %>
 <html lang="zh-CN">
     <jsp:include page="header.jsp"/>

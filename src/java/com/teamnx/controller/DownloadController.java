@@ -15,8 +15,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -32,16 +35,16 @@ public class DownloadController {
 
     @RequestMapping("/download")
     public String download(HttpServletRequest request,
-	    HttpServletResponse response) {
+	    HttpServletResponse response, HttpSession session) throws UnsupportedEncodingException {
 	String homeworkId = request.getParameter("homeworkId");
 	String resourceId = request.getParameter("resourceId");
 	String filePath;
 	if (homeworkId != null) {
 	    Homework homework = hdi.findHomeworkById(homeworkId);
-	    filePath = homework.getFilePath();
+	    filePath = session.getServletContext().getRealPath("/WEB-INF") + homework.getFilePath();
 	} else if (resourceId != null) {
 	    Resource resource = rdi.findResourceById(resourceId);
-	    filePath = resource.getPath();
+	    filePath = session.getServletContext().getRealPath("/WEB-INF") + resource.getPath();
 	} else {
 	    filePath = "Nothing";
 	}
@@ -51,7 +54,7 @@ public class DownloadController {
 	    File file = new File(filePath);
 	    String fileName = file.getName();
 	    response.setHeader("Content-Disposition", "attachment;fileName="
-		    + fileName);
+		    + URLEncoder.encode(fileName, "utf-8"));
 	    try {
 		InputStream inputStream = new FileInputStream(file);
 		OutputStream os = response.getOutputStream();

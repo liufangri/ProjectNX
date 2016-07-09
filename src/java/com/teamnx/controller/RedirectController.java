@@ -9,11 +9,15 @@ import com.teamnx.model.Course;
 import com.teamnx.model.CourseDaoImpl;
 import com.teamnx.model.Homework;
 import com.teamnx.model.HomeworkDaoImpl;
+import com.teamnx.model.Resource;
+import com.teamnx.model.ResourceDaoImpl;
 import com.teamnx.model.ShowHomework;
 import com.teamnx.model.Task;
 import com.teamnx.model.TaskDaoImpl;
 import com.teamnx.model.User;
 import com.teamnx.model.UserDaoImpl;
+import com.teamnx.util.MD5;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +39,7 @@ public class RedirectController {
     private UserDaoImpl udi;
     private TaskDaoImpl tdi;
     private HomeworkDaoImpl hdi;
+    private ResourceDaoImpl rdi;
 
     /**
      * 跳转到不同的usercenter
@@ -316,12 +321,93 @@ public class RedirectController {
 	return mav;
     }
 
+    /**
+     * 跳转到资源页面
+     *
+     * @param request
+     * @param sessionn
+     * @return
+     */
+    @RequestMapping(value = "/resource")
+    public ModelAndView toResourcePage(HttpServletRequest request, HttpSession sessionn) {
+	String courseId = request.getParameter("course_id");
+	User user = (User) sessionn.getAttribute("user");
+	String folderId = request.getParameter("folder_id");
+	ModelAndView mav = new ModelAndView();
+	ArrayList<Resource> resources = null;
+	Resource currentFolder = null;
+	if (folderId == null) {
+	    currentFolder = rdi.findCourseRootFolder(courseId);
+	    if (currentFolder == null) {
+		currentFolder = getRootResource(courseId, request);
+		resources = new ArrayList<Resource>();
+	    } else {
+		resources = rdi.findChildrenByFolderId(currentFolder.getId());
+	    }
+
+	} else {
+	    currentFolder = rdi.findResourceById(folderId);
+	    resources = rdi.findChildrenByFolderId(currentFolder.getId());
+	}
+	request.setAttribute("course_id", courseId);
+	request.setAttribute("current_folder", currentFolder);
+	request.setAttribute("resources", resources);
+	switch (user.getCharacter()) {
+	    case User.STUDENT:
+		mav.setViewName("stu_resource");
+		break;
+	    case User.TEACHER:
+		mav.setViewName("te_resource");
+		mav.addObject("new_resource", new Resource());
+		break;
+	    case User.ADMIN:
+		break;
+	}
+	return mav;
+    }
+
+    /**
+     * 首次进入课程资源首页的处理
+     *
+     * @param courseId
+     * @param request
+     * @return
+     */
+    private Resource getRootResource(String courseId, HttpServletRequest request) {
+	Resource resource = new Resource();
+	String name = courseId + "_root";
+	resource.setId(MD5.Md5_16(name));
+	resource.setName(name);
+	resource.setFolder(true);
+	resource.setPath("\\courseResources\\" + name);
+	resource.setCourseId(courseId);
+	String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF") + resource.getPath();
+	File file = new File(realPath);
+	if (!file.exists()) {
+	    file.mkdirs();
+	    resource.setLastChange(file.lastModified());
+	    if (!rdi.insert(resource)) {
+		//插入数据失败，删除新建的文件夹
+		file.delete();
+	    }
+	} else if (!rdi.insert(resource)) {
+	    //插入数据失败，删除新建的文件夹
+	    file.delete();
+	}
+	return resource;
+
+    }
+
     public void setTdi(TaskDaoImpl tdi) {
 	this.tdi = tdi;
     }
 
     public void setHdi(HomeworkDaoImpl hdi) {
 	this.hdi = hdi;
+    }
+
+    public void setRdi(ResourceDaoImpl rdi) {
+	this.rdi = rdi;
     }
 
 }

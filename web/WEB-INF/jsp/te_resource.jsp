@@ -4,12 +4,24 @@
     Author     : coco
 --%>
 
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="com.teamnx.model.User"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.teamnx.model.Resource"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="mvc" %>
 
 <!DOCTYPE html>
 <html lang="zh-CN">
     <%
         String path = request.getContextPath();
+        Resource currentFolder = (Resource) request.getAttribute("current_folder");
+        ArrayList<Resource> resources = (ArrayList<Resource>) request.getAttribute("resources");
+        User teacher = (User) session.getAttribute("user");
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm");
+        String fullPath = currentFolder.getPath();
+        String[] folders = fullPath.split("\\\\");
     %>
 
     <jsp:include page="header.jsp"/>
@@ -18,9 +30,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="iBarn">
         <link rel="shortcut icon" href="img/favicon.png">
-        <title>iBarn</title>
         <link href="<%=path%>/lib/css/resourceindex.css" rel="stylesheet" />
         <script src="<%=path%>/lib/js/file.js"></script>
+        <script src="<%=path%>/lib/js/bootstrap-treeview.js"></script>
+        <link href="<%=path%>/lib/css/fileinput.min.css" rel="stylesheet">
+        <script src="<%=path%>/lib/js/fileinput.min.js"></script>
+        <script src="<%=path%>/lib/js/fileinput-zh.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#upload").fileinput({
+                    language: "zh",
+                    fileActionSettings: {showZoom: false},
+                });
+            });
+        </script>
     </head>
     <body>
         <jsp:include page="navbar.jsp"/>
@@ -35,19 +58,24 @@
             <section>
                 <section>
                     <!--state overview start-->
+                    <div class="row">
+                        <label class="text-info">目前位置:</label>
+                        <label class="text-info"><%= currentFolder.getPath()%></label> 
+                    </div>
                     <div class="row state-overview">
                         <ul class="buttons pull-left">
                             <li>
                                 <div id="ucontainer">
-                                    <button class="btn btn-info" type="button" onclick="javascript:addFile()">
-                                        <i class="icon-cloud-upload"></i>
+                                    <button class="btn btn-success" type="button" data-target="#myModal1" data-toggle="modal">
+                                        <i class="icon-folder-close"></i>
                                         上传资料                                </button>
                                 </div>
                             </li>
                             <li>
-                                <button class="btn btn-success" type="button" data-target="#myModal5" data-toggle="modal">
+                                <button class="btn btn-success" type="button" 
+                                        data-target="#myModal5" data-toggle="modal">新建文件夹
                                     <i class="icon-folder-close"></i>
-                                    新建文件夹                            </button>
+                                </button>
                             </li>
                             <li>
                                 <button class="btn btn-danger" type="button" data-target="#myModal4" data-toggle="modal">
@@ -73,56 +101,97 @@
                         <input type="hidden" id="path" name="path" value="">
                         <input type="hidden" id="dpath" name="dpath">
                         <input type="hidden" id="sid" name="sid">
-                        <input type="hidden" id="delid" name="delid">
                     </div>
                     <!--state overview end-->
                     <div class="row">
+                        <div class="col-lg-12">
+                            <!--breadcrumbs start -->
+                            <ul class="breadcrumb">
+                                <% if (currentFolder.getFatherId() != null) {%>
+                                <li><a href="resource.htm?course_id=<%= currentFolder.getCourseId()%>&folder_id=<%= currentFolder.getFatherId()%>"><i class="icon-mail-reply"></i> 返回上一级</a></li>
+                                    <%}%>
+                                <li><a href="resource.htm?course_id=<%= currentFolder.getCourseId()%>">所有资料</a></li>
+                                    <%
+                                        for (int i = 3; i < folders.length - 1 && i < 10; i++) {
+                                    %>
+                                <li><%= folders[i]%>
+                                    <%if (i == 9) {%>
+                                <li>...</li>
+                                    <%}
+					}%>
+                                <li class="active"><%=folders.length > 3 ? folders[folders.length - 1] : ""%>
+                            </ul>
+                            <!--breadcrumbs end -->
+                        </div>
                         <div class="col-lg-12" id="block" style="display: none;">
                             <ul class="listType pull-left">
                             </ul>
                         </div>
                         <div class="col-lg-12" id="list" >
                             <ul id="listtable" class="listTable pull-left">
-                                <li id="fileList">
+                                <li style="list-style-type:none;" id="fileList">
                                     <div class="listTableTop pull-left">
                                         <div class="listTableTopL pull-left">
                                             <div class="cBox"><input id="chkAll" name="chkAll" type="checkbox"></div>
                                             <div class="name" id="name">名称<div class="seq"></div></div>
                                         </div>
-                                        <div class="listTableTopR pull-right">
 
+                                        <div class="listTableTopR pull-right">
                                             <div class="updateTime" id="ctime">上传时间<div class="seq"></div></div>
+                                            <div class="menu" id="menu">操作<div class="seq"></div></div>
                                         </div>
                                     </div>
                                 </li>
-                                <!--                                id为文件标识符-->
-                                <li id="li_190">
+                                <!--id为文件标识符-->
+                                <!--每个资源项展示位置-->
+                                <% for (Resource r : resources) {%>
+                                <li  style="list-style-type:none;" id="li_190">
+
                                     <div class="listTableIn pull-left">
                                         <div class="listTableInL pull-left">
                                             <div class="cBox"><input name="classLists" id="classLists190" type="checkbox" value="190" class="classLists"></div>
                                             <div class="name">
-                                                <img src="<%=path%>/images/folder.jpg"> <a target="_self" id="a_190"   href="index.php?path=a"><em class="folder"></em></a>
+                                                <img src="<%=path%>/images/<%if (r.isFolder()) {%>folder.jpg<%} else {%>u247.png<%}%>"/> 
+                                                <a target="_self" id="a_190"   href="<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>">
+                                                    <em class="folder"></em>
+                                                </a>
                                                 <span class="div_pro">
-                                                    <a id="sa_190" target="_self"   href="index.php?path=a" >a</a>
+                                                    <a id="sa_190"   href="<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>" ><%= r.getName()%></a>
                                                 </span>
                                             </div>
+
                                         </div>
                                         <div class="listTableInR pull-right">
-
-                                            <div class="updateTime">2016-07-06 00:59:44</div>
+                                            <div class="updateTime"><%= sdf.format(new Date(r.getLastChange()))%></div>
+                                            <div>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-primary dropdown-toggle" 
+                                                            data-toggle="dropdown">
+                                                        菜单 <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="#" onclick="deleteResource('<%= r.getId()%>');" data-toggle="modal"><i class="icon-remove"></i>删除</a></li>
+                                                        <li><a href="download.htm?resourceId=<%=r.getId()%>" ><i class="icon-remove"></i>下载</a></li>
+                                                        <li><a href="#" onclick="renameResource('<%= r.getId()%>');"><i class="icon-remove"></i>重命名</a></li>
+                                                        <li><a href="#" onclick="$('#sid').val('190');modalTrans();" data-toggle="modal"><i class="icon-remove"></i>移动到</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                             <div style="display:none;" class="float_box" id="box_190">
                                                 <ul class="control">
-                                                    <li><a href="index.php?a=mdown&ids=190"><i class="icon-download-alt"></i></a></li>
-                                                    <!--                                              <li><a href="#" onclick="modalShare(190, '5a');" data-toggle="modal"><i class="icon-share"></i></a></li>
-                                                                                                  <li><a href="#" onclick="modalName(190, 'a');" data-toggle="modal"><i class="icon-edit"></i></a></li>
-                                                                                                  <li><a href="#" onclick="$('#sid').val(190);modalTrans();" data-toggle="modal"><i class="icon-random"></i></a></li>
-                                                                                                  <li><a href="#" onclick="modalDel('a');$('#delid').val(190);" data-toggle="modal"><i class="icon-remove"></i></a></li>-->
+                                                    <li><a href="<%if (r.isFolder()) {%>resource.htm?folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>">
+                                                            <i class="icon-download-alt"></i></a></li>
+                                                    <!--<li><a href="#" onclick="modalShare(190, '5a');" data-toggle="modal"><i class="icon-share"></i></a></li>
+                                                        <li><a href="#" onclick="modalName(190, 'a');" data-toggle="modal"><i class="icon-edit"></i></a></li>
+                                                        <li><a href="#" onclick="$('#sid').val(190);modalTrans();" data-toggle="modal"><i class="icon-random"></i></a></li>
+                                                        <li><a href="#" onclick="modalDel('a');$('#delid').val(190);" data-toggle="modal"><i class="icon-remove"></i></a></li>-->
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </li>
-
+                                <% }%>
+                                <!--展示完成-->
                             </ul>
                         </div>
                     </div>
@@ -130,29 +199,57 @@
                     <input type="hidden" id="dirId">
                     <input type="hidden" id="order">
                     <input type="hidden" id="by">
-
-                    <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal2" class="modal fade in" style="display: none;">
+                    <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal1" class="modal fade in" style="display: none;">
                         <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header pull-left">
-                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                    <h4 class="modal-title">编辑</h4>
-                                </div>
-                                <div class="modal-body pull-left">
-                                    <div>
-                                        <div class="modalTitleSmall pull-left">名称：</div>
-                                        <div class="col-lg-10 marginB10 pull-left">
-                                            <input class="form-control" id="newName" type="text" placeholder="请输入名称">
-                                            <input type="hidden" id="aname" name="aname">
-                                        </div>
+                            <mvc:form action="uploadFile.htm" enctype="multipart/form-data" method="post" modelAttribute="new_resource">
+                                <div class="modal-content">
+                                    <div class="modal-header pull-left">
+                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                        <h4 class="modal-title">上传文件</h4>
+                                    </div>
+                                    <div class="modal-body pull-left">
+                                        <input id="upload" type="file"  class="file-loading" name="uploadFile">
+                                    </div>
+                                    <input type="text" name="courseId" value="<%= currentFolder.getCourseId()%>" hidden="hidden">
+                                    <input type="text" name="fatherId" value="<%= currentFolder.getId()%>" hidden="hidden">
+                                    <input type="text" name="teacherId" value="<%= teacher.getId()%>" hidden="hidden">
+                                    <input type="text" name="teacherName" value="<%= teacher.getName()%>" hidden="hidden">
+
+
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success" >上传</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" onclick="file.setName();">确定</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            </mvc:form>
+                        </div>
+                    </div>
+                    <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal2" class="modal fade in" style="display: none;">
+                        <form method="post" action="renameResource.htm" >
+
+                            <div class="modal-dialog">
+                                <input type="text" name="course_id" value="<%= currentFolder.getCourseId()%>" hidden="hidden">
+                                <input type="text" name="resource_id" value="" id="rename_resource_id" hidden="hidden" >
+                                <div class="modal-content">
+                                    <div class="modal-header pull-left">
+                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                        <h4 class="modal-title">重命名</h4>
+                                    </div>
+                                    <div class="modal-body pull-left">
+                                        <div>
+                                            <div class="modalTitleSmall pull-left">名称：</div>
+                                            <div class="col-lg-10 marginB10 pull-left">
+                                                <input class="form-control" type="text" placeholder="请输入名称" name="name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">确定</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal3" class="modal fade in" style="display: none;">
                         <div class="modal-dialog">
@@ -165,7 +262,7 @@
                                     <div id="tree"></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" onclick="file.trans();">确定</button>
+                                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="file.trans();">确定</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                 </div>
                             </div>
@@ -173,191 +270,104 @@
                     </div>
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal4" class="modal fade in" style="display: none;">
                         <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header pull-left">
-                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                    <h4 class="modal-title">删除</h4>
+                            <form action="deleteResource.htm" method="post" id="delete_resource_form_id">
+                                <input id="delete_resource_id" name="resource_id" type="text" value="" hidden="hidden">
+                                <div class="modal-content">
+                                    <div class="modal-header pull-left">
+                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                        <h4 class="modal-title">删除</h4>
+                                    </div>
+                                    <div class="modal-body pull-left">
+                                        <div class="delText">确定要删除吗？</div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">确定</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    </div>
                                 </div>
-                                <div class="modal-body pull-left">
-                                    <div class="delText">确定要删除吗？</div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" onclick="javascript:deleteresouce()">确定</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                     <!--新建文件夹模态框 保留-->
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal5" class="modal fade in" style="display: none;">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header pull-left">
-                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                    <h4 class="modal-title">新建文件夹</h4>
-                                </div>
-                                <div class="modal-body pull-left">
-                                    <div>
-                                        <div class="modalTitleSmall pull-left">名称：</div>
-                                        <div class="col-lg-10 marginB10 pull-left">
-                                            <input class="form-control" id="folderName" type="text" placeholder="请输入名称">
+                                <form action="addNewFolder.htm" method="post">
+                                    <div class="modal-header pull-left">
+                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                        <h4 class="modal-title">新建文件夹</h4>
+                                    </div>
+                                    <div class="modal-body pull-left">
+                                        <div>
+                                            <div class="modalTitleSmall pull-left">名称：</div>
+                                            <div class="col-lg-10 marginB10 pull-left">
+                                                <input class="form-control" id="folderName" type="text" placeholder="请输入名称" name="name">
+                                                <input type="text" hidden="hidden" name="current_resource_id" value="<%= currentFolder.getId()%>">
+                                                <input type="text" hidden="hidden" name="course_id" value="<%= currentFolder.getCourseId()%>">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" onclick="addFolder();">确定</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">确定</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </section>
             </section>
-            <!--main content end-->
-            <div id="msg_win">
-                <div class="icos"><a id="msg_min" title="最小化" href="javascript:void 0">_</a><a id="msg_close" title="关闭" href="javascript:void 0">×</a></div>
-                <div id="msg_title">上传文件</div>
-                <div id="msg_content">
-                    <ul class="pull-left" id="progress"></ul>
-                </div>
-            </div>
         </div>
         <script type="text/javascript">
             $('body').on('hidden', '.modal', function () {
                 $(this).removeData('modal');
             });
-//            测试用
-            function addFolder() {
-
-                var i1 = document.createElement("i");
-                i1.className = "icon-download-alt";
-                var a1 = document.createElement("a");
-                a1.href = "index.php?a=mdown&ids=190";
-                var li1 = document.createElement("li1");
-                a1.appendChild(i1);
-                li1.appendChild(a1);
-                var ul1 = document.createElement("ul1");
-                ul1.className = "control";
-                ul1.appendChild(li1);
-                var div1 = document.createElement("div");
-                div1.style = "display:none";
-                div1.className = "float_box";
-                div1.appendChild(ul1);
-                var div2 = document.createElement("div");
-                div2.className = "updateTime";
-                div2.innerHTML = "2016-07-06 02:55:54";
-                var div4 = document.createElement("div");
-                div4.className = "listTableInR pull-right";
-                div4.appendChild(div1);
-                div4.appendChild(div2);
 
 
-                var a2 = document.createElement("a");
-                a2.href = "index.php?a=mdown&ids=190";
-                a2.targett = "_self";
-                a2.innerHTML = document.getElementById("folderName").value;
-                var span2 = document.createElement("span2");
-                span2.className = "div_pro";
-                span2.appendChild(a2);
-                var img = document.createElement("img");
-                img.src = "<%=path%>/images/folder.jpg";
-                var div5 = document.createElement("div");
-                div5.className = "name";
-                div5.appendChild(img);
-                div5.appendChild(span2);
-
-                var check = document.createElement("input");
-                check.type = "checkbox";
-                check.className = "classLists";
-                var div6 = document.createElement("div");
-                div6.className = "cBox";
-                div6.appendChild(check);
-                var div7 = document.createElement("div");
-                div7.className = "listTableInL pull-left";
-                div7.appendChild(div6);
-                div7.appendChild(div5);
-                var div8 = document.createElement("div");
-                div8.className = "listTableIn pull-left";
-                div8.appendChild(div7);
-                div8.appendChild(div4);
-                var li = document.createElement("li");
-                li.appendChild(div8);
-                document.getElementById("listtable").appendChild(li);
-            }
-            function addFile() {
-
-                var i1 = document.createElement("i");
-                i1.className = "icon-download-alt";
-                var a1 = document.createElement("a");
-                a1.href = "index.php?a=mdown&ids=190";
-                var li1 = document.createElement("li1");
-                a1.appendChild(i1);
-                li1.appendChild(a1);
-                var ul1 = document.createElement("ul1");
-                ul1.className = "control";
-                ul1.appendChild(li1);
-                var div1 = document.createElement("div");
-                div1.style = "display:none";
-                div1.className = "float_box";
-                div1.appendChild(ul1);
-                var div2 = document.createElement("div");
-                div2.className = "updateTime";
-                div2.innerHTML = "2016-07-06 02:55:54";
-                var div4 = document.createElement("div");
-                div4.className = "listTableInR pull-right";
-                div4.appendChild(div1);
-                div4.appendChild(div2);
-
-
-                var a2 = document.createElement("a");
-                a2.href = "index.php?a=mdown&ids=190";
-                a2.targett = "_self";
-                a2.innerHTML = "222";
-                var span2 = document.createElement("span2");
-                span2.className = "div_pro";
-                span2.appendChild(a2);
-                var img = document.createElement("img");
-                img.src = "<%=path%>/images/u247.png";
-                var div5 = document.createElement("div");
-                div5.className = "name";
-                div5.appendChild(img);
-                div5.appendChild(span2);
-
-                var check = document.createElement("input");
-                check.type = "checkbox";
-                check.className = "classLists";
-                var div6 = document.createElement("div");
-                div6.className = "cBox";
-                div6.appendChild(check);
-                var div7 = document.createElement("div");
-                div7.className = "listTableInL pull-left";
-                div7.appendChild(div6);
-                div7.appendChild(div5);
-                var div8 = document.createElement("div");
-                div8.className = "listTableIn pull-left";
-                div8.appendChild(div7);
-                div8.appendChild(div4);
-                var li = document.createElement("li");
-                li.appendChild(div8);
-                document.getElementById("listtable").appendChild(li);
-            }
-
-            function deleteresouce()
+            function renameResource(resource_id)
             {
-                $("input[class='classLists']").each(function () {
-                    if ($(this).is(':checked'))
-                    {
-                        $(this).parent().parent().parent().parent().remove();
-                    }
-                });
+                $('#sid').val(190);
+                $('#myModal2').modal('show');
+                document.getElementById("rename_resource_id").value = resource_id;
+
+            }
+            function deleteResource(resource_id)
+            {
+                $('#sid').val(190);
+                $('#myModal4').modal('show');
+                document.getElementById("delete_resource_id").value = resource_id;
+            }
+            function downloadResource()
+            {
+                var sid = $('#sid').val();
+                alert(sid);
+                if (sid) {
+//                  加入下载操作
+                } else {
+//                   加入复选框操作
+                }
+            }
+            function transResource()
+            {
+                var sid = $('#sid').val();
+                if (sid) {
+                    //移动操作
+                } else {
+                    //复选框操作
+                }
+                did = $('#dirId').val();
+                if (did.trim() == '') {
+                    alert(this.lang('请选择要转入的目录'));
+                    return false;
+                }
             }
 
 
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~我是一条分界线 ~~~~~~~~~~~ 
             function modalTrans() {
                 $('#myModal3').modal('show');
                 $.ajax({
-                    url: 'index.php?a=getTree',
+                    url: 'getall.htm',
                     type: 'POST',
                     dataType: 'json',
                     timeout: 8000,
@@ -365,7 +375,7 @@
                         $('#tree').treeview({data: data});
                         $('#tree').on('nodeSelected', function (event, data) {
                             $('#dirId').val(data.mapId);
-                            $('#dpath').val(data.path);
+//                            $('#dpath').val(data.path);
                         });
                         $('#tree').on('nodeUnselected', function (event, data) {
                             $('#dirId').val('');
@@ -392,10 +402,6 @@
                 $('#aname').val(name);
                 $('#fileId').val(id);
                 $('#myModal2').modal('show');
-            }
-            function modalDel(name) {
-                $('.delText label').text(name);
-                $('#myModal4').modal('show');
             }
             function down() {
                 if (Cookies.get('show') == 'block') {

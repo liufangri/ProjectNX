@@ -64,7 +64,7 @@ public class HomeworkController {
 	    } else {
 		//存在文件可以上传
 		String realPath = session.getServletContext().getRealPath("/WEB-INF")
-			+ "\\homework\\" + homework.getTaskId() + "\\" + uploadFile.getOriginalFilename();
+			+ "\\homework\\" + homework.getTaskId() + "\\" + user.getId() + "\\" + uploadFile.getOriginalFilename();
 		File file = new File(realPath);
 		if (!file.exists()) {
 		    file.mkdirs();
@@ -72,7 +72,7 @@ public class HomeworkController {
 		    //已存在相同的文件
 		}
 		uploadFile.transferTo(file);
-		homework.setFilePath(realPath);
+		homework.setFilePath("\\homework\\" + homework.getTaskId() + "\\" + user.getId() + "\\" + uploadFile.getOriginalFilename());
 
 		if (hdi.insert(homework)) {
 		    response.sendRedirect("stu_homework.htm?course_id=" + homework.getCourseId());
@@ -98,7 +98,7 @@ public class HomeworkController {
 		//存在文件可以上传
 		//学生希望多个文件。暂不考虑
 		String realPath = session.getServletContext().getRealPath("/WEB-INF")
-			+ "\\homework\\" + homework.getTaskId() + "\\" + uploadFile.getOriginalFilename();
+			+ "\\homework\\" + homework.getTaskId() + "\\" + user.getId() + "\\" + uploadFile.getOriginalFilename();
 		File file = new File(realPath);
 		if (!file.exists()) {
 		    file.mkdirs();
@@ -106,33 +106,37 @@ public class HomeworkController {
 		    //已存在相同的文件
 		}
 		uploadFile.transferTo(file);
-		homework.setFilePath(realPath);
+		homework.setFilePath("\\homework\\" + homework.getTaskId() + "\\" + user.getId() + "\\" + uploadFile.getOriginalFilename());
 
-		if (hdi.update(homework)) {
-		    if (originHomework.getFilePath() != null) {
-			File originFile = new File(originHomework.getFilePath());
-			if (originFile.exists()) {
-			    int x = 0;
-			    while (!originFile.delete() && x < 3) {
-				try {
-				    //删除文件失败
-				    Thread.sleep(2000);
-				    x++;
-				} catch (InterruptedException ex) {
-				    Logger.getLogger(HomeworkController.class.getName()).log(Level.SEVERE, null, ex);
-				}
-			    }
-			    if (x >= 3) {
-				//删除文件操作失败，撤销数据库操作。
+		if (originHomework.getFilePath() != null) {
+		    File originFile = new File(session.getServletContext().getRealPath("/WEB-INF")
+			    + "\\" + user.getId() + "\\" + originHomework.getFilePath());
+		    if (originFile.exists()) {
+			int x = 0;
+			while (!originFile.delete() && x < 3) {
+			    try {
+				//删除文件失败
+				Thread.sleep(2000);
+				x++;
+			    } catch (InterruptedException ex) {
+				Logger.getLogger(HomeworkController.class.getName()).log(Level.SEVERE, null, ex);
 			    }
 			}
+			if (x >= 3) {
+			    //删除文件操作失败
+			} else {
+			    hdi.update(homework);
+			}
+		    } else {
+			hdi.update(homework);
 		    }
-		    response.sendRedirect("stu_homework.htm?course_id=" + homework.getCourseId());
 		} else {
-		    //更新失败
-		    file.delete();
-		    response.sendRedirect("stu_homework.htm?course_id=" + homework.getCourseId());
+		    hdi.update(homework);
 		}
+		//更新失败
+		file.delete();
+		response.sendRedirect("stu_homework.htm?course_id=" + homework.getCourseId());
+
 	    }
 	}
 

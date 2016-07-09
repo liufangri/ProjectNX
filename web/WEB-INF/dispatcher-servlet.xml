@@ -20,6 +20,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
+
             </props>
         </property>
     </bean>
@@ -63,6 +64,14 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
         <property name="sgdi" ref="studentGroupDaoImpl"/>
         <property name="udi" ref="userDaoImpl"/>
     </bean>
+    <!--注册一个资源控制器-->
+    <bean id="resourceController" class="com.teamnx.controller.ResourceController">
+        <property name="rdi" ref="resourceDaoImpl"/>
+        <property name="hdi" ref="homeworkDaoImpl"/>
+        <property name="cdi" ref="courseDaoImpl"/>
+        <property name="udi" ref="userDaoImpl"/>
+        <property name="tdi" ref="taskDaoImpl"/>
+    </bean>
     <!--
         注册一个跳转控制器
         控制的跳转包括：
@@ -75,6 +84,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
         <property name="udi" ref="userDaoImpl"/>
         <property name="tdi" ref="taskDaoImpl"/>
         <property name="hdi" ref="homeworkDaoImpl"/>
+        <property name="rdi" ref="resourceDaoImpl"/>
     </bean>
     <!--注册一个user的数据库操作类-->
     <bean id="userDaoImpl" class="com.teamnx.model.UserDaoImpl">
@@ -104,6 +114,8 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <!--注册一个studentGroup的数据库操作-->
     <bean id="studentGroupDaoImpl" class="com.teamnx.model.StudentGroupDaoImpl">
         <property name="dbcpBean" ref="dbcpBean"/>
+    </bean>
+    <bean id="getAllController" class="com.teamnx.controller.GetAllController">
     </bean>
     <context:component-scan base-package="com.teamnx.controller"/>
     <context:annotation-config/>
