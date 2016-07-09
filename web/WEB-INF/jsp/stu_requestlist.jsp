@@ -4,9 +4,14 @@
     Author     : coco
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.teamnx.model.Group"%>
+<%@page import="com.teamnx.model.StudentGroup"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="mvc" %>
 <html lang="zh-CN">
     <%
         String path = request.getContextPath();
+        ArrayList<StudentGroup> applyLists = (ArrayList<StudentGroup>) request.getAttribute("studentGroups");
     %>
     <jsp:include page="header.jsp"/>
     <head>
@@ -36,15 +41,17 @@
                     </thead>
                     <tbody>
                         <%
-                            for (int i = 0; i < 10; i++) {
+                            for (StudentGroup sg : applyLists) {
                         %>
                         <tr>
-                            <td>12311231</td>
-                            <td>辛辛那提·穆罕穆德</td>   
-                            <td>负责人</td>
+                            <td><%=sg.getStudentId()%></td>
+                            <td><%=sg.getStudentName()%></td>   
                             <td>
-                                <button class="btn"><span class="glyphicon glyphicon-ok-sign"></span> 同意</button>
-                                <button class="btn"><span class="glyphicon glyphicon-remove-sign"></span> 拒绝</button>
+                                <a href="ifJoin.htm?studentGroup_id=<%=sg.getId()%>&course_id=${course_id}&status=1"><button type="button" class="btn"><span class="glyphicon glyphicon-ok-sign"></span> 同意</button></a>
+                                <a href="ifJoin.htm?studentGroup_id=<%=sg.getId()%>&course_id=${course_id}&status=0"><button type="button" class="btn"><span class="glyphicon glyphicon-ok-sign"></span> 拒绝</button></a>
+                                <input name="studentGroup_id" hidden="hidden" value="<%=sg.getId()%>"/>
+                                <input name="course_id" hidden="hidden" value="${course_id}"/>
+                                <input name="status" hidden="hidden" value="0"/>
                             </td>
                         </tr>
                         <%

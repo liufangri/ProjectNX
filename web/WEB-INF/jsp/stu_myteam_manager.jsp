@@ -34,7 +34,7 @@
             </div>
             <div>
                 <button type="button" class="btn btn-default">完成组建</button>
-                <button type="button" class="btn btn-default">查看申请</button>
+                <a href="applyList.htm?group_id=<%=group.getId()%>&course_id=${course_id}"><button type="submit" class="btn btn-default">查看申请</button></a>
                 <button type="button" class="btn btn-default">解散团队</button>
             </div>
             <div class="table-responsive">

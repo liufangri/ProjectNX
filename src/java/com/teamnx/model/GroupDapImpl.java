@@ -66,7 +66,7 @@ public class GroupDapImpl implements GroupDao {
         Connection connection = dbcpBean.getConnection();
         String sql = "SELECT * FROM mygroup WHERE id = ("
                 + "SELECT group_id FROM student_group "
-                + "WHERE student_id = ? AND course_id = ?)";
+                + "WHERE student_id = ? AND course_id = ? AND status = True)";
         PreparedStatement ps;
         try {
             ps = connection.prepareStatement(sql);
