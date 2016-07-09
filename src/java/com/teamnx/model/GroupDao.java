@@ -13,10 +13,16 @@ import java.util.ArrayList;
  */
 public interface GroupDao {
     public boolean insert(Group group);
+    
+    public boolean delete(String id);
 
     public Group findGroupById(String id);
 
     public Group findGroupByStudentId(String student_id, String course_id);
     
     public ArrayList<Group> findGroupsByCourseId(String course_id);
+    
+    public boolean setManager(String groupId, String student_id);
+    
+    public boolean setStatus(String groupId, int status);
 }

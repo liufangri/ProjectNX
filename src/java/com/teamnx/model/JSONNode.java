@@ -49,14 +49,4 @@ public class JSONNode extends HashMap<String, Object> {
 	put("node", node);
     }
 
-    public static void main(String[] args) {
-	JSONNode jsonNode = new JSONNode();
-	jsonNode.setId("123123");
-	jsonNode.setName("456456");
-	JSONNode jsonn = new JSONNode();
-	jsonn.setId("what");
-	jsonNode.setNode(jsonn);
-	JSONObject jsonObject = JSONObject.fromObject(jsonNode);
-	System.out.println(jsonObject);
-    }
 }

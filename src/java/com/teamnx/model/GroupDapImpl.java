@@ -155,4 +155,73 @@ public class GroupDapImpl implements GroupDao {
         }
     }
 
+    @Override
+    public boolean delete(String id) {
+        Connection connection = dbcpBean.getConnection();
+        boolean flag = false;
+        String sql = "DELETE FROM mygroup WHERE id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, id);
+            ps.executeUpdate();
+            flag = true;
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return flag;
+        }
+    }
+
+    @Override
+    public boolean setManager(String groupId, String student_id) {
+        boolean flag = false;
+        Connection connection = dbcpBean.getConnection();
+        String sql = "UPDATE mygroup SET manager_id = ? WHERE id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, student_id);
+            ps.setString(2, groupId);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @Override
+    public boolean setStatus(String groupId, int status) {
+        boolean flag = false;
+        Connection connection = dbcpBean.getConnection();
+        String sql = "UPDATE mygroup SET status = ? WHERE id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, status);
+            ps.setString(2, groupId);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
 }
