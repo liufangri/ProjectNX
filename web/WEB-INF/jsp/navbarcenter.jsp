@@ -53,7 +53,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">教学周次</a></li>
+                <li><a >教学周次</a></li>
                 <li><a id="time"></a></li>
                 <li>
                     <div  class="btn-group" >
@@ -83,7 +83,7 @@
             --%>
         </div>
     </div>
-        <div style="display: none" id="goTopBtn"><image src="<%=path%>/images/up.png" /></div>  
+        <div style="display: none" id="goTopBtn"><i class="fa fa-fw fa-2x fa-arrow-circle-up"></i></div>  
 </nav>
 <script type=text/javascript>goTopEx();</script>  
 
