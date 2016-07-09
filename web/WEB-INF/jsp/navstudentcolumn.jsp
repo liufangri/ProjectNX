@@ -19,7 +19,7 @@
         <li id="homework"><a href="stu_homework.htm?course_id=<%=courseId%>">作业</a></li>
         <li><a href="#">课程资源</a></li>
         
-        <li><a href="#">团队</a></li>
+        <li><a href="toMyGroup.htm?course_id=<%=courseId%>">团队</a></li>
         <li><a href="#">留言板</a></li>
     </ul>
 </div>

@@ -41,6 +41,7 @@ public class CourseDaoImpl implements CourseDao {
 		course.setName(rs.getString("name"));
 		course.setPosition(rs.getString("position"));
 		course.setSchedule(rs.getString("schedule"));
+                course.setMax_member(rs.getInt("max_member"));
 		course.setSemester(rs.getInt("semester"));
 		course.setStart_time(rs.getInt("start_time"));
 		course.setYear(rs.getInt("year"));
