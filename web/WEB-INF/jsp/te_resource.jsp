@@ -110,6 +110,7 @@
                                         </div>
 
                                         <div class="listTableTopR pull-right">
+                                            <div class="publisher" id="publisher">发布人<div class="seq"></div></div>
                                             <div class="updateTime" id="ctime">上传时间<div class="seq"></div></div>
                                             <div class="menu" id="menu">操作<div class="seq"></div></div>
                                         </div>
@@ -129,6 +130,7 @@
 
                                         </div>
                                         <div class="listTableInR pull-right">
+                                            <div class="publisher">黄鹤</div>
                                             <div class="updateTime">2016-07-06 00:59:44</div>
                                             <div>
                                                 <div class="btn-group">
@@ -140,17 +142,9 @@
                                                         <li><a href="#" onclick="$('#sid').val(190);$('#myModal4').modal('show');" data-toggle="modal"><i class="icon-remove"></i>删除</a></li>
                                                         <li><a href="#" onclick="$('#sid').val(190);javascript:downloadResource();" data-toggle="modal"><i class="icon-remove"></i>下载</a></li>
                                                         <li><a href="#" onclick="$('#sid').val('190');modalTrans();" data-toggle="modal"><i class="icon-remove"></i>移动到</a></li>
+                                                        <li><a href="#" onclick="$('#sid').val('190');$('#myModal2').modal('show');;" data-toggle="modal"><i class="icon-remove"></i>重命名</a></li>
                                                     </ul>
                                                 </div>
-                                            </div>
-                                            <div style="display:none;" class="float_box" id="box_190">
-                                                <ul class="control">
-                                                    <li><a href="index.php?a=mdown&ids=190"><i class="icon-download-alt"></i></a></li>
-                                                    <!--                                              <li><a href="#" onclick="modalShare(190, '5a');" data-toggle="modal"><i class="icon-share"></i></a></li>
-                                                                                                  <li><a href="#" onclick="modalName(190, 'a');" data-toggle="modal"><i class="icon-edit"></i></a></li>
-                                                                                                  <li><a href="#" onclick="$('#sid').val(190);modalTrans();" data-toggle="modal"><i class="icon-random"></i></a></li>
-                                                                                                  <li><a href="#" onclick="modalDel('a');$('#delid').val(190);" data-toggle="modal"><i class="icon-remove"></i></a></li>-->
-                                                </ul>
                                             </div>
                                         </div>
                                     </div>
@@ -187,7 +181,7 @@
                             <div class="modal-content">
                                 <div class="modal-header pull-left">
                                     <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                    <h4 class="modal-title">编辑</h4>
+                                    <h4 class="modal-title">重命名</h4>
                                 </div>
                                 <div class="modal-body pull-left">
                                     <div>
@@ -216,7 +210,7 @@
                                     <div id="tree"></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="file.trans();">确定</button>
+                                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="javascript:transResource();">确定</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                 </div>
                             </div>
@@ -268,6 +262,18 @@
         <script type="text/javascript">
             $('body').on('hidden', '.modal', function () {
                 $(this).removeData('modal');
+            });
+            $('#myModal5').on('hidden.bs.modal', function () {
+                $(this).find('input').val("");
+            });
+            $('#myModal2').on('hidden.bs.modal', function () {
+                $(this).find('input').val("");
+            });
+            $('#myModal1').on('hidden.bs.modal', function () {
+                var father = $(this).find(".file-input").parent();
+                $(this).find(".file-input").remove();
+                father.prepend(" <input id=\"upload\" type=\"file\"  class=\"file-loading\" name=\"uploadFile\">");
+                father.prepend("<script> $(\"#upload\").fileinput({language: \"zh\", fileActionSettings: {showZoom: false}, });<\/script>")
             });
 //            测试用
             function addFolder() {
@@ -416,6 +422,7 @@
             {
                 var sid = $('#sid').val();
                 if (sid) {
+                    alert(sid);
                     //移动操作
                 } else {
                     //复选框操作
@@ -448,7 +455,7 @@
                     }
                 });
             }
-            function modalName(id, name) {
+            function modalName() {
                 if (!id) {
                     if ($('input[name="squaredCheckbox"]:checked').length > 1) {
                         alert(file.lang('一次只能重命名一个资料'));

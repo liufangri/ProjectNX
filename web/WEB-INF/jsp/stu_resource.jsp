@@ -22,6 +22,7 @@
         <link href="<%=path%>/lib/css/resourceindex.css" rel="stylesheet" />
         <script src="<%=path%>/lib/js/file.js"></script>
         <link href="<%=path%>/lib/css/fileinput.min.css" rel="stylesheet">
+        <link href="<%=path%>/lib/css/ace.min.css" rel="stylesheet">
         <script src="<%=path%>/lib/js/fileinput.min.js"></script>
         <script src="<%=path%>/lib/js/fileinput-zh.min.js"></script>
         <script>
@@ -47,15 +48,7 @@
                 <section>
                     <!--state overview start-->
                     <div class="row state-overview">
-                        <ul class="buttons pull-left">
-                           
-                            <li id="down">
-                                <button class="btn btn-success" type="button" onclick="down();">
-                                    <i class="icon-download"></i>
-                                    下载                            </button>
-                            </li>
-                            
-                        </ul>   
+                       
                         <input type="hidden" id="path" name="path" value="">
                         <input type="hidden" id="dpath" name="dpath">
                         <input type="hidden" id="sid" name="sid">
@@ -69,20 +62,20 @@
                         </div>
                         <div class="col-lg-12" id="list" >
                             <ul id="listtable" class="listTable pull-left">
-                                <li id="fileList">
+                                <li style="list-style-type:none;" id="fileList">
                                     <div class="listTableTop pull-left">
                                         <div class="listTableTopL pull-left">
                                             <div class="cBox"><input id="chkAll" name="chkAll" type="checkbox"></div>
                                             <div class="name" id="name">名称<div class="seq"></div></div>
                                         </div>
                                         <div class="listTableTopR pull-right">
-
+                                            <div class="publisher" id="publisher">发布人<div class="seq"></div></div>
                                             <div class="updateTime" id="ctime">上传时间<div class="seq"></div></div>
                                         </div>
                                     </div>
                                 </li>
                                 <!--                                id为文件标识符-->
-                                <li id="li_190">
+                                <li style="list-style-type:none;" id="li_190">
                                     <div class="listTableIn pull-left">
                                         <div class="listTableInL pull-left">
                                             <div class="cBox"><input name="classLists" id="classLists190" type="checkbox" value="190" class="classLists"></div>
@@ -92,19 +85,12 @@
                                                     <a id="sa_190" target="_self"   href="index.php?path=a" >a</a>
                                                 </span>
                                             </div>
-                                            
+
                                         </div>
                                         <div class="listTableInR pull-right">
+                                            <div class="publisher">黄鹤</div>
                                             <div class="updateTime">2016-07-06 00:59:44</div>
-                                            <div style="display:none;" class="float_box" id="box_190">
-                                                <ul class="control">
-                                                    <li><a href="index.php?a=mdown&ids=190"><i class="icon-download-alt"></i></a></li>
-                                                    <!--                                              <li><a href="#" onclick="modalShare(190, '5a');" data-toggle="modal"><i class="icon-share"></i></a></li>
-                                                                                                  <li><a href="#" onclick="modalName(190, 'a');" data-toggle="modal"><i class="icon-edit"></i></a></li>
-                                                                                                  <li><a href="#" onclick="$('#sid').val(190);modalTrans();" data-toggle="modal"><i class="icon-random"></i></a></li>
-                                                                                                  <li><a href="#" onclick="modalDel('a');$('#delid').val(190);" data-toggle="modal"><i class="icon-remove"></i></a></li>-->
-                                                </ul>
-                                            </div>
+                                            <a href="#" onclick="$('#sid').val(190);javascript:downloadResource();" data-toggle="modal"><i class="icon-remove"></i>下载</a>
                                         </div>
                                     </div>
                                 </li>

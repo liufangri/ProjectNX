@@ -1,6 +1,5 @@
 @charset "utf-8";
 /* CSS Document */
-
 .mainMenu { width: 170px; float: left; margin: 0 10px 0 15px; }
 .buttons { width: 100%; list-style: none; padding: 0 0 20px 5px; }
 .buttons li { float: left; margin-left: 10px; position: relative; }
@@ -18,7 +17,7 @@
 .listTable li div { float: left; }
 .cBox { width: 6.5%; }
 .name { text-align: left; width: 93.5%; }
-.seq { width: 19px; position: absolute; left: 4em; top: 2px; height: 38px; background: rgba(0, 0, 0, 0) url("../img/sort_both.png") no-repeat scroll right center; }
+.seq { width: 19px; position: absolute; left: 4em; top: 2px; height: 38px; background: rgba(0, 0, 0, 0)  no-repeat scroll right center; }
 .size .seq { left: 5em; }
 .updateTime .seq { left: 8.5em; }
 .descending { background: rgba(0, 0, 0, 0) url("../img/sort_desc.png") no-repeat scroll right center; }
