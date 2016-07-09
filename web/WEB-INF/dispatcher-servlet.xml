@@ -78,6 +78,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
         usercenter.htm
         index.htm
         te_homework.htm
+        ...
     -->
     <bean id="redirectController" class="com.teamnx.controller.RedirectController">
         <property name="cdi" ref="courseDaoImpl"/>

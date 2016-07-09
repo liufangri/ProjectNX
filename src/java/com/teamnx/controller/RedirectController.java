@@ -17,9 +17,9 @@ import com.teamnx.model.TaskDaoImpl;
 import com.teamnx.model.User;
 import com.teamnx.model.UserDaoImpl;
 import com.teamnx.util.MD5;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -367,7 +367,7 @@ public class RedirectController {
     }
 
     /**
-     * 首次进入课程资源首页的处理
+     * 进入课程资源首页的处理
      *
      * @param courseId
      * @param request
@@ -377,24 +377,18 @@ public class RedirectController {
 	Resource resource = new Resource();
 	String name = courseId + "_root";
 	resource.setId(MD5.Md5_16(name));
-	resource.setName(name);
-	resource.setFolder(true);
-	resource.setPath("\\courseResources\\" + name);
-	resource.setCourseId(courseId);
-	String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF") + resource.getPath();
-	File file = new File(realPath);
-	if (!file.exists()) {
-	    file.mkdirs();
-	    resource.setLastChange(file.lastModified());
-	    if (!rdi.insert(resource)) {
-		//插入数据失败，删除新建的文件夹
-		file.delete();
-	    }
-	} else if (!rdi.insert(resource)) {
-	    //插入数据失败，删除新建的文件夹
-	    file.delete();
+	Resource rootReource = rdi.findResourceById(resource.getId());
+	if (rootReource != null) {
+	    return rootReource;
+	} else {
+	    resource.setName(name);
+	    resource.setFolder(true);
+	    resource.setPath("\\courseResources\\" + name);
+	    resource.setCourseId(courseId);
+	    resource.setLastChange(new Date().getTime());
+	    rdi.insert(resource);
+	    return resource;
 	}
-	return resource;
 
     }
 

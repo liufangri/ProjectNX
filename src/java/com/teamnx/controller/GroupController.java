@@ -149,12 +149,12 @@ public class GroupController {
     }
 
     @RequestMapping(value = "/groupApply")
-    public void groupApplay(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void groupApply(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = (User) session.getAttribute("user");
         String groupId = request.getParameter("group_id");
         String courseId = request.getParameter("course_id");
         Group group = gdi.findGroupById(groupId);
-        if (group.getMaxMember() > sgdi.countMember(groupId)) {
+        if (group.getMaxMember() > sgdi.countMember(groupId) && !sgdi.ifInGroup(user.getId(), courseId)) {
             String sgId = MD5.Md5_16(user.getName() + new Date().getTime());
             StudentGroup studentGroup = new StudentGroup();
             studentGroup.setId(sgId);
@@ -165,8 +165,48 @@ public class GroupController {
             studentGroup.setStatus(false);
             sgdi.insert(studentGroup);
         }
-        response.sendRedirect("studentGroupList.htm?course_id="+courseId);
+        response.sendRedirect("studentGroupList.htm?course_id=" + courseId);
 
+    }
+
+    @RequestMapping(value = "/applyList")
+    public ModelAndView applyList(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("stu_requestlist");
+        String groupId = request.getParameter("group_id");
+        String courseId = request.getParameter("course_id");
+        ArrayList<StudentGroup> studentGroups = sgdi.findApplyList(groupId);
+        mav.addObject("studentGroups", studentGroups);
+        mav.addObject("course_id", courseId);
+        return mav;
+    }
+
+    @RequestMapping(value = "/ifJoin")
+    public void ifJoin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String courseId = request.getParameter("course_id");
+        String studentGroupId = request.getParameter("studentGroup_id");
+        StudentGroup sg = sgdi.findById(studentGroupId);
+        String groupId = sg.getGroupId();
+        String status = request.getParameter("status");
+        if (status.equals("1")) {
+            Group group = gdi.findGroupById(groupId);
+            int member = sgdi.countMember(groupId);
+            if (group.getMaxMember() > member) {
+                sgdi.accpet(studentGroupId);
+            }
+        } else {
+            sgdi.delete(studentGroupId);
+        }
+        response.sendRedirect("applyList.htm?course_id=" + courseId + "&?group_id=" + groupId);
+    }
+    
+    @RequestMapping(value = "/exitGroup")
+    public void exitGroup(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException{
+        String courseId = request.getParameter("course_id");
+        User user = (User) session.getAttribute("user");
+        String groupId = request.getParameter("group_id");
+        StudentGroup sg = sgdi.findByStudentGroup(user.getId(), groupId);
+        sgdi.delete(sg.getId());
+        response.sendRedirect("toMyGroup.htm?course_id="+courseId);
     }
 
     /**

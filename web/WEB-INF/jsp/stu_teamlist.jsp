@@ -49,7 +49,7 @@
                             <td><%=sg.getManager()%></td>   
                             <td><%=sg.getNumber()%>/${max_number}</td>  
                             <td><%=sg.getStatus()%></td>
-                            <td><%if(sg.getStatus().equals("组建中")){%><mvc:form action="groupApply.htm" method="post" modelAttribute="user"><button type="submit" class="btn btn-default">申请加入</button>
+                            <td><%if(sg.getStatus().equals("组建中")){%><mvc:form action="groupApply.htm" method="post"><button type="submit" class="btn btn-default">申请加入</button>
                                     <input name="group_id" hidden="hidden" value="<%=sg.getGroupId()%>">
                                     <input name="course_id" hidden="hidden" value="${course_id}">
                                 </mvc:form><%}%></td> 

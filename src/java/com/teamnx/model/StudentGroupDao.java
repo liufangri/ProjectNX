@@ -16,15 +16,24 @@ public interface StudentGroupDao {
     public boolean insert(StudentGroup studentGroup);
 
     public boolean delete(String id);
+    
+    public StudentGroup findById(String id);
+    
+    public StudentGroup findByCourseGroup(String courseId, String groupId);
+    
+    public StudentGroup findByStudentGroup(String studentId, String groupId);
 
     public ArrayList<StudentGroup> findstudentGroupsByGroupId(String groupId);
 
     public boolean ifInGroup(String studentId, String courseId);
-    
 
+    public ArrayList<StudentGroup> findApplyList(String groupId);
+    
     public boolean deleteByGroupId(String groupId);
 
     public boolean deleteByStudentId(String studentId, String groupId);
 
     public int countMember(String groudId);
+    
+    public boolean accpet(String sgId);
 }
