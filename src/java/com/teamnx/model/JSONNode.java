@@ -49,7 +49,4 @@ public class JSONNode extends HashMap<String, Object> {
         put("node", node);
     }
 
-    public static void main(String[] args) {
-
-    }
 }

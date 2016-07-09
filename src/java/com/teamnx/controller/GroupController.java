@@ -209,6 +209,48 @@ public class GroupController {
         response.sendRedirect("toMyGroup.htm?course_id="+courseId);
     }
 
+    @RequestMapping(value = "/removeMember")
+    public void removeMember(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        String sgId = request.getParameter("sg_id");
+        String courseId = request.getParameter("course_id");
+        sgdi.delete(sgId);
+        response.sendRedirect("toMyGroup.htm?course_id="+courseId);
+    }
+    
+    @RequestMapping(value = "/dissolution")
+    public void dissolution(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        String groupId = request.getParameter("group_id");
+        sgdi.deleteByGroupId(groupId);
+        gdi.delete(groupId);
+        String course_id = request.getParameter("course_id");
+        response.sendRedirect("toMyGroup.htm?course_id="+course_id);
+    }
+    
+    @RequestMapping(value = "/setManager")
+    public void setManager(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        String courseId = request.getParameter("course_id");
+        String groupId = request.getParameter("group_id");
+        String studentId = request.getParameter("student_id");
+        gdi.setManager(groupId, studentId);
+        response.sendRedirect("toMyGroup.htm?course_id="+courseId);
+    }
+    
+    @RequestMapping(value = "finishForming")
+    public void finishForming(HttpServletRequest request,HttpServletResponse response) throws IOException{
+        String courseId = request.getParameter("course_id");
+        String groupId = request.getParameter("group_id");
+        gdi.setStatus(groupId, 1);
+        response.sendRedirect("toMyGroup.htm?course_id="+courseId);
+    }
+    
+    @RequestMapping(value = "cancelForming")
+    public void cancelForming(HttpServletRequest request,HttpServletResponse response) throws IOException{
+        String courseId = request.getParameter("course_id");
+        String groupId = request.getParameter("group_id");
+        gdi.setStatus(groupId, 0);
+        response.sendRedirect("toMyGroup.htm?course_id="+courseId);
+    }
+    
     /**
      * @param gdi the gdi to set
      */

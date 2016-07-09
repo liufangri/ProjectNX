@@ -82,7 +82,25 @@ public class StudentGroupDaoImpl implements StudentGroupDao {
 
     @Override
     public boolean deleteByGroupId(String groupId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection connection = dbcpBean.getConnection();
+        boolean flag = false;
+        String sql = "DELETE FROM student_group WHERE group_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, groupId);
+            ps.executeUpdate();
+            flag = true;
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return flag;
+        }
     }
 
     @Override

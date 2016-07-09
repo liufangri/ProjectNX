@@ -33,7 +33,8 @@
                 <h3>团队名称：<b><%=name%></b>  状态：<span class="glyphicon glyphicon-user"></span><i style="color: red">${status}</i></h3>
             </div>
             <div>
-                <a href="exitGroup.htm?group_id=<%=group.getId()%>&course_id=${course_id}"><button type="button" class="btn btn-default">退出团队</button></a>
+                <a href="studentGroupList.htm?course_id=${course_id}"><button type="button" class="btn btn-info">团队列表</button></a>
+                <a href="exitGroup.htm?group_id=<%=group.getId()%>&course_id=${course_id}"><button type="button" class="btn btn-danger">退出团队</button></a>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped" cellspacing="0" cellpadding="0">
@@ -63,9 +64,6 @@
                         %>
                     </tbody>
                 </table>
-            </div>
-            <div>
-                <button type="button" class="btn btn-default">返回</button>
             </div>
         </div>
     </body>
