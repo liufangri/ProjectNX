@@ -68,7 +68,7 @@
             --%>
         </div>
     </div>
-        <div style="display: none" id="goTopBtn"><image src="<%=path%>/images/up.png" /></div>  
+        <div style="display: none" id="goTopBtn"><i class="fa fa-fw fa-2x fa-arrow-circle-up"></i></div>  
 </nav>
 <script type=text/javascript>goTopEx();</script>  
 

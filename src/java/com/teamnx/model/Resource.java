@@ -20,6 +20,7 @@ public class Resource {
     private long lastChange;
     private boolean folder;
     private long size;
+    private String courseId;
 
     public String getName() {
 	return name;
@@ -91,5 +92,13 @@ public class Resource {
 
     public void setTeacherName(String teacherName) {
 	this.teacherName = teacherName;
+    }
+
+    public String getCourseId() {
+	return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+	this.courseId = courseId;
     }
 }

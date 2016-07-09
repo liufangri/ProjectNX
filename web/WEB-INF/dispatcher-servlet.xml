@@ -20,12 +20,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-                <!--                开发用-->
-                <prop key="te_studentlist.htm">te_studentListController</prop>
-                <prop key="te_homework_list.htm">te_homework_listController</prop>
-                <prop key="stu_resource.htm">stu_resourceController</prop>
-                <prop key="te_resource.htm">te_resourceController</prop>
-                <prop key="getall.htm">getAllController</prop>
+
             </props>
         </property>
     </bean>
@@ -62,6 +57,14 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
         <property name="udi" ref="userDaoImpl"/>
         <property name="tdi" ref="taskDaoImpl"/>
     </bean>
+    <!--注册一个资源控制器-->
+    <bean id="resourceController" class="com.teamnx.controller.ResourceController">
+        <property name="rdi" ref="resourceDaoImpl"/>
+        <property name="hdi" ref="homeworkDaoImpl"/>
+        <property name="cdi" ref="courseDaoImpl"/>
+        <property name="udi" ref="userDaoImpl"/>
+        <property name="tdi" ref="taskDaoImpl"/>
+    </bean>
     <!--
         注册一个跳转控制器
         控制的跳转包括：
@@ -74,6 +77,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
         <property name="udi" ref="userDaoImpl"/>
         <property name="tdi" ref="taskDaoImpl"/>
         <property name="hdi" ref="homeworkDaoImpl"/>
+        <property name="rdi" ref="resourceDaoImpl"/>
     </bean>
     <!--注册一个user的数据库操作类-->
     <bean id="userDaoImpl" class="com.teamnx.model.UserDaoImpl">
@@ -104,16 +108,5 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
 
   
     <!--    测试用-->
-    <bean name="te_studentListController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="te_studentlist" />
-    <bean name="te_homework_listController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="te_homework_list" />
-    <bean name="stu_resourceController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="stu_resource" />
-    <bean name="te_resourceController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="te_resource" />
+
 </beans>

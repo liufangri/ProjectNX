@@ -92,7 +92,7 @@
                     }
                 %>
                 <br/>
-<!--                <input type="text" hidden="hidden" name="id" value="<%= origin_homework.getId()%>"/>-->
+                <input type="text" hidden="hidden" name="id" value="${origin_homework.id}"/>
                 <input type="text" hidden="hidden" name="courseId" value="<%=courseId%>"/>
                 <input type="text" hidden="hidden" name="taskId" value="<%=task.getId()%>"/>
                 <input type="text" hidden="hidden" name="studentId" value="<%=user.getId()%>"/>
