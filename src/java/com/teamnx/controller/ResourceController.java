@@ -15,6 +15,7 @@ import com.teamnx.model.UserDaoImpl;
 import com.teamnx.util.MD5;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -73,7 +74,7 @@ public class ResourceController {
 		folder.setTeacherId(teacher.getId());
 		folder.setTeacherName(teacherName);
 		folder.setPath(fatherPath + "\\" + name);
-		String realPath = session.getServletContext().getRealPath("/WEB-INF") + "\\courseResources" + folder.getPath();
+		String realPath = session.getServletContext().getRealPath("/WEB-INF") + folder.getPath();
 		File file = new File(realPath);
 		if (!file.exists()) {
 		    file.mkdirs();
@@ -121,44 +122,44 @@ public class ResourceController {
     @RequestMapping(value = "/deleteResource")
     public void deleteResource(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
 	String resourceId = request.getParameter("resource_id");
-	Resource currentResource = rdi.findResourceById(resourceId);
-	if (currentResource == null) {
-	    //当前所在文件夹不存在，返回资源首页
-	    response.sendRedirect("resourcepage.htm");
-	} else {
-	    Resource resource = rdi.findResourceById(resourceId);
-	    if (resource == null) {
-		//当前文件不存在，报错
-		response.sendRedirect("resourcepage.htm?folder_id=" + currentResource.getId());
-	    } else if (rdi.delete(resource)) {
-		//数据库删除成功
-		String realPath;
-		realPath = session.getServletContext().getRealPath("/WEB-INF")
-			+ "\\courseResources" + resource.getPath();
-		File resourceAtProject = new File(realPath);
-		if (resourceAtProject.exists()) {
-		    try {
-			if (resourceAtProject.delete()) {
-			    //成功删除物理存储的文件
-			    response.sendRedirect("resourcepage.htm?folder_id=" + currentResource.getId());
-			} else {
-			    //文件夹不为空，无法删除
-
-			}
-		    } catch (SecurityException e) {
-			//文件系统拒绝了删除请求
-
-			e.printStackTrace();
+	Resource chooseResource = rdi.findResourceById(resourceId);
+	if (chooseResource != null) {
+	    String realPath = session.getServletContext().getRealPath("/WEB-INF") + chooseResource.getPath();
+	    File chooseFile = new File(realPath);
+	    if (chooseResource.isFolder()) {
+		ArrayList<Resource> resources = rdi.findChildrenByFolderId(resourceId);
+		if (resources.size() > 0) {
+		    //文件夹不为空,返回错误
+		} else if (chooseFile.exists()) {
+		    if (rdi.delete(chooseResource)) {
+			chooseFile.delete();
 		    }
+		} else {
+		    rdi.delete(chooseResource);
 		}
-	    } else {
-		//数据库删除失败
+	    } else if (chooseFile.exists()) {
+		if (rdi.delete(chooseResource)) {
+		    chooseFile.delete();
+		}
 	    }
+	    response.sendRedirect("resource.htm?course_id=" + chooseResource.getCourseId() + "&folder_id=" + chooseResource.getFatherId());
+	} else {
+	    //所选择的文件已被删除
+	    response.sendRedirect("resource.htm?course_id=" + chooseResource.getCourseId() + "&folder_id=" + chooseResource.getFatherId());
 	}
     }
 
+    /**
+     * 上传文件的请求
+     *
+     * @param resource
+     * @param request
+     * @param response
+     * @param uploadFile
+     * @throws IOException
+     */
     @RequestMapping(value = "/uploadFile")
-    public void uploadFile(Resource resource, HttpServletRequest request,
+    public void uploadFile(Resource resource, HttpServletRequest request, HttpSession session,
 	    HttpServletResponse response, MultipartFile uploadFile) throws IOException {
 	String id = MD5.Md5_16(new Date().getTime() + resource.getTeacherName());
 	resource.setId(id);
@@ -168,9 +169,9 @@ public class ResourceController {
 	if (name != null && name != "") {
 	    Resource fatherFolder = rdi.findResourceById(resource.getFatherId());
 	    if (fatherFolder != null) {
-		String path = fatherFolder.getPath() + "\\" + name;
-		resource.setPath(path);
-		File file = new File(path);
+		resource.setPath(fatherFolder.getPath() + "\\" + name);
+		String realPath = session.getServletContext().getRealPath("/WEB-INF") + fatherFolder.getPath() + "\\" + name;
+		File file = new File(realPath);
 		if (file.exists()) {
 		    file.delete();
 		}
@@ -191,6 +192,66 @@ public class ResourceController {
 	    //文件名错误
 	    response.sendRedirect("resource.htm?course_id=" + resource.getCourseId());
 	}
+    }
+
+    @RequestMapping(value = "/renameResource")
+    public void rename(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+	String name = request.getParameter("name");
+	String resourceId = request.getParameter("resource_id");
+	String courseId = request.getParameter("course_id");
+	Resource resource = rdi.findResourceById(resourceId);
+	if (resource != null) {
+	    if (rdi.findChildren(resource).size() > 0) {
+		//文件夹级联更改路径
+		response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
+	    } else {
+		request.setAttribute("course_id", courseId);
+		String originName = resource.getName();
+		String path = resource.getPath();
+		int position = path.lastIndexOf(".");
+		if (position != -1) {
+		    resource.setName(name + path.substring(position, path.length()));
+		    String realPath = session.getServletContext().getRealPath("/WEB-INF") + resource.getPath();
+		    File originFile = new File(realPath);
+		    String newPath = realPath.substring(0, realPath.length() - originName.length()) + name + path.substring(position, path.length());
+		    File newFile = new File(newPath);
+		    resource.setPath(path.substring(0, path.length() - originName.length()) + name + path.substring(position, path.length()));
+		    if (originFile.renameTo(newFile)) {
+			if (rdi.updateName(resource)) {
+			    response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
+			} else {
+			    //文件重命名失败
+			    newFile.renameTo(new File(realPath));
+			    response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
+			}
+		    } else {
+			response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
+		    }
+		} else {
+		    resource.setName(name);
+		    String realPath = session.getServletContext().getRealPath("/WEB-INF") + resource.getPath();
+		    File originFile = new File(realPath);
+		    String newPath = realPath.substring(0, realPath.length() - originName.length()) + name;
+		    File newFile = new File(newPath);
+		    resource.setPath(path.substring(0, path.length() - originName.length()) + name);
+		    if (originFile.renameTo(newFile)) {
+			if (rdi.updateName(resource)) {
+			    response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
+			} else {
+			    //文件重命名失败
+			    newFile.renameTo(new File(realPath));
+			    response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
+			}
+		    } else {
+			response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
+		    }
+		}
+	    }
+	} else {
+	    //当前的资源不存在
+	    response.sendRedirect("resource.htm?course_id=" + courseId);
+	}
+
     }
 
     /**

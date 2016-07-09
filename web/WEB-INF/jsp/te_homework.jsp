@@ -55,19 +55,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                         <tr>
-                            <td hidden> <input type="hidden" id="path" name="path" value="">2323</td>
-                            <td><a href="#"></a>123123</td>
-                            <td>123</td>   
-                            <td>232</td>  
-                            <td>123123</td>  
-                            <td><a href="#">已提交名单</a></td>
-                        </tr>
                         <%
                             for (Task t : tasks) {
                         %>
                         <tr>
-                           
+
                             <td><a href="te_task_modify.htm?task_id=<%= t.getId()%>"><%= t.getName()%></a></td>
                             <td><%= sdf.format(new Date(t.getStartTime().getTime()))%></td>   
                             <td><%= sdf.format(new Date(t.getDeadline().getTime()))%></td>  

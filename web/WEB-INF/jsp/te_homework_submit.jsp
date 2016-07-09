@@ -37,7 +37,7 @@
             <div class="container">
                 <div class="row clearfix">
                     <div class="col-md-10 column">
-                        <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href = 'te_homework.htm?id=<%=courseId%>'">
+                        <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href = 'te_homework.htm?course_id=<%=courseId%>'">
                     </div>
                 </div>
 

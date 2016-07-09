@@ -40,11 +40,13 @@ public class HomeworkDaoImpl implements HomeworkDao {
 		homework.setId(rs.getString("id"));
 		homework.setStudentId(rs.getString("student_id"));
 		homework.setGroupId(rs.getString("group_id"));
+		homework.setCourseId(rs.getString("course_id"));
 		homework.setFilePath(rs.getString("file_path"));
 		homework.setScore(rs.getInt("score"));
 		homework.setTaskId(rs.getString("task_id"));
 		homework.setText(rs.getString("text"));
 		homework.setComment(rs.getString("comment"));
+		homework.setStudentName(rs.getString("student_name"));
 
 	    }
 	} catch (SQLException ex) {
@@ -75,11 +77,13 @@ public class HomeworkDaoImpl implements HomeworkDao {
 		homework.setId(rs.getString("id"));
 		homework.setStudentId(rs.getString("student_id"));
 		homework.setGroupId(rs.getString("group_id"));
+		homework.setCourseId(rs.getString("course_id"));
 		homework.setFilePath(rs.getString("file_path"));
 		homework.setScore(rs.getInt("score"));
 		homework.setTaskId(rs.getString("task_id"));
 		homework.setText(rs.getString("text"));
 		homework.setComment(rs.getString("comment"));
+		homework.setStudentName(rs.getString("student_name"));
 		homeworks.add(homework);
 	    }
 	} catch (SQLException ex) {
@@ -108,9 +112,9 @@ public class HomeworkDaoImpl implements HomeworkDao {
 
 		Homework homework = new Homework();
 		homework.setId(rs.getString("id"));
-		homework.setCourseId(rs.getString("course_id"));
 		homework.setStudentId(rs.getString("student_id"));
 		homework.setGroupId(rs.getString("group_id"));
+		homework.setCourseId(rs.getString("course_id"));
 		homework.setFilePath(rs.getString("file_path"));
 		homework.setScore(rs.getInt("score"));
 		homework.setTaskId(rs.getString("task_id"));
@@ -148,9 +152,9 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	    while (rs.next()) {
 		homework = new Homework();
 		homework.setId(rs.getString("id"));
-		homework.setCourseId(rs.getString("course_id"));
 		homework.setStudentId(rs.getString("student_id"));
 		homework.setGroupId(rs.getString("group_id"));
+		homework.setCourseId(rs.getString("course_id"));
 		homework.setFilePath(rs.getString("file_path"));
 		homework.setScore(rs.getInt("score"));
 		homework.setTaskId(rs.getString("task_id"));
@@ -185,9 +189,9 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	    while (rs.next()) {
 		homework = new Homework();
 		homework.setId(rs.getString("id"));
-		homework.setCourseId(rs.getString("course_id"));
 		homework.setStudentId(rs.getString("student_id"));
 		homework.setGroupId(rs.getString("group_id"));
+		homework.setCourseId(rs.getString("course_id"));
 		homework.setFilePath(rs.getString("file_path"));
 		homework.setScore(rs.getInt("score"));
 		homework.setTaskId(rs.getString("task_id"));

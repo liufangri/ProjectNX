@@ -342,12 +342,12 @@ public class RedirectController {
 		currentFolder = getRootResource(courseId, request);
 		resources = new ArrayList<Resource>();
 	    } else {
-		resources = rdi.findChildsByFolderId(currentFolder.getId());
+		resources = rdi.findChildrenByFolderId(currentFolder.getId());
 	    }
 
 	} else {
 	    currentFolder = rdi.findResourceById(folderId);
-	    resources = rdi.findChildsByFolderId(currentFolder.getId());
+	    resources = rdi.findChildrenByFolderId(currentFolder.getId());
 	}
 	request.setAttribute("course_id", courseId);
 	request.setAttribute("current_folder", currentFolder);
@@ -379,9 +379,9 @@ public class RedirectController {
 	resource.setId(MD5.Md5_16(name));
 	resource.setName(name);
 	resource.setFolder(true);
-	resource.setPath("\\" + name);
+	resource.setPath("\\courseResources\\" + name);
 	resource.setCourseId(courseId);
-	String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF") + "\\courseResources" + resource.getPath();
+	String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF") + resource.getPath();
 	File file = new File(realPath);
 	if (!file.exists()) {
 	    file.mkdirs();

@@ -84,7 +84,7 @@ public class ResourceDaoImpl implements ResourceDao {
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, resource.getId());
-	    ps.execute();
+	    ps.executeUpdate();
 	    return true;
 	} catch (SQLException ex) {
 	    Logger.getLogger(ResourceDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,7 +108,7 @@ public class ResourceDaoImpl implements ResourceDao {
 	    ps.setString(1, resource.getFatherId());
 	    ps.setString(2, resource.getPath());
 	    ps.setString(3, resource.getId());
-	    ps.execute();
+	    ps.executeUpdate();
 	    return true;
 	} catch (SQLException ex) {
 	    Logger.getLogger(ResourceDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,12 +130,13 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public boolean updateName(Resource resource) {
 	Connection connection = dbcpBean.getConnection();
-	String sql = "UPDATE resource SET name=?  WHERE id = ?";
+	String sql = "UPDATE resource SET name=?,path=?  WHERE id = ?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, resource.getName());
-	    ps.setString(2, resource.getId());
-	    ps.execute();
+	    ps.setString(2, resource.getPath());
+	    ps.setString(3, resource.getId());
+	    ps.executeUpdate();
 	    return true;
 	} catch (SQLException ex) {
 	    Logger.getLogger(ResourceDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -188,7 +189,7 @@ public class ResourceDaoImpl implements ResourceDao {
     }
 
     @Override
-    public ArrayList<Resource> findChilds(Resource resource) {
+    public ArrayList<Resource> findChildren(Resource resource) {
 	ArrayList<Resource> resources = new ArrayList<Resource>();
 	Connection connection = dbcpBean.getConnection();
 	String sql = "SELECT * FROM resource WHERE father_id=?";
@@ -224,7 +225,7 @@ public class ResourceDaoImpl implements ResourceDao {
     }
 
     @Override
-    public ArrayList<Resource> findChildsByFolderId(String folderId) {
+    public ArrayList<Resource> findChildrenByFolderId(String folderId) {
 	ArrayList<Resource> resources = new ArrayList<Resource>();
 	Connection connection = dbcpBean.getConnection();
 	String sql = "SELECT * FROM resource WHERE father_id=?";
