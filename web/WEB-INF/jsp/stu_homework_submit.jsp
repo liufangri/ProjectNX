@@ -72,7 +72,7 @@
 
                 <div class="form-group">
                     <label for="name">文本作业</label>
-                    <input type="textarea" class="form-control" rows="5" name="text" value="${homework.text}" <%if (hide) {%>disabled="disabled"<%};%>/>
+                    <textarea class="form-control" rows="5" name="text" <%if (hide) {%>disabled="disabled"<%};%>>${homework.text}</textarea>
                 </div> 
 
                 <%if (!task.isText()) {
@@ -94,8 +94,11 @@
                 <% if (origin_homework.getFilePath() != null) {
                         File file = new File(origin_homework.getFilePath());
                 %>
-                <div class="clearfix" style=" margin-bottom:20px;margin-right: 20px">
-                    <label><%= file.getName()%></label><a href="download.htm?homeworkId=<%= origin_homework.getId()%>"><button type="button" class="btn btn-info" >附件下载</button></a>
+                <div class="clearfix" >
+                    <label class="control-label">附件下载</label>
+                </div>
+                <div class="clearfix" style="margin-bottom:20px">
+                    <a href="download.htm?homeworkId=<%= origin_homework.getId()%>"><button type="button" class="btn btn-info" > <%= file.getName()%></button></a>
                 </div>
                 <%}%>
                 <div class="form-group">
