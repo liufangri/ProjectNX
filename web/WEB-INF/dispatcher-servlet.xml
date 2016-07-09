@@ -57,6 +57,13 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
         <property name="udi" ref="userDaoImpl"/>
         <property name="tdi" ref="taskDaoImpl"/>
     </bean>
+    <!--注册一个团队控制器-->
+    <bean id="groupController" class="com.teamnx.controller.GroupController">
+        <property name="gdi" ref="groupDaoImpl"/>
+        <property name="cdi" ref="courseDaoImpl"/>
+        <property name="sgdi" ref="studentGroupDaoImpl"/>
+        <property name="udi" ref="userDaoImpl"/>
+    </bean>
     <!--注册一个资源控制器-->
     <bean id="resourceController" class="com.teamnx.controller.ResourceController">
         <property name="rdi" ref="resourceDaoImpl"/>
@@ -98,6 +105,14 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     </bean>
     <!--注册一个resource的数据库操作-->
     <bean id="resourceDaoImpl" class="com.teamnx.model.ResourceDaoImpl">
+        <property name="dbcpBean" ref="dbcpBean"/>
+    </bean>
+    <!--注册一个group的数据库操作-->
+    <bean id="groupDaoImpl" class="com.teamnx.model.GroupDapImpl">
+        <property name="dbcpBean" ref="dbcpBean"/>
+    </bean>
+    <!--注册一个studentGroup的数据库操作-->
+    <bean id="studentGroupDaoImpl" class="com.teamnx.model.StudentGroupDaoImpl">
         <property name="dbcpBean" ref="dbcpBean"/>
     </bean>
     <bean id="getAllController" class="com.teamnx.controller.GetAllController">

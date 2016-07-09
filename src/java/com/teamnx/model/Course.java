@@ -22,6 +22,7 @@ public class Course {
     private int year;
     private int semester;
     private String teachers;
+    private int max_member;
 
     public String getId() {
 	return id;
@@ -109,5 +110,19 @@ public class Course {
 
     public void setTeachers(String teachers) {
 	this.teachers = teachers;
+    }
+
+    /**
+     * @return the max_member
+     */
+    public int getMax_member() {
+        return max_member;
+    }
+
+    /**
+     * @param max_member the max_member to set
+     */
+    public void setMax_member(int max_member) {
+        this.max_member = max_member;
     }
 }

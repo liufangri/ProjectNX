@@ -34,7 +34,7 @@
             </a>
         </li>
         <li id="team">
-            <a href="#">
+            <a href="toMyGroup.htm?course_id=<%=courseId%>">
                 <i class="fa  fa-fw fa-lg fa-group"></i>
                 <span>团队</span>
             </a>
