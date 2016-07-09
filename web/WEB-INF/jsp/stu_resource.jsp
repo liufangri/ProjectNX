@@ -32,6 +32,7 @@
         <link href="<%=path%>/lib/css/resourceindex.css" rel="stylesheet" />
         <script src="<%=path%>/lib/js/file.js"></script>
         <link href="<%=path%>/lib/css/fileinput.min.css" rel="stylesheet">
+        <link href="<%=path%>/lib/css/ace.min.css" rel="stylesheet">
         <script src="<%=path%>/lib/js/fileinput.min.js"></script>
         <script src="<%=path%>/lib/js/fileinput-zh.min.js"></script>
         <script>
@@ -78,7 +79,7 @@
                                     <%if (i == 9) {%>
                                 <li>...</li>
                                     <%}
-					}%>
+                                        }%>
                                 <li class="active"><%=folders.length > 3 ? folders[folders.length - 1] : ""%>
                                 </li>
                             </ul>
@@ -90,14 +91,14 @@
                         </div>
                         <div class="col-lg-12" id="list" >
                             <ul id="listtable" class="listTable pull-left">
-                                <li id="fileList">
+                                <li style="list-style-type:none;" id="fileList">
                                     <div class="listTableTop pull-left">
                                         <div class="listTableTopL pull-left">
                                             <div class="cBox"><input id="chkAll" name="chkAll" type="checkbox"></div>
                                             <div class="name" id="name">名称<div class="seq"></div></div>
                                         </div>
                                         <div class="listTableTopR pull-right">
-
+                                            <div class="publisher" id="publisher">发布人<div class="seq"></div></div>
                                             <div class="updateTime" id="ctime">上传时间<div class="seq"></div></div>
                                         </div>
                                     </div>
@@ -120,6 +121,7 @@
 
                                         </div>
                                         <div class="listTableInR pull-right">
+                                            <div class="publisher"><%= r.getTeacherName()%></div>
                                             <div class="updateTime"><%= sdf.format(new Date(r.getLastChange()))%></div>
                                             <div>
                                                 <%

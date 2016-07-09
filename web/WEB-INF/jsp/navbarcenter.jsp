@@ -59,9 +59,10 @@
                     <div  class="btn-group" >
                         <button id="semester" type="button" class="btn dropdown-toggle " 
                                 data-toggle="dropdown">
-                                2015年春季 <span class="caret"></span>
+                            2015年春季 <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
+                            <!--                            TODO-->
                             <li><a href="#">2015年春季</a></li>
                             <li><a href="#">2015年夏季</a></li>
                             <li><a href="#">2015年秋季</a></li>
@@ -83,7 +84,7 @@
             --%>
         </div>
     </div>
-        <div style="display: none" id="goTopBtn"><i class="fa fa-fw fa-2x fa-arrow-circle-up"></i></div>  
+    <div style="display: none" id="goTopBtn"><i class="fa fa-fw fa-2x fa-arrow-circle-up"></i></div>  
 </nav>
 <script type=text/javascript>goTopEx();</script>  
 

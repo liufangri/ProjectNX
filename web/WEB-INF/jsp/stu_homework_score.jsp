@@ -20,7 +20,7 @@
         </jsp:include>
         <div class="container-fluid">
             <div class="row">
-                <jsp:include page="navteachercolumn.jsp">
+                <jsp:include page="navstudentcolumn.jsp">
                     <jsp:param name="type" value="homework"/>
                 </jsp:include>
             </div>

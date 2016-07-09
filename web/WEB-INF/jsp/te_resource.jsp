@@ -118,7 +118,7 @@
                                     <%if (i == 9) {%>
                                 <li>...</li>
                                     <%}
-					}%>
+                                        }%>
                                 <li class="active"><%=folders.length > 3 ? folders[folders.length - 1] : ""%>
                             </ul>
                             <!--breadcrumbs end -->
@@ -137,6 +137,7 @@
                                         </div>
 
                                         <div class="listTableTopR pull-right">
+                                            <div class="publisher" id="publisher">发布人<div class="seq"></div></div>
                                             <div class="updateTime" id="ctime">上传时间<div class="seq"></div></div>
                                             <div class="menu" id="menu">操作<div class="seq"></div></div>
                                         </div>
@@ -162,6 +163,7 @@
 
                                         </div>
                                         <div class="listTableInR pull-right">
+                                            <div class="publisher"><%= r.getTeacherName()%></div>
                                             <div class="updateTime"><%= sdf.format(new Date(r.getLastChange()))%></div>
                                             <div>
                                                 <div class="btn-group">
@@ -174,6 +176,7 @@
                                                         <li><a href="download.htm?resourceId=<%=r.getId()%>" ><i class="icon-remove"></i>下载</a></li>
                                                         <li><a href="#" onclick="renameResource('<%= r.getId()%>');"><i class="icon-remove"></i>重命名</a></li>
                                                         <li><a href="#" onclick="$('#sid').val('190');modalTrans();" data-toggle="modal"><i class="icon-remove"></i>移动到</a></li>
+                                                        <li><a href="#" onclick="$('#sid').val('190');$('#myModal2').modal('show');;" data-toggle="modal"><i class="icon-remove"></i>重命名</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -262,7 +265,7 @@
                                     <div id="tree"></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="file.trans();">确定</button>
+                                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="javascript:transResource();">确定</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                 </div>
                             </div>
@@ -322,7 +325,18 @@
             $('body').on('hidden', '.modal', function () {
                 $(this).removeData('modal');
             });
-
+            $('#myModal5').on('hidden.bs.modal', function () {
+                $(this).find('input').val("");
+            });
+            $('#myModal2').on('hidden.bs.modal', function () {
+                $(this).find('input').val("");
+            });
+            $('#myModal1').on('hidden.bs.modal', function () {
+                var father = $(this).find(".file-input").parent();
+                $(this).find(".file-input").remove();
+                father.prepend(" <input id=\"upload\" type=\"file\"  class=\"file-loading\" name=\"uploadFile\">");
+                father.prepend("<script> $(\"#upload\").fileinput({language: \"zh\", fileActionSettings: {showZoom: false}, });<\/script>")
+            });
 
             function renameResource(resource_id)
             {
@@ -351,6 +365,7 @@
             {
                 var sid = $('#sid').val();
                 if (sid) {
+                    alert(sid);
                     //移动操作
                 } else {
                     //复选框操作
@@ -383,7 +398,7 @@
                     }
                 });
             }
-            function modalName(id, name) {
+            function modalName() {
                 if (!id) {
                     if ($('input[name="squaredCheckbox"]:checked').length > 1) {
                         alert(file.lang('一次只能重命名一个资料'));
