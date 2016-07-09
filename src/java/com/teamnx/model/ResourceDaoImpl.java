@@ -102,12 +102,11 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public boolean updatePath(Resource resource) {
 	Connection connection = dbcpBean.getConnection();
-	String sql = "UPDATE resource SET father_id = ?,path= ?  WHERE id = ?";
+	String sql = "UPDATE resource SET father_id = ?  WHERE id = ?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, resource.getFatherId());
-	    ps.setString(2, resource.getPath());
-	    ps.setString(3, resource.getId());
+	    ps.setString(2, resource.getId());
 	    ps.executeUpdate();
 	    return true;
 	} catch (SQLException ex) {
@@ -194,7 +193,7 @@ public class ResourceDaoImpl implements ResourceDao {
 	String sql = "SELECT * FROM resource WHERE father_id=?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
-	    ps.setString(1, resource.getName());
+	    ps.setString(1, resource.getId());
 	    ResultSet rs = ps.executeQuery();
 	    while (rs.next()) {
 		Resource r = new Resource();

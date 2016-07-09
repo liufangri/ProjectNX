@@ -22,8 +22,6 @@
         <div class="login">
             <div class="container">
                 <div class="login-box" >
-                    <div class="l"><img src="<%=path%>/images/image-16.png"/></div>
-                    <div class="r"  >
                         <div class="login-tab">
                             <div class="hd">
                                 <ul><li class="on">课程中心登录</li></ul>
@@ -49,10 +47,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
                 </div>
-            </div>   
+            </div>
         </div>
         <script type="text/javascript">
             function check() {

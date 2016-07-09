@@ -5,6 +5,7 @@
  */
 package com.teamnx.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import net.sf.json.JSONObject;
 
@@ -16,7 +17,7 @@ public class JSONNode extends HashMap<String, Object> {
 
     private String id;
     private String name;
-    private JSONNode[] nodes;
+    private ArrayList<JSONNode> node;
 
     public JSONNode() {
 	super();
@@ -28,7 +29,7 @@ public class JSONNode extends HashMap<String, Object> {
 
     public void setId(String id) {
 	this.id = id;
-	put("id", id);
+	put("mapId", id);
     }
 
     public String getName() {
@@ -37,25 +38,27 @@ public class JSONNode extends HashMap<String, Object> {
 
     public void setName(String name) {
 	this.name = name;
-	put("name", name);
+	put("text", name);
     }
 
-    public JSONNode[] getNode() {
-	return nodes;
+    public ArrayList<JSONNode> getNode() {
+	return node;
     }
 
-    public void setNode(JSONNode[] node) {
-	this.nodes = node;
-	put("node", node);
+    public void setNode(ArrayList<JSONNode> node) {
+	this.node = node;
+	put("nodes", node);
     }
 
     public static void main(String[] args) {
 	JSONNode jsonNode = new JSONNode();
 	jsonNode.setId("123123");
 	jsonNode.setName("456456");
+	ArrayList<JSONNode> jsonns = new ArrayList<JSONNode>();
 	JSONNode jsonn = new JSONNode();
 	jsonn.setId("what");
-	jsonNode.setNode(jsonn);
+	jsonns.add(jsonn);
+	jsonNode.setNode(jsonns);
 	JSONObject jsonObject = JSONObject.fromObject(jsonNode);
 	System.out.println(jsonObject);
     }
