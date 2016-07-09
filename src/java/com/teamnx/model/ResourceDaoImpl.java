@@ -130,12 +130,11 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public boolean updateName(Resource resource) {
 	Connection connection = dbcpBean.getConnection();
-	String sql = "UPDATE resource SET name=?,path=?  WHERE id = ?";
+	String sql = "UPDATE resource SET name=?  WHERE id = ?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, resource.getName());
-	    ps.setString(2, resource.getPath());
-	    ps.setString(3, resource.getId());
+	    ps.setString(2, resource.getId());
 	    ps.executeUpdate();
 	    return true;
 	} catch (SQLException ex) {

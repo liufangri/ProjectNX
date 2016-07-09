@@ -39,20 +39,26 @@ public class DownloadController {
 	String homeworkId = request.getParameter("homeworkId");
 	String resourceId = request.getParameter("resourceId");
 	String filePath;
+	Homework homework;
+	Resource resource;
+	String fileName = "nothing";
+	File file = null;
 	if (homeworkId != null) {
-	    Homework homework = hdi.findHomeworkById(homeworkId);
+	    homework = hdi.findHomeworkById(homeworkId);
 	    filePath = session.getServletContext().getRealPath("/WEB-INF") + homework.getFilePath();
+	    file = new File(filePath);
+	    fileName = file.getName();
 	} else if (resourceId != null) {
-	    Resource resource = rdi.findResourceById(resourceId);
+	    resource = rdi.findResourceById(resourceId);
 	    filePath = session.getServletContext().getRealPath("/WEB-INF") + resource.getPath();
+	    file = new File(filePath);
+	    fileName = resource.getName();
 	} else {
 	    filePath = "Nothing";
 	}
 	response.setCharacterEncoding("utf-8");
 	response.setContentType("multipart/form-data");
 	if (!filePath.equals("Nothing")) {
-	    File file = new File(filePath);
-	    String fileName = file.getName();
 	    response.setHeader("Content-Disposition", "attachment;fileName="
 		    + URLEncoder.encode(fileName, "utf-8"));
 	    try {

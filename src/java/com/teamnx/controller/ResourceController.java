@@ -7,6 +7,7 @@ package com.teamnx.controller;
 
 import com.teamnx.model.CourseDaoImpl;
 import com.teamnx.model.HomeworkDaoImpl;
+import com.teamnx.model.JSONNode;
 import com.teamnx.model.Resource;
 import com.teamnx.model.ResourceDaoImpl;
 import com.teamnx.model.TaskDaoImpl;
@@ -51,35 +52,27 @@ public class ResourceController {
 	String courseId = request.getParameter("course_id");
 	String fatherId = request.getParameter("current_resource_id");
 	User teacher = (User) session.getAttribute("user");
-	//检查重名,建议放在前端做。
-	if (duplicate()) {
-
+	if (duplicate(fatherId, name)) {
+	    response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + fatherId);
 	} else {
 	    Resource currentResource = rdi.findResourceById(fatherId);
 	    if (currentResource == null) {
 		//当前所在文件夹已经被删除
-
+		response.sendRedirect("resource.htm?course_id=" + courseId);
 	    } else {
-		String fatherName = currentResource.getName();
-		String fatherPath = currentResource.getPath();
-		//修改此处老师名字
 		String teacherName = teacher.getName();
 		Resource folder = new Resource();
-
-		folder.setId(MD5.Md5_16(fatherId + name));
+		String folderId = MD5.Md5_16(new Date().getTime() + teacherName);
+		folder.setId(folderId);
 		folder.setName(name);
 		folder.setFatherId(fatherId);
 		folder.setFolder(true);
 		folder.setCourseId(courseId);
 		folder.setTeacherId(teacher.getId());
 		folder.setTeacherName(teacherName);
-		folder.setPath(fatherPath + "\\" + name);
-		String realPath = session.getServletContext().getRealPath("/WEB-INF") + folder.getPath();
-		File file = new File(realPath);
-		if (!file.exists()) {
-		    file.mkdirs();
-		    folder.setLastChange(file.lastModified());
-		}
+		Resource courseRoot = rdi.findCourseRootFolder(courseId);
+		folder.setPath(courseRoot.getPath() + "\\" + name);
+		folder.setLastChange(new Date().getTime());
 
 		//部分刷新页面也可以
 		if (rdi.insert(folder)) {
@@ -88,28 +81,9 @@ public class ResourceController {
 		    );
 		} else {
 		    //插入失败错误处理
-		    response.sendRedirect("resource.htm?folder_id=" + fatherId);
+		    response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + fatherId);
 		}
 	    }
-	}
-    }
-
-    /**
-     * 回到上一级文件夹
-     *
-     * @param request
-     * @param response
-     * @throws IOException
-     */
-    @RequestMapping(value = "/preFolder")
-    public void preFolder(HttpServletRequest request, HttpServletResponse response) throws IOException {
-	String currentResourceId = (String) request.getParameter("current_resource_id");
-	Resource currentResource = rdi.findResourceById(currentResourceId);
-	if (currentResource == null) {
-	    //当前文件夹已经被删除，可以写错误提示并跳回首页？
-	    response.sendRedirect("resourcepage.htm");
-	} else {
-	    response.sendRedirect("resourcepage.htm?folder_id=" + currentResource.getFatherId());
 	}
     }
 
@@ -167,26 +141,33 @@ public class ResourceController {
 	String name = uploadFile.getOriginalFilename();
 	resource.setName(name);
 	if (name != null && name != "") {
-	    Resource fatherFolder = rdi.findResourceById(resource.getFatherId());
-	    if (fatherFolder != null) {
-		resource.setPath(fatherFolder.getPath() + "\\" + name);
-		String realPath = session.getServletContext().getRealPath("/WEB-INF") + fatherFolder.getPath() + "\\" + name;
-		File file = new File(realPath);
-		if (file.exists()) {
-		    file.delete();
-		}
-		file.mkdirs();
-		resource.setLastChange(file.lastModified());
-		uploadFile.transferTo(file);
-		if (rdi.insert(resource)) {
-		    response.sendRedirect("resource.htm?course_id=" + resource.getCourseId() + "&folder_id=" + resource.getFatherId());
-		} else {
-		    file.delete();
-		    response.sendRedirect("resource.htm?course_id=" + resource.getCourseId() + "&folder_id=" + resource.getFatherId());
-		}
+	    //遍历当前目录下所有的文件
+	    //查看是否有重名文件
+	    if (duplicate(resource.getFatherId(), name)) {
+		response.sendRedirect("resource.htm?course_id=" + resource.getCourseId() + "&folder_id=" + resource.getFatherId());
 	    } else {
-		//父文件夹不存在
-		response.sendRedirect("resource.htm?course_id=" + resource.getCourseId());
+		Resource fatherFolder = rdi.findResourceById(resource.getFatherId());
+		if (fatherFolder != null) {
+		    Resource courseRoot = rdi.findCourseRootFolder(fatherFolder.getCourseId());
+		    resource.setPath(courseRoot.getPath() + "\\" + id);
+		    String realPath = session.getServletContext().getRealPath("/WEB-INF") + resource.getPath();
+		    File file = new File(realPath);
+		    if (file.exists()) {
+			file.delete();
+		    }
+		    file.mkdirs();
+		    resource.setLastChange(file.lastModified());
+		    uploadFile.transferTo(file);
+		    if (rdi.insert(resource)) {
+			response.sendRedirect("resource.htm?course_id=" + resource.getCourseId() + "&folder_id=" + resource.getFatherId());
+		    } else {
+			file.delete();
+			response.sendRedirect("resource.htm?course_id=" + resource.getCourseId() + "&folder_id=" + resource.getFatherId());
+		    }
+		} else {
+		    //父文件夹不存在
+		    response.sendRedirect("resource.htm?course_id=" + resource.getCourseId());
+		}
 	    }
 	} else {
 	    //文件名错误
@@ -194,6 +175,25 @@ public class ResourceController {
 	}
     }
 
+    @RequestMapping(value = "/getall")
+    public void getAllFolder() {
+
+    }
+
+    private void getJson(ArrayList<Resource> resources, JSONNode node) {
+	if (resources.size() == 0) {
+
+	}
+    }
+
+    /**
+     * 重命名文件夹或文件
+     *
+     * @param request
+     * @param response
+     * @param session
+     * @throws IOException
+     */
     @RequestMapping(value = "/renameResource")
     public void rename(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 	String name = request.getParameter("name");
@@ -201,52 +201,26 @@ public class ResourceController {
 	String courseId = request.getParameter("course_id");
 	Resource resource = rdi.findResourceById(resourceId);
 	if (resource != null) {
-	    if (rdi.findChildren(resource).size() > 0) {
-		//文件夹级联更改路径
-		response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
-	    } else {
+	    if (!duplicate(resource.getFatherId(), name)) {
 		request.setAttribute("course_id", courseId);
 		String originName = resource.getName();
-		String path = resource.getPath();
-		int position = path.lastIndexOf(".");
+		int position = originName.lastIndexOf(".");
 		if (position != -1) {
-		    resource.setName(name + path.substring(position, path.length()));
-		    String realPath = session.getServletContext().getRealPath("/WEB-INF") + resource.getPath();
-		    File originFile = new File(realPath);
-		    String newPath = realPath.substring(0, realPath.length() - originName.length()) + name + path.substring(position, path.length());
-		    File newFile = new File(newPath);
-		    resource.setPath(path.substring(0, path.length() - originName.length()) + name + path.substring(position, path.length()));
-		    if (originFile.renameTo(newFile)) {
-			if (rdi.updateName(resource)) {
-			    response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
-			} else {
-			    //文件重命名失败
-			    newFile.renameTo(new File(realPath));
-			    response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
-			}
-		    } else {
-			response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
-		    }
+		    resource.setName(name + originName.substring(position, originName.length()));
 		} else {
 		    resource.setName(name);
-		    String realPath = session.getServletContext().getRealPath("/WEB-INF") + resource.getPath();
-		    File originFile = new File(realPath);
-		    String newPath = realPath.substring(0, realPath.length() - originName.length()) + name;
-		    File newFile = new File(newPath);
-		    resource.setPath(path.substring(0, path.length() - originName.length()) + name);
-		    if (originFile.renameTo(newFile)) {
-			if (rdi.updateName(resource)) {
-			    response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
-			} else {
-			    //文件重命名失败
-			    newFile.renameTo(new File(realPath));
-			    response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
-			}
-		    } else {
-			response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
-		    }
 		}
+		if (rdi.updateName(resource)) {
+		    response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
+		} else {
+		    //数据库修改名称失败
+		    response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
+		}
+	    } else {
+		//存在重名文件
+		response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + resource.getFatherId());
 	    }
+
 	} else {
 	    //当前的资源不存在
 	    response.sendRedirect("resource.htm?course_id=" + courseId);
@@ -259,8 +233,19 @@ public class ResourceController {
      *
      * @return
      */
-    private boolean duplicate() {
-	return false;
+    private boolean duplicate(String fatherId, String name) {
+	ArrayList<Resource> resources = rdi.findChildrenByFolderId(fatherId);
+	if (resources.size() > 0) {
+	    for (Resource r : resources) {
+		if (name.equals(r.getName())) {
+		    return true;
+		}
+	    }
+	    return false;
+	} else {
+
+	    return false;
+	}
     }
 
     public void setHdi(HomeworkDaoImpl hdi) {
