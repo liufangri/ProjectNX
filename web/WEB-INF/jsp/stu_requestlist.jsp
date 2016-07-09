@@ -61,7 +61,7 @@
                 </table>
             </div>
             <div>
-                <button type="button" class="btn btn-default">返回</button>
+                <a href="toMyGroup.htm?course_id=${course_id}"><button type="button" class="btn btn-default">返回</button></a>
             </div>
         </div>
     </body>

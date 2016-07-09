@@ -33,9 +33,21 @@
                 <h3>团队名称：<b><%=name%></b>  状态：<span class="glyphicon glyphicon-user"></span><i style="color: red">${status}</i></h3>
             </div>
             <div>
-                <button type="button" class="btn btn-default">完成组建</button>
+                <% switch (group.getStatus()) {
+                        case 0:%>
+                <a href="finishForming.htm?course_id=${course_id}&group_id=<%=group.getId()%>"><button type="button" class="btn btn-default">完成组建</button></a>
+                <% break;
+                    case 1:%>
+                <a href="cancelForming.htm?course_id=${course_id}&group_id=<%=group.getId()%>"><button type="button" class="btn btn-default">取消申请</button></a>
+                <% break;
+                    case 2:%>
+                <button type="button" class="btn btn-default">审核通过</button>
+                <%
+                    }
+                %>
                 <a href="applyList.htm?group_id=<%=group.getId()%>&course_id=${course_id}"><button type="submit" class="btn btn-default">查看申请</button></a>
-                <button type="button" class="btn btn-default">解散团队</button>
+                <a href="dissolution.htm?group_id=<%=group.getId()%>&course_id=${course_id}"><button type="button" class="btn btn-default">解散团队</button></a>
+                <a href="studentGroupList.htm?course_id=${course_id}"><button type="button" class="btn btn-info">团队列表</button></a>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped" cellspacing="0" cellpadding="0">
@@ -68,8 +80,8 @@
                                         选择操作 <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">移除</a></li>
-                                        <li><a href="#">设为负责人</a></li>
+                                        <li><a href="removeMember.htm?course_id=${course_id}&sg_id=<%=sg.getId()%>">移除</a></li>
+                                        <li><a href="setManager.htm?course_id=${course_id}&group_id=<%=sg.getGroupId()%>&student_id=<%=sg.getStudentId()%>">设为负责人</a></li>
                                     </ul>
                                     <%}%>
                                 </div>
@@ -80,9 +92,6 @@
                         %>
                     </tbody>
                 </table>
-            </div>
-            <div>
-                <button type="button" class="btn btn-default">返回</button>
             </div>
         </div>
     </body>

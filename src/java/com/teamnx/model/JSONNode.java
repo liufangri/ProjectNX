@@ -7,7 +7,6 @@ package com.teamnx.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import net.sf.json.JSONObject;
 
 /**
  *
@@ -50,16 +49,4 @@ public class JSONNode extends HashMap<String, Object> {
 	put("nodes", node);
     }
 
-    public static void main(String[] args) {
-	JSONNode jsonNode = new JSONNode();
-	jsonNode.setId("123123");
-	jsonNode.setName("456456");
-	ArrayList<JSONNode> jsonns = new ArrayList<JSONNode>();
-	JSONNode jsonn = new JSONNode();
-	jsonn.setId("what");
-	jsonns.add(jsonn);
-	jsonNode.setNode(jsonns);
-	JSONObject jsonObject = JSONObject.fromObject(jsonNode);
-	System.out.println(jsonObject);
-    }
 }
