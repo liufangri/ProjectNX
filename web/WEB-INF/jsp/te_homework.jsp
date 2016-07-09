@@ -37,7 +37,7 @@
                 </jsp:include>
             </div>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="padding-bottom: 100px">
             <div class="col-md-offset-10 ">
 
                 <button class="btn btn-default" onclick="javascript:location.href = 'te_homework_add.htm?course_id=<%= courseId%>'">发布新作业</button>  
