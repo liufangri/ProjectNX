@@ -110,7 +110,7 @@ public class HomeworkController {
 
 		if (originHomework.getFilePath() != null) {
 		    File originFile = new File(session.getServletContext().getRealPath("/WEB-INF")
-			    + "\\" + user.getId() + "\\" + originHomework.getFilePath());
+			    + originHomework.getFilePath());
 		    if (originFile.exists()) {
 			int x = 0;
 			while (!originFile.delete() && x < 3) {
