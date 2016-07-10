@@ -89,8 +89,8 @@
                 </div>  
 
                 <div class="form-group">
-                    <label for="name">文本作业</label>
-                    <textarea class="form-control" rows="8" name="text" <%if (hide) {%>disabled="disabled"<%};%>>${homework.text}</textarea>
+                    <label for="name">文本作业</label>  
+                    <textarea class="form-control" rows="5" name="text" <%if (hide) {%>disabled="disabled"<%};%>>${homework.text}</textarea>
                 </div> 
 
                 <%if (!task.isText()) {
