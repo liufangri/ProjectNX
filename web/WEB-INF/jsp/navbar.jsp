@@ -12,13 +12,12 @@
     Boolean isread = false;
     String path = request.getContextPath();
     User user = (User) session.getAttribute("user");
-    ArrayList<Message> unreadMessageList = (ArrayList<Message>) session.getAttribute("unread_message");
+    ArrayList<Message> unreadMessageList = (ArrayList<Message>) session.getAttribute("unread_message_list");
+    int num = unreadMessageList.size();
+
 %>
 <!--如果没有未读 就不用发信息给服务器-->
-<%if (false) {
-        isread = true;
-    }
-%>
+
 
 <link href="<%=path%>/lib/css/navbar.css" rel="stylesheet">
 <link href="<%=path%>/lib/css/AdminLTE.min.css" rel="stylesheet"/>
@@ -27,21 +26,27 @@
     {
         var myDate = new Date();
         document.getElementById("time").innerHTML = myDate.getFullYear() + "年" + (myDate.getMonth() + 1) + "月" + myDate.getDate() + "日";
-    })
+    });
     function isRead()
     {
-    <%isread = true;%>
-        $.ajax({
-            url: 'isread.htm',
-            data: {
-                'user_id': ('<%= user.getId()%>'),
-            },
-            type: 'POST',
-            dataType: 'json',
-            timeout: 8000,
-            success: function (data) {
-            }
-        });
+        var checkInput = document.getElementById("check_for_read");
+        if (checkInput === "readed") {
+        } else {
+
+            checkInput.value = "readed";
+            $.ajax({
+                url: 'isread.htm',
+                data: {
+                    'user_id': ('<%= user.getId()%>'),
+                },
+                type: 'POST',
+                dataType: 'json',
+                timeout: 8000,
+                success: function (data) {
+
+                }
+            });
+        }
     }
 
     function goTopEx() {
@@ -70,6 +75,7 @@
     }
 
 </script>
+<input type="text" value="" id="check_for_read" hidden="true">
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -92,50 +98,43 @@
                 </li>
 
                 <!--                <li><a href="#">系统消息</a></li>-->
-                <li class="dropdown messages-menu" onclick="isRead()">
+                <li class="dropdown messages-menu" onclick="isRead();">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%= user.getName()%>
 
                         <i class="fa fa-bell-o"></i>
-                        <span class="label label-success">4</span>
+                        <%if (num != 0) {%><span class="label label-success"><%= num%></span><%}%>
                     </a>
                     <ul class="dropdown-menu">
-                        <%if (false) {%>
+                        <%if (num > 0) {%>
 
-                        <li class="header" style="text-align: center">您有 条新消息</li>
-                            <%} else {%>
-                        <li class="header" style="text-align: center">没有新消息</li>
-                            <%}%>
+                        <li class="header" style="text-align: center">您有<%= num%>条新消息</li>
+
                         <li>
                             <!-- inner menu: contains the actual data -->
 
                             <ul class="menu" style="overflow-y: auto; width: 100%; height: 200px;">
-                                <%if (true) {%>
 
-                                <%for (int i = 1; i <= 5; i++) {%>
-                                <li><!-- start message -->
+                                <%for (int i = 0; i <= 5 && i < num; i++) {%>
+                                <li>
                                     <a href="#">      
                                         <h4>
-                                            Support Team
+                                            <%= unreadMessageList.get(i).getText()%>
                                         </h4>
                                     </a>
                                 </li>       
                                 <%}%>
-                                <!--                                //else-->
-                                <%for (int i = 1; i <= 5; i++) {%>
-                                <!--                                <li> start message 
-                                                                    <a href="#">      
-                                                                        <h4>
-                                                                            Support Team
-                                                                        </h4>
-                                                                    </a>
-                                                                </li>     -->
-                                <%  }
-                                    }
-                                %>
+
+
                             </ul>
 
                         </li>
-                        <li class="footer"><a href="#">查看所有消息</a></li>
+
+
+                        <%} else {%>
+                        <li class="header" style="text-align: center">没有新消息</li>
+                            <%}%>
+
+                        <li class="footer"><a href="allMessage.htm">查看所有消息</a></li>
                     </ul>
                 </li>
 

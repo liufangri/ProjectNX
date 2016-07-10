@@ -5,10 +5,14 @@
  */
 package com.teamnx.filters;
 
+import com.teamnx.model.Message;
+import com.teamnx.model.MessageDaoImpl;
+import com.teamnx.model.User;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -27,6 +31,8 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  *
@@ -41,12 +47,17 @@ public class LoginFilter implements Filter {
     // this value is null, this filter instance is not currently
     // configured.
     private FilterConfig filterConfig = null;
+    private BeanFactory beans;
+    private MessageDaoImpl mdi;
 
     public LoginFilter() {
     }
 
     private void doBeforeProcessing(RequestWrapper request, ResponseWrapper response)
 	    throws IOException, ServletException {
+	beans = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
+	mdi = (MessageDaoImpl) beans.getBean("messageDaoImpl", MessageDaoImpl.class);
+
 	if (debug) {
 	    log("LoginFilter:DoBeforeProcessing");
 	}
@@ -162,6 +173,7 @@ public class LoginFilter implements Filter {
 	    Boolean isLogin = (Boolean) session.getAttribute("is_login");
 	    HttpServletRequest req = (HttpServletRequest) request;
 	    String path = req.getServletPath();
+	    User user = (User) session.getAttribute("user");
 	    if (isLogin == null || !isLogin) {
 		if (!path.equals("/login.htm") && !path.equals("/loginAction.htm")) {
 		    RequestDispatcher rd = req.getRequestDispatcher("login.htm");
@@ -170,6 +182,12 @@ public class LoginFilter implements Filter {
 		}
 		//测试用
 		session.setAttribute("is_login", Boolean.FALSE);
+	    } else if (user != null) {
+		switch (user.getCharacter()) {
+		    case User.STUDENT:
+			ArrayList<Message> unreadMessageList = mdi.getAllUnreadMessage(user.getId());
+			session.setAttribute("unread_message_list", unreadMessageList);
+		}
 	    }
 
 	    chain.doFilter(wrappedRequest, wrappedResponse);

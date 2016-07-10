@@ -14,8 +14,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
        xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc">
     <mvc:resources mapping="/images/**" location="/images/" />
     <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
-    <!--注册一个数据库连接池bean-->
-    <bean name="dbcpBean" class="com.teamnx.db.DbcpBean"/>
+    
 
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
@@ -35,6 +34,15 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
         <property name="maxUploadSize" value="20485760"/>
         <property name="maxInMemorySize" value="524288"/>
     </bean>
+   
+
+    <context:component-scan base-package="com.teamnx.controller"/>
+    <context:annotation-config/>
+    <mvc:annotation-driven/>
+
+    <!--注册一个数据库连接池bean-->
+    <bean name="dbcpBean" class="com.teamnx.db.DbcpBean"/>
+    <!--注册一个message控制器-->
     <bean id="messageController" class="com.teamnx.controller.MessageController">
         <property name="mdi" ref="messageDaoImpl"/>
     </bean>
@@ -46,6 +54,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <!--注册一个登录控制器-->
     <bean id="loginController" class="com.teamnx.controller.LoginController">
         <property name="udi" ref="userDaoImpl"/>
+        <property name="mdi" ref="messageDaoImpl"/>
     </bean>
     <!--注册一个老师布置的作业控制器-->
     <bean id="taskController" class="com.teamnx.controller.TaskController">
@@ -65,6 +74,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
         <property name="cdi" ref="courseDaoImpl"/>
         <property name="sgdi" ref="studentGroupDaoImpl"/>
         <property name="udi" ref="userDaoImpl"/>
+        <property name="mc" ref="messageController"/>
     </bean>
     <!--注册一个资源控制器-->
     <bean id="resourceController" class="com.teamnx.controller.ResourceController">
@@ -124,12 +134,6 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="messageDaoImpl" class="com.teamnx.model.MessageDaoImpl">
         <property name="dbcpBean" ref="dbcpBean"/>
     </bean>
-
-    <context:component-scan base-package="com.teamnx.controller"/>
-    <context:annotation-config/>
-    <mvc:annotation-driven/>
-
-  
     <!--    测试用-->
 
 </beans>

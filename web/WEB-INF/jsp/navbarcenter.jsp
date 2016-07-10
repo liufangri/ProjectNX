@@ -3,10 +3,18 @@
     Created on : 2016-7-3, 12:21:47
     Author     : coco
 --%>
+<%@page import="com.teamnx.model.Message"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.teamnx.model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
+    Boolean isread = false;
     String path = request.getContextPath();
+    User user = (User) session.getAttribute("user");
+    ArrayList<Message> unreadMessageList = (ArrayList<Message>) session.getAttribute("unread_message_list");
+    int num = unreadMessageList.size();
+
 %>
 <link href="<%=path%>/lib/css/navbar.css" rel="stylesheet">
 <script>
@@ -74,82 +82,38 @@
                         </ul>
                     </div>
                 </li>
-                <li class="dropdown messages-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                <li class="dropdown messages-menu" onclick="isRead()">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%= user.getName()%>
+
                         <i class="fa fa-bell-o"></i>
-                        <span class="label label-success">4</span>
+                        <%if (num != 0) {%><span class="label label-success"><%= num%></span><%}%>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">You have 4 messages</li>
+                        <%if (num > 0) {%>
+
+                        <li class="header" style="text-align: center">您有<%= num%>条新消息</li>
+
                         <li>
                             <!-- inner menu: contains the actual data -->
-                            <div class="slimScrollDiv" style="position: relative; overflow: auto; width: auto; height: 200px;">
-                                <ul class="menu" style="overflow: scroll; width: 100%; height: 200px;">
-                                    <li><!-- start message -->
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                                            </div>
-                                            <h4>
-                                                Support Team
-                                                <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                    <!-- end message -->
-                                    <li>
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
-                                            </div>
-                                            <h4>
-                                                AdminLTE Design Team
-                                                <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
-                                            </div>
-                                            <h4>
-                                                Developers
-                                                <small><i class="fa fa-clock-o"></i> Today</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
-                                            </div>
-                                            <h4>
-                                                Sales Department
-                                                <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
-                                            </div>
-                                            <h4>
-                                                Reviewers
-                                                <small><i class="fa fa-clock-o"></i> 2 days</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+
+                            <ul class="menu" style="overflow-y: auto; width: 100%; height: 200px;">
+
+                                <%for (int i = 0; i <= 5 && i < num; i++) {%>
+                                <li>
+                                    <a href="#">      
+                                        <h4>
+                                            <%= unreadMessageList.get(i).getText()%>
+                                        </h4>
+                                    </a>
+                                </li>       
+                                <%}%>
+                            </ul>
                         </li>
-                        <li class="footer"><a href="#">See All Messages</a></li>
+                        <%} else {%>
+                        <li class="header" style="text-align: center">没有新消息</li>
+                            <%}%>
+
+                        <li class="footer"><a href="allMessage.htm">查看所有消息</a></li>
                     </ul>
                 </li>
                 <li><a href="logout.htm">注销</a></li>
