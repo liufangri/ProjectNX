@@ -44,7 +44,7 @@ public class GroupDapImpl implements GroupDao {
                 group.setId(rs.getString("id"));
                 group.setName(rs.getString("name"));
                 group.setCourseId(rs.getString("course_id"));
-                group.setManagerId("manager_id");
+                group.setManagerId(rs.getString("manager_id"));
                 group.setMaxMember(rs.getInt("max_member"));
                 group.setStatus(rs.getInt("status"));
             }
@@ -221,6 +221,40 @@ public class GroupDapImpl implements GroupDao {
             } catch (SQLException ex) {
                 Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    @Override
+    public ArrayList<Group> findGroupsByStatus(String course_id, int status) {
+        ArrayList<Group> groups = new ArrayList<Group>();
+        Connection connection = dbcpBean.getConnection();
+        String sql = "SELECT * FROM mygroup "
+                + "WHERE course_id = ? AND status = ?";
+        PreparedStatement ps;
+        try {
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, course_id);
+            ps.setInt(2, status);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Group group = new Group();
+                group.setId(rs.getString("id"));
+                group.setName(rs.getString("name"));
+                group.setCourseId(rs.getString("course_id"));
+                group.setManagerId(rs.getString("manager_id"));
+                group.setMaxMember(rs.getInt("max_member"));
+                group.setStatus(rs.getInt("status"));
+                groups.add(group);
+            }
+        } catch (SQLException ex) {
+
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return groups;
         }
     }
 

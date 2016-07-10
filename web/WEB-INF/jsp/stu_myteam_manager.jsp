@@ -41,7 +41,7 @@
                 <a href="cancelForming.htm?course_id=${course_id}&group_id=<%=group.getId()%>"><button type="button" class="btn btn-default">取消申请</button></a>
                 <% break;
                     case 2:%>
-                <button type="button" class="btn btn-default">审核通过</button>
+                <button type="button" disabled class="btn btn-default">审核通过</button>
                 <%
                     }
                 %>

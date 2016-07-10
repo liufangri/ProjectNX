@@ -21,6 +21,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -175,13 +176,54 @@ public class ResourceController {
 	}
     }
 
+    /**
+     * 获取当前文件树
+     *
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping(value = "/getall")
-    public void getAllFolder() {
-
+    public void getAllFolder(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	String courseId = request.getParameter("course_id");
+	String resourceId = request.getParameter("resource_id");
+	ArrayList<Resource> resources = rdi.findCourseResources(courseId);
+	Resource rootFolder = rdi.findCourseRootFolder(courseId);
+	JSONNode jsonnode = new JSONNode();
+	jsonnode.setId(rootFolder.getId());
+	jsonnode.setName("所有资料");
+	getJson(resources, jsonnode, resourceId);
+	JSONObject jsono = JSONObject.fromObject(jsonnode);
+	String out = jsono.toString();
+	out = "[" + out + "]";
+	response.setCharacterEncoding("utf-8");
+	response.getWriter().write(out);
+	response.getWriter().flush();
     }
 
-    private void getJson(ArrayList<Resource> resources, JSONNode node) {
-	if (resources.size() == 0) {
+    /**
+     * 获得文件系统JSON
+     *
+     * @param resources
+     * @param node
+     */
+    private void getJson(ArrayList<Resource> resources, JSONNode node, String resourceId) {
+	if (!resources.isEmpty()) {
+	    ArrayList<JSONNode> jsonns = new ArrayList<JSONNode>();
+	    for (Resource r : resources) {
+		if (r.isFolder() && !r.getId().equals(resourceId)) {
+		    JSONNode jsonn = new JSONNode();
+		    jsonn.setId(r.getId());
+		    jsonn.setName(r.getName());
+		    jsonns.add(jsonn);
+		    ArrayList<Resource> children = rdi.findChildren(r);
+		    getJson(children, jsonn, resourceId);
+		}
+	    }
+	    if (!jsonns.isEmpty()) {
+
+		node.setNode(jsonns);
+	    }
 
 	}
     }
@@ -223,6 +265,33 @@ public class ResourceController {
 
 	} else {
 	    //当前的资源不存在
+	    response.sendRedirect("resource.htm?course_id=" + courseId);
+	}
+
+    }
+
+    /**
+     * 移动文件
+     *
+     * @param request
+     */
+    @RequestMapping(value = "/transportResource")
+    public void transResource(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	String courseId = request.getParameter("course_id");
+	String sourceId = request.getParameter("resource_id");
+	String folderId = request.getParameter("aim_id");
+	request.setAttribute("course_id", courseId);
+	Resource resource = rdi.findResourceById(sourceId);
+	Resource folder = rdi.findResourceById(folderId);
+	if (folder != null && resource != null) {
+	    String currentFolderId = resource.getFatherId();
+	    resource.setFatherId(folder.getId());
+	    if (rdi.updatePath(resource)) {
+		response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + currentFolderId);
+	    } else {
+		response.sendRedirect("resource.htm?course_id=" + courseId + "&folder_id=" + currentFolderId);
+	    }
+	} else {
 	    response.sendRedirect("resource.htm?course_id=" + courseId);
 	}
 

@@ -25,4 +25,6 @@ public interface GroupDao {
     public boolean setManager(String groupId, String student_id);
     
     public boolean setStatus(String groupId, int status);
+    
+    public ArrayList<Group> findGroupsByStatus(String course_id, int status);
 }

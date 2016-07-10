@@ -148,6 +148,32 @@ public class GroupController {
         return mav;
     }
 
+    @RequestMapping(value = "/studentGroupInfo")
+    public ModelAndView studentGroupInfo(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("stu_teaminfo");
+        String courseId = request.getParameter("course_id");
+        String groupId = request.getParameter("group_id");
+        Group group = gdi.findGroupById(groupId);
+        ArrayList<StudentGroup> studentGroups = sgdi.findstudentGroupsByGroupId(groupId);
+        String status = "";
+        switch (group.getStatus()) {
+            case 0:
+                status = "组建中";
+                break;
+            case 1:
+                status = "待审核";
+                break;
+            case 2:
+                status = "已通过";
+                break;
+        }
+        mav.addObject("status", status);
+        mav.addObject("studentGroups", studentGroups);
+        mav.addObject("group", group);
+        mav.addObject("course_id", courseId);
+        return mav;
+    }
+
     @RequestMapping(value = "/groupApply")
     public void groupApply(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = (User) session.getAttribute("user");
@@ -198,59 +224,126 @@ public class GroupController {
         }
         response.sendRedirect("applyList.htm?course_id=" + courseId + "&?group_id=" + groupId);
     }
-    
+
     @RequestMapping(value = "/exitGroup")
-    public void exitGroup(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void exitGroup(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String courseId = request.getParameter("course_id");
         User user = (User) session.getAttribute("user");
         String groupId = request.getParameter("group_id");
         StudentGroup sg = sgdi.findByStudentGroup(user.getId(), groupId);
         sgdi.delete(sg.getId());
-        response.sendRedirect("toMyGroup.htm?course_id="+courseId);
+        response.sendRedirect("toMyGroup.htm?course_id=" + courseId);
     }
 
     @RequestMapping(value = "/removeMember")
-    public void removeMember(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void removeMember(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String sgId = request.getParameter("sg_id");
         String courseId = request.getParameter("course_id");
         sgdi.delete(sgId);
-        response.sendRedirect("toMyGroup.htm?course_id="+courseId);
+        response.sendRedirect("toMyGroup.htm?course_id=" + courseId);
     }
-    
+
     @RequestMapping(value = "/dissolution")
-    public void dissolution(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void dissolution(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String groupId = request.getParameter("group_id");
         sgdi.deleteByGroupId(groupId);
         gdi.delete(groupId);
         String course_id = request.getParameter("course_id");
-        response.sendRedirect("toMyGroup.htm?course_id="+course_id);
+        response.sendRedirect("toMyGroup.htm?course_id=" + course_id);
     }
-    
+
     @RequestMapping(value = "/setManager")
-    public void setManager(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void setManager(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String courseId = request.getParameter("course_id");
         String groupId = request.getParameter("group_id");
         String studentId = request.getParameter("student_id");
         gdi.setManager(groupId, studentId);
-        response.sendRedirect("toMyGroup.htm?course_id="+courseId);
+        response.sendRedirect("toMyGroup.htm?course_id=" + courseId);
     }
-    
-    @RequestMapping(value = "finishForming")
-    public void finishForming(HttpServletRequest request,HttpServletResponse response) throws IOException{
+
+    @RequestMapping(value = "/finishForming")
+    public void finishForming(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String courseId = request.getParameter("course_id");
         String groupId = request.getParameter("group_id");
         gdi.setStatus(groupId, 1);
-        response.sendRedirect("toMyGroup.htm?course_id="+courseId);
+        response.sendRedirect("toMyGroup.htm?course_id=" + courseId);
     }
-    
-    @RequestMapping(value = "cancelForming")
-    public void cancelForming(HttpServletRequest request,HttpServletResponse response) throws IOException{
+
+    @RequestMapping(value = "/cancelForming")
+    public void cancelForming(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String courseId = request.getParameter("course_id");
         String groupId = request.getParameter("group_id");
         gdi.setStatus(groupId, 0);
-        response.sendRedirect("toMyGroup.htm?course_id="+courseId);
+        response.sendRedirect("toMyGroup.htm?course_id=" + courseId);
     }
-    
+
+    @RequestMapping(value = "/teacherGroupList")
+    public ModelAndView teacherGroupList(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("te_teamlist");
+        String courseId = request.getParameter("course_id");
+        Course course = cdi.findCourseById(courseId);
+        ArrayList<Group> passedGroups = gdi.findGroupsByStatus(courseId, 2);
+        ArrayList<ShowGroup> passedShowGroups = new ArrayList<ShowGroup>();
+        for (Group g : passedGroups) {
+            User manager = udi.findUserById(g.getManagerId());
+            int member = sgdi.countMember(g.getId());
+            ShowGroup showGroup = new ShowGroup();
+            showGroup.setId(g.getId());
+            showGroup.setName(g.getName());
+            showGroup.setManager(manager.getName());
+            showGroup.setGroupId(g.getId());
+            showGroup.setNumber(member);
+            showGroup.setStatus("未知");
+            passedShowGroups.add(showGroup);
+        }
+        ArrayList<Group> waitingGroups = gdi.findGroupsByStatus(courseId, 1);
+        ArrayList<ShowGroup> waitingShowGroups = new ArrayList<ShowGroup>();
+        for (Group g : waitingGroups) {
+            User manager = udi.findUserById(g.getManagerId());
+            int member = sgdi.countMember(g.getId());
+            ShowGroup showGroup = new ShowGroup();
+            showGroup.setId(g.getId());
+            showGroup.setName(g.getName());
+            showGroup.setManager(manager.getName());
+            showGroup.setGroupId(g.getId());
+            showGroup.setNumber(member);
+            showGroup.setStatus("未知");
+            waitingShowGroups.add(showGroup);
+        }
+        ArrayList<Group> formingGroups = gdi.findGroupsByStatus(courseId, 0);
+        ArrayList<ShowGroup> formingShowGroups = new ArrayList<ShowGroup>();
+        for (Group g : formingGroups) {
+            User manager = udi.findUserById(g.getManagerId());
+            int member = sgdi.countMember(g.getId());
+            ShowGroup showGroup = new ShowGroup();
+            showGroup.setId(g.getId());
+            showGroup.setName(g.getName());
+            showGroup.setManager(manager.getName());
+            showGroup.setGroupId(g.getId());
+            showGroup.setNumber(member);
+            showGroup.setStatus("未知");
+            formingShowGroups.add(showGroup);
+        }
+        mav.addObject("course", course);
+        mav.addObject("passedGroups", passedShowGroups);
+        mav.addObject("waitingGroups", waitingShowGroups);
+        mav.addObject("formingGroups", formingShowGroups);
+        mav.addObject("course_id", courseId);
+        return mav;
+    }
+
+    @RequestMapping(value = "/teacherPermitting")
+    public void teacherPermitting(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String courseId = request.getParameter("course_id");
+        String groupId = request.getParameter("group_id");
+        String statusString = request.getParameter("status");
+        int status = Integer.parseInt(statusString);
+        gdi.setStatus(groupId, status);
+        response.sendRedirect("teacherGroupList.htm?course_id=" + courseId);
+    }
+
+    @RequestMapping(value = "/")
+
     /**
      * @param gdi the gdi to set
      */

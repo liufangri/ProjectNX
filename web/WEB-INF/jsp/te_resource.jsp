@@ -166,8 +166,7 @@
                                                         <li><a href="#" onclick="deleteResource('<%= r.getId()%>');" data-toggle="modal"><i class="icon-remove"></i>删除</a></li>
                                                         <li><a href="download.htm?resourceId=<%=r.getId()%>" ><i class="icon-remove"></i>下载</a></li>
                                                         <li><a href="#" onclick="renameResource('<%= r.getId()%>');"><i class="icon-remove"></i>重命名</a></li>
-                                                        <li><a href="#" onclick="$('#sid').val('190');modalTrans();" data-toggle="modal"><i class="icon-remove"></i>移动到</a></li>
-                                                        <li><a href="#" onclick="$('#sid').val('190');$('#myModal2').modal('show');;" data-toggle="modal"><i class="icon-remove"></i>重命名</a></li>
+                                                        <li><a href="#" onclick="$('#sid').val('<%= r.getId()%>');modalTrans('<%= r.getCourseId()%>', '<%= r.getId()%>');" data-toggle="modal"><i class="icon-remove"></i>移动到</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -217,7 +216,6 @@
                     </div>
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal2" class="modal fade in" style="display: none;">
                         <form method="post" action="renameResource.htm" >
-
                             <div class="modal-dialog">
                                 <input type="text" name="course_id" value="<%= currentFolder.getCourseId()%>" hidden="hidden">
                                 <input type="text" name="resource_id" value="" id="rename_resource_id" hidden="hidden" >
@@ -243,21 +241,26 @@
                         </form>
                     </div>
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal3" class="modal fade in" style="display: none;">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header pull-left">
-                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                    <h4 class="modal-title">移动到</h4>
-                                </div>
-                                <div class="modal-body pull-left" style="height: 412px;overflow-y: scroll;">
-                                    <div id="tree"></div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="javascript:transResource();">确定</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <form action="transportResource.htm" method="post" id="trans_resource_form">
+                            <input type="text" hidden="hidden" value="" name="resource_id" id="trans_resource_resource_id">
+                            <input type="text" hidden="hidden" value="" name="aim_id" id="trans_resource_aim_id">
+                            <input type="text" hidden="hidden" value="<%= currentFolder.getCourseId()%>" name="course_id">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header pull-left">
+                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                        <h4 class="modal-title">移动到</h4>
+                                    </div>
+                                    <div class="modal-body pull-left" style="height: 412px;overflow-y: scroll;">
+                                        <div id="tree"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="submit" class="btn btn-success" onclick="return transResource();" value="确定">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal4" class="modal fade in" style="display: none;">
                         <div class="modal-dialog">
@@ -327,13 +330,116 @@
             });
             function check()
             {
-                if ($.trim($('#folderName').val()) == '') {
+                if ($.trim($('#folderName').val()) === '') {
                     var oTimer = null;
                     var i = 0;
                     oTimer = setInterval(function () {
                         i++;
                         i == 5 ? clearInterval(oTimer) : (i % 2 === 0 ? $('#folderName').css("background-color", "#ffffff") : $('#folderName').css("background-color", "#ffd4d4"));
                     }, 200);
+                    return false;
+                } else
+                    return true;
+            }
+
+            function renameResource(resource_id)
+            {
+                $('#sid').val(190);
+                $('#myModal2').modal('show');
+                document.getElementById("rename_resource_id").value = resource_id;
+            }
+            function deleteResource(resource_id)
+            {
+                $('#sid').val(190);
+                $('#myModal4').modal('show');
+                document.getElementById("delete_resource_id").value = resource_id;
+            }
+            function downloadResource()
+            {
+                var sid = $('#sid').val();
+                alert(sid);
+                if (sid) {
+//                  加入下载操作
+                } else {
+//                   加入复选框操作
+                }
+            }
+            function transResource()
+            {
+                dir = $('#dirId').val();
+                alert(dir);
+                if (dir === '') {
+                    alert('请选择要转入的目录');
+                    return false;
+                }
+                var sid = $('#sid').val();
+                alert(sid);
+                document.getElementById("trans_resource_resource_id").value = sid;
+                document.getElementById("trans_resource_aim_id").value = dir;
+                return true;
+                //移动操作
+//                var form = document.getElementById("trans_resource_form");
+//                form.onsubmit();
+            }
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~我是一条分界线 ~~~~~~~~~~~ 
+            function modalTrans(courseId, resourceId) {
+                $('#myModal3').modal('show');
+                $.ajax({
+                    url: 'getall.htm',
+                    data: {
+                        'course_id': (courseId),
+                        'resource_id': (resourceId),
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+                    timeout: 8000,
+                    success: function (data) {
+                        $('#tree').treeview({data: data});
+                        $('#tree').on('nodeSelected', function (event, data) {
+                            $('#dirId').val(data.mapId);
+//                            $('#dpath').val(data.path);
+                        });
+                        $('#tree').on('nodeUnselected', function (event, data) {
+                            $('#dirId').val('');
+                        });
+                    }
+                });
+            }
+            function modalName() {
+                if (!id) {
+                    if ($('input[name="squaredCheckbox"]:checked').length > 1) {
+                        alert(file.lang('一次只能重命名一个资料'));
+                        return false;
+                    }
+                    $('input[name="squaredCheckbox"]:checked').each(function () {
+                        id = $(this).val();
+                    });
+                    if (!id) {
+                        alert(file.lang('请选择要重命名的资料'));
+                        return false;
+                    }
+                    name = $('#aname_' + id).val();
+                }
+                $('#newName').val(name.replace(/\.\w+$/, ''));
+                $('#aname').val(name);
+                $('#fileId').val(id);
+                $('#myModal2').modal('show');
+            }
+            function down() {
+                if (Cookies.get('show') == 'block') {
+                    name = 'squaredCheckbox';
+                } else {
+                    name = 'classLists';
+                }
+                var ids = new Array();
+                $('input[name="' + name + '"]:checked').each(function () {
+                    ids.push($(this).val());
+                });
+                var idstr = ids.join(',');
+                if (!idstr) {
+                    alert(file.lang('请选择要下载的文件'));
                     return false;
                 }
                 return true;
