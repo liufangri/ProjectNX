@@ -19,17 +19,10 @@ public class GetAllController {
 
     @RequestMapping(value = "/getall2")
     public void submitHomework(HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-        String s = "[{\"text\":\"\\u6240\\u6709\\u8d44\\u6599\",\"mapId\":0,\"nodes\":[{\"mapId\":\"38\",\"path\":\"\\/\",\"text\":\"\\u4fe1\\u606f\"},{\"mapId\":\"44\",\"path\":\"\\/\",\"text\":\"123\",\"nodes\":[{\"mapId\":\"181\",\"path\":\"\\/44\\/\",\"text\":\"as\",\"nodes\":[{\"mapId\":\"72\",\"path\":\"\\/44\\/181\\/\",\"text\":\"aaa\"}]}]},{\"mapId\":\"166\",\"path\":\"\\/\",\"text\":\"aaaa\"},{\"mapId\":\"194\",\"path\":\"\\/\",\"text\":\"asdfadd\"}]}]";
-        response.getWriter().write(s);
-        response.getWriter().flush();
+	    throws Exception {
+	String s = "[{\"text\":\"\\u6240\\u6709\\u8d44\\u6599\",\"mapId\":0,\"nodes\":[{\"mapId\":\"38\",\"path\":\"\\/\",\"text\":\"\\u4fe1\\u606f\"},{\"mapId\":\"44\",\"path\":\"\\/\",\"text\":\"123\",\"nodes\":[{\"mapId\":\"181\",\"path\":\"\\/44\\/\",\"text\":\"as\",\"nodes\":[{\"mapId\":\"72\",\"path\":\"\\/44\\/181\\/\",\"text\":\"aaa\"}]}]},{\"mapId\":\"166\",\"path\":\"\\/\",\"text\":\"aaaa\"},{\"mapId\":\"194\",\"path\":\"\\/\",\"text\":\"asdfadd\"}]}]";
+	response.getWriter().write(s);
+	response.getWriter().flush();
     }
 
-    @RequestMapping(value = "/isread")
-    public void asdfdd(HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-        String roomid = request.getParameter("user_id");
-        response.getWriter().write("{\"success\":" + roomid + " }");
-        response.getWriter().flush();
-    }
 }
