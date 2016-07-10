@@ -19,34 +19,34 @@ public class JSONNode extends HashMap<String, Object> {
     private ArrayList<JSONNode> node;
 
     public JSONNode() {
-	super();
+        super();
     }
 
     public String getId() {
-	return id;
+        return id;
     }
 
     public void setId(String id) {
-	this.id = id;
-	put("mapId", id);
+        this.id = id;
+        put("mapId", id);
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public void setName(String name) {
-	this.name = name;
-	put("text", name);
+        this.name = name;
+        put("text", name);
     }
 
     public ArrayList<JSONNode> getNode() {
-	return node;
+        return node;
     }
 
     public void setNode(ArrayList<JSONNode> node) {
-	this.node = node;
-	put("nodes", node);
+        this.node = node;
+        put("nodes", node);
     }
 
 }

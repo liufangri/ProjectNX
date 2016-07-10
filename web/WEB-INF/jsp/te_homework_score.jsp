@@ -4,6 +4,7 @@
     Author     : tmc
 --%>
 
+<%@page import="com.teamnx.model.Group"%>
 <%@page import="com.teamnx.model.Task"%>
 <%@page import="java.io.File"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,6 +17,7 @@
     Homework originHomework = (Homework) request.getAttribute("origin_homework");
     Task task = (Task) request.getAttribute("task");
     String courseId = (String) request.getAttribute("course_id");
+    Group group = (Group) request.getAttribute("group");
 %>
 <html lang="zh-CN">
     <jsp:include page="header.jsp"/>
@@ -35,9 +37,11 @@
                 <button class="btn btn-default" onclick="javascript:location.href = 'te_homework_list.htm?task_id=<%=taskId%>'"> <span class="glyphicon glyphicon-chevron-left"></span>返回列表</button>
             </div>
             <h1>作业评分</h1>
-
+            <% if (group != null) {%>
+            <h3>小组：<%= group.getName()%></h3>
+            <%}%>
             <div class="form-group">
-                <textarea class="form-control" readonly rows="15"><%= originHomework.getText() %></textarea>
+                <textarea class="form-control" readonly rows="15"><%= originHomework.getText()%></textarea>
             </div>  
             <%
                 if (originHomework.getFilePath() != null && originHomework.getFilePath() != "") {
@@ -45,7 +49,7 @@
                     File file = new File(originHomework.getFilePath());
             %>
             <div class="clearfix">
-                <lable style="margin-right: 20px"><%= file.getName()%></lable><button class="btn btn-info" onclick="javascript:location.href = 'download.htm?homeworkId=<%= originHomework.getId()%>'">附件下载</button>
+                <label style="margin-right: 20px"><%= file.getName()%></label><button class="btn btn-info" onclick="javascript:location.href = 'download.htm?homeworkId=<%= originHomework.getId()%>'">附件下载</button>
             </div>
             <%}%>
             <mvc:form action="setHomeworkScore.htm" modelAttribute="homework" method="post" cssClass="form">
@@ -58,7 +62,7 @@
                     </div>
                 </div>
                 <div class="clearfix">
-                    <input type="textarea" name="comment" class="form-control">
+                    <textarea  name="comment" class="form-control" rows="5"></textarea>>
                 </div>
                 <div class="col-md-4 col-md-push-10 column" style="margin: 5px 0 0 0">
                     <button type="submit" class="btn btn-primary">提交</button>

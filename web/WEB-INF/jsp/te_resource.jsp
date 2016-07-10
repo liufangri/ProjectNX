@@ -64,15 +64,12 @@
                             <li>
                                 <div id="ucontainer">
                                     <button class="btn btn-success" type="button" data-target="#myModal1" data-toggle="modal">
-                                        <i class="icon-folder-close"></i>
-                                        上传资料                                </button>
+                                        <i class="fa fa-cloud-upload fa-lg" style="margin-right: 7px"></i>上传资料</button>
                                 </div>
                             </li>
                             <li>
-                                <button class="btn btn-success" type="button" 
-                                        data-target="#myModal5" data-toggle="modal">新建文件夹
-                                    <i class="icon-folder-close"></i>
-                                </button>
+                                <button class="btn btn-success" type="button" data-target="#myModal5" data-toggle="modal">
+                                    <i class="fa fa-plus-circle fa-lg" style="margin-right: 7px"></i>新建文件夹</button>
                             </li>
                             
                         </ul>   
@@ -110,13 +107,12 @@
                                 <li style="list-style-type:none;" id="fileList">
                                     <div class="listTableTop pull-left">
                                         <div class="listTableTopL pull-left">
-
                                             <div class="name" id="name">名称<div class="seq"></div></div>
                                         </div>
 
                                         <div class="listTableTopR pull-right">
-                                            <div class="publisher" id="publisher">发布人<div class="seq"></div></div>
-                                            <div class="updateTime" id="ctime">上传时间<div class="seq"></div></div>
+                                            <div class="updateTime" id="ctime">上传时间</div>
+                                            <div class="publisher" id="publisher">发布人</div>
                                             <div class="menu" id="menu">操作<div class="seq"></div></div>
                                         </div>
                                     </div>
@@ -141,13 +137,13 @@
 
                                         </div>
                                         <div class="listTableInR pull-right">
-                                            <div class="publisher"><%= r.getTeacherName()%></div>
                                             <div class="updateTime"><%= sdf.format(new Date(r.getLastChange()))%></div>
+                                            <div class="publisher"><%= r.getTeacherName()%></div>
                                             <div>
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-primary dropdown-toggle" 
                                                             data-toggle="dropdown">
-                                                        菜单 <span class="caret"></span>
+                                                        <i class="fa fa-chevron-circle-down fa-lg"></i>
                                                     </button>
                                                     <ul class="dropdown-menu" role="menu">
                                                         <li><a href="#" onclick="deleteResource('<%= r.getId()%>');" data-toggle="modal"><i class="icon-remove"></i>删除</a></li>

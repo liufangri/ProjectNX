@@ -3,18 +3,23 @@
     Created on : 2016-7-3, 12:21:47
     Author     : coco
 --%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.teamnx.model.Message"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
     String path = request.getContextPath();
+    ArrayList<Message> unreadMessageList = (ArrayList<Message>) session.getAttribute("unread_message");
+    
 %>
 <link href="<%=path%>/lib/css/navbar.css" rel="stylesheet">
+<link href="<%=path%>/lib/css/AdminLTE.min.css" rel="stylesheet"/>
 <script>
     $(document).ready(function ()
     {
         var myDate = new Date();
         document.getElementById("time").innerHTML = myDate.getFullYear() + "年" + (myDate.getMonth() + 1) + "月" + myDate.getDate() + "日";
-    })
+    });
     function goTopEx() {
         var obj = document.getElementById("goTopBtn");
         function getScrollTop() {
@@ -43,7 +48,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"  aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -58,17 +63,83 @@
                 <li>
                     <a id="backtocenter" href="usercenter.htm">返回课程页面</a>
                 </li>
-                <li><a href="#">系统消息</a></li>
+                <li class="dropdown messages-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                        <i class="fa fa-bell-o"></i>
+                        <span class="label label-success">4</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">You have 4 messages</li>
+                        <li>
+                            <!-- inner menu: contains the actual data -->
+                            <div class="slimScrollDiv" style="position: relative; overflow: auto; width: auto; height: 200px;">
+                                <ul class="menu" style="overflow: scroll; width: 100%; height: 200px;">
+                                    <li><!-- start message -->
+                                        <a href="#">
+                                            <div class="pull-left">
+                                            </div>
+                                            <h4>
+                                                Support Team
+                                                <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                            </h4>
+                                            <p>Why not buy a new 1 theme?</p>
+                                        </a>
+                                    </li>
+                                    <!-- end message -->
+                                    <li>
+                                        <a href="#">
+                                            <div class="pull-left">
+                                            </div>
+                                            <h4>
+                                                AdminLTE Design Team
+                                                <small><i class="fa fa-clock-o"></i> 2 hours</small>
+                                            </h4>
+                                            <p>Why not buy a new 2 theme?</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="pull-left">
+                                            </div>
+                                            <h4>
+                                                Developers
+                                                <small><i class="fa fa-clock-o"></i> Today</small>
+                                            </h4>
+                                            <p>Why not buy a new 3 theme?</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="pull-left">
+                                            </div>
+                                            <h4>
+                                                Sales Department
+                                                <small><i class="fa fa-clock-o"></i> Yesterday</small>
+                                            </h4>
+                                            <p>Why not buy a new 4 theme?</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+
+                                            <h4>
+                                                Reviewers
+                                                <small><i class="fa fa-clock-o"></i> 2 days</small>
+                                            </h4>
+                                            <p>Why not buy a new 5 theme?</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="footer"><a href="#">See All Messages</a></li>
+                    </ul>
+                </li>
                 <li><a href="logout.htm">注销</a></li>
             </ul>
-            <%-- 课程搜索暂时不做
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search...">
-            </form>
-            --%>
         </div>
     </div>
-        <div style="display: none" id="goTopBtn"><i class="fa fa-fw fa-2x fa-arrow-circle-up"></i></div>  
+    <div style="display: none" id="goTopBtn"><i class="fa fa-fw fa-2x fa-arrow-circle-up"></i></div>  
 </nav>
 <script type=text/javascript>goTopEx();</script>  
 

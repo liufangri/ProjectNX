@@ -30,4 +30,6 @@ public interface HomeworkDao {
     public boolean insert(Homework homework);
 
     public boolean update(Homework homework);
+
+    public ArrayList<Homework> findAllGroupHomeworks(String courseId, String studentId);
 }

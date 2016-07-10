@@ -8,7 +8,7 @@ package com.teamnx.controller;
 import com.teamnx.model.Course;
 import com.teamnx.model.CourseDaoImpl;
 import com.teamnx.model.Group;
-import com.teamnx.model.GroupDapImpl;
+import com.teamnx.model.GroupDaoImpl;
 import com.teamnx.model.ShowGroup;
 import com.teamnx.model.StudentGroup;
 import com.teamnx.model.StudentGroupDaoImpl;
@@ -32,7 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class GroupController {
 
-    private GroupDapImpl gdi;
+    private GroupDaoImpl gdi;
     private CourseDaoImpl cdi;
     private StudentGroupDaoImpl sgdi;
     private UserDaoImpl udi;
@@ -428,7 +428,7 @@ public class GroupController {
     /**
      * @param gdi the gdi to set
      */
-    public void setGdi(GroupDapImpl gdi) {
+    public void setGdi(GroupDaoImpl gdi) {
         this.gdi = gdi;
     }
 
