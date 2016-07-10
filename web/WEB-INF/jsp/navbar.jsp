@@ -3,14 +3,19 @@
     Created on : 2016-7-3, 12:21:47
     Author     : coco
 --%>
+<<<<<<< HEAD
 <%@page import="com.teamnx.model.User"%>
+=======
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.teamnx.model.Message"%>
+>>>>>>> 195bd494db41951887b465d9386c800636e14166
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
     Boolean isread = false;
     String path = request.getContextPath();
     User user = (User) session.getAttribute("user");
-    int sss = 8;
+    ArrayList<Message> unreadMessageList = (ArrayList<Message>) session.getAttribute("unread_message");
 %>
 <!--如果没有未读 就不用发信息给服务器-->
 <%if (false) {
@@ -19,9 +24,8 @@
 %>
 
 <link href="<%=path%>/lib/css/navbar.css" rel="stylesheet">
-<link href="<%=path%>/lib/css/AdminLTE.min.css" rel="stylesheet">
+<link href="<%=path%>/lib/css/AdminLTE.min.css" rel="stylesheet"/>
 <script>
-
     $(document).ready(function ()
     {
         var myDate = new Date();
@@ -42,6 +46,7 @@
             }
         });
     }
+
     function goTopEx() {
         var obj = document.getElementById("goTopBtn");
         function getScrollTop() {
@@ -88,9 +93,11 @@
                 <li>
                     <a id="backtocenter" href="usercenter.htm">返回课程页面</a>
                 </li>
+
                 <!--                <li><a href="#">系统消息</a></li>-->
                 <li class="dropdown messages-menu" onclick="isRead()">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%= user.getName()%>
+
                         <i class="fa fa-bell-o"></i>
                         <span class="label label-success">4</span>
                     </a>
@@ -103,6 +110,7 @@
                             <%}%>
                         <li>
                             <!-- inner menu: contains the actual data -->
+
                             <ul class="menu" style="overflow-y: auto; width: 100%; height: 200px;">
                                 <%if (true) {%>
 
@@ -117,13 +125,13 @@
                                 <%}%>
                                 <!--                                //else-->
                                 <%for (int i = 1; i <= 5; i++) {%>
-<!--                                <li> start message 
-                                    <a href="#">      
-                                        <h4>
-                                            Support Team
-                                        </h4>
-                                    </a>
-                                </li>     -->
+                                <!--                                <li> start message 
+                                                                    <a href="#">      
+                                                                        <h4>
+                                                                            Support Team
+                                                                        </h4>
+                                                                    </a>
+                                                                </li>     -->
                                 <%  }
                                     }
                                 %>
@@ -136,11 +144,6 @@
 
                 <li><a href="logout.htm">注销</a></li>
             </ul>
-            <%-- 课程搜索暂时不做
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search...">
-            </form>
-            --%>
         </div>
     </div>
     <div style="display: none" id="goTopBtn"><i class="fa fa-fw fa-2x fa-arrow-circle-up"></i></div>  

@@ -40,8 +40,8 @@
                                         <div class="submit-box clearfix">
                                             <input id="type" type="hidden" value="ldap"/>
                                             <button id="submitButton" type="submit">登 录</button>
-                                            <img id="processing" style="display: none;" src="<%=path%>/images/processing.gif" />
-                                            <a id="errorMessage" style="color:red">${error_message}</a>
+                                            <i class="fa fa-circle-o-notch fa-spin" style="display:none"></i>
+                                            <div class="clearfix"><a id="errorMessage" style="color:red">${error_message}</a></div>
                                         </div>
                                     </mvc:form>
                                 </div>

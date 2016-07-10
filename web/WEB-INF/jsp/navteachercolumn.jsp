@@ -25,11 +25,11 @@
         </li>
         <li id="homework">
             <a href="te_homework.htm?course_id=<%=courseId%>">
-                <i class="fa  fa-fw fa-lg fa-file"></i>
+                <i class="fa fa-fw fa-lg fa-pencil-square"></i>
                 <span>作业</span>
             </a>
         </li>
-        <li id="resource">
+        <li>
             <a href="resource.htm?course_id=<%= courseId%>">
                 <i class="fa  fa-fw fa-lg fa-folder-open"></i>
                 <span>课程资源</span>

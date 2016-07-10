@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.teamnx.model.ShowGroup"%>
+<%@page import="com.teamnx.model.User"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="mvc" %>
 <html lang="zh-CN">
     <%
@@ -14,6 +15,7 @@
         ArrayList<ShowGroup> passedGroups = (ArrayList<ShowGroup>) request.getAttribute("passedGroups");
         ArrayList<ShowGroup> waitingGroups = (ArrayList<ShowGroup>) request.getAttribute("waitingGroups");
         ArrayList<ShowGroup> formingGroups = (ArrayList<ShowGroup>) request.getAttribute("formingGroups");
+        ArrayList<User> users = (ArrayList<User>) request.getAttribute("users");
         Course course = (Course) request.getAttribute("course");
     %>
     <jsp:include page="header.jsp"/>
@@ -58,7 +60,7 @@
                                     for (ShowGroup sg : passedGroups) {
                                 %>
                                 <tr>
-                                    <td><a href=""><%=sg.getName()%></a></td>
+                                    <td><a href="passedGroupInfo.htm?course_id=${course_id}&group_id=<%=sg.getId()%>"><%=sg.getName()%></a></td>
                                     <td><%=sg.getManager()%></td>   
                                     <td><%=sg.getNumber()%>/<%=course.getMax_member()%></td>
                                 </tr>
@@ -135,12 +137,12 @@
                             </thead>
                             <tbody>
                                 <%
-                                    for (int i = 1; i < 3; i++) {
+                                    for (User u : users) {
                                 %>
                                 <tr>
-                                    <td>1,001</td>
-                                    <td id="112">Lorem</td>
-                                    <td><button type="button" class="btn btn-success" onclick="manager();" data-toggle="modal">新建团队</button></td>
+                                    <td><%=u.getId()%></td>
+                                    <td id="112"><%=u.getName()%></td>
+                                    <td><button type="button" class="btn btn-success" onclick="manager('<%=u.getId()%>');" data-toggle="modal">新建团队</button></td>
                                 </tr>
                                 <%
                                     }
@@ -152,26 +154,32 @@
             </div>
             <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal1" class="modal fade in" style="display: none;">
                 <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header pull-left">
-                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                            <h4 class="modal-title">团队组建</h4>
-                        </div>
-                        <div class="modal-body pull-left">
-                            <div class="clearfix">
-                                <div class="modalTitleSmall pull-left">名称：</div>
-                                <div class="col-lg-10 marginB10 pull-right">
-                                    <input class="form-control" id="folderName" type="text" placeholder="请输入团队名称">
-                                </div>
+                    <mvc:form action="establishGroup.htm" method="post" modelAttribute="group">
+                        <div class="modal-content">
+                            <div class="modal-header pull-left">
+                                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                <h4 class="modal-title">团队组建</h4>
                             </div>
-                            <div class="clearfix"><h4>最大人数限制: 100</h4></div>
-                            <div class="clearfix"><h4>负责人： <span id="teammanager"></span></h4></div>
+                            <div class="modal-body pull-left">
+                                <div class="clearfix">
+                                    <div class="modalTitleSmall pull-left">名称：</div>
+                                    <div class="col-lg-10 marginB10 pull-right">
+                                        <input class="form-control" name="name" id="folderName" type="text" placeholder="请输入团队名称">
+                                        <input name="managerId" hidden="hidden" value="" id="student_id">
+                                        <input name="courseId" hidden="hidden" value="${course_id}">
+                                        <input name="status" hidden="hidden" value="0">
+                                        <input name="maxMember" hidden="hidden" value="<%=course.getMax_member()%>">
+                                    </div>
+                                </div>
+                                <div class="clearfix"><h4>最大人数限制: <%=course.getMax_member()%></h4></div>
+                                <div class="clearfix"><h4>负责人： <span id="teammanager"></span></h4></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success" onclick="">确定</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-success" onclick="">确定</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        </div>
-                    </div>
+                    </mvc:form>
                 </div>
             </div>
         </div>
@@ -182,9 +190,10 @@
                     $(this).tab('show');//显示当前选中的链接及关联的content 
                 })
             })
-            function manager() {
+            function manager(id) {
                 $('#teammanager').text($('#112').text());
                 $('#myModal1').modal("show");
+                document.getElementById("student_id").value=id;
             }
         </script>
     </body>

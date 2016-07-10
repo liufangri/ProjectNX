@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author JOHNKYON
  */
-public class GroupDapImpl implements GroupDao {
+public class GroupDaoImpl implements GroupDao {
 
     private DbcpBean dbcpBean;
 

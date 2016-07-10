@@ -38,9 +38,11 @@
             </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="padding-bottom: 100px">
-            <div class="col-md-offset-10 ">
+            <div class="col-md-offset-0" style="padding-bottom: 10px">
 
-                <button class="btn btn-default" onclick="javascript:location.href = 'te_homework_add.htm?course_id=<%= courseId%>'">发布新作业</button>  
+                <button class="btn btn-success" type="button" data-target="#myModal5" data-toggle="modal"
+                        onclick="javascript:location.href = 'te_homework_add.htm?course_id=<%= courseId%>'">
+                    <i class="fa fa-plus-circle fa-lg" style="margin-right: 7px"></i>发布新作业</button>  
 
             </div>
             <div class="table-responsive">

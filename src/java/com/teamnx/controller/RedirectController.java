@@ -7,11 +7,14 @@ package com.teamnx.controller;
 
 import com.teamnx.model.Course;
 import com.teamnx.model.CourseDaoImpl;
+import com.teamnx.model.Group;
+import com.teamnx.model.GroupDaoImpl;
 import com.teamnx.model.Homework;
 import com.teamnx.model.HomeworkDaoImpl;
 import com.teamnx.model.Resource;
 import com.teamnx.model.ResourceDaoImpl;
 import com.teamnx.model.ShowHomework;
+import com.teamnx.model.StudentGroupDaoImpl;
 import com.teamnx.model.Task;
 import com.teamnx.model.TaskDaoImpl;
 import com.teamnx.model.User;
@@ -40,6 +43,8 @@ public class RedirectController {
     private TaskDaoImpl tdi;
     private HomeworkDaoImpl hdi;
     private ResourceDaoImpl rdi;
+    private GroupDaoImpl gdi;
+    private StudentGroupDaoImpl sgdi;
 
     /**
      * 跳转到不同的usercenter
@@ -50,6 +55,7 @@ public class RedirectController {
      * @return
      */
     @RequestMapping(value = "usercenter")
+
     public ModelAndView toUserCenter(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 	User user = (User) session.getAttribute("user");
 	ModelAndView mav = new ModelAndView("usercenter");
@@ -159,6 +165,7 @@ public class RedirectController {
 	if (user != null) {
 	    ArrayList<Task> tasks;
 	    tasks = tdi.findTasksByCourseId(courseId);
+	    Group group = gdi.findGroupByStudentId(courseId, user.getId());
 	    ArrayList<ShowHomework> showHomeworks = new ArrayList<ShowHomework>();
 	    for (Task t : tasks) {
 		Homework homework = hdi.findStudentHomework(t.getId(), user.getId());
@@ -180,6 +187,7 @@ public class RedirectController {
 	    request.setAttribute("show_homeworks", showHomeworks);
 	    Task task = new Task();
 	    mav.addObject("task", task);
+
 	    request.setAttribute("course_id", courseId);
 	} else {
 	    mav.setViewName("login");
@@ -248,17 +256,26 @@ public class RedirectController {
     public ModelAndView toStudentHomeworkSubmitPage(HttpServletRequest request, HttpSession session) {
 	ModelAndView mav = new ModelAndView("stu_homework_submit");
 	User user = (User) session.getAttribute("user");
-	String taskId = request.getParameter("task_id");
-	Task task = tdi.findTaskById(taskId);
-	request.setAttribute("task_id", taskId);
-	request.setAttribute("course_id", task.getCourseId());
-	request.setAttribute("task", task);
-	Homework homework = hdi.findStudentHomework(taskId, user.getId());
-	if (homework == null) {
-	    homework = new Homework();
+	if (user != null) {
+	    String taskId = request.getParameter("task_id");
+	    Task task = tdi.findTaskById(taskId);
+	    Group group = gdi.findGroupByStudentId(user.getId(), task.getCourseId());
+	    Course course = cdi.findCourseById(task.getCourseId());
+	    request.setAttribute("task_id", taskId);
+	    request.setAttribute("course_id", task.getCourseId());
+	    request.setAttribute("task", task);
+	    request.setAttribute("in_group", group != null);
+	    request.setAttribute("course", course);
+	    request.setAttribute("group", group);
+	    Homework homework = hdi.findStudentHomework(taskId, user.getId());
+	    if (homework == null) {
+		homework = new Homework();
+	    }
+	    request.setAttribute("origin_homework", homework);
+	    mav.addObject("homework", homework);
+	} else {
+	    mav.setViewName("login");
 	}
-	request.setAttribute("origin_homework", homework);
-	mav.addObject("homework", homework);
 	return mav;
     }
 
@@ -306,18 +323,25 @@ public class RedirectController {
      * @return
      */
     @RequestMapping(value = "/scoreHomework")
-    public ModelAndView scoreHomework(HttpServletRequest request) {
+    public ModelAndView scoreHomework(HttpServletRequest request, HttpSession session) {
 	ModelAndView mav = new ModelAndView("te_homework_score");
-	String homeworkId = request.getParameter("homework_id");
-	Homework homework = hdi.findHomeworkById(homeworkId);
-	String taskId = homework.getTaskId();
-	Task task = (Task) tdi.findTaskById(taskId);
-	request.setAttribute("homework_id", homeworkId);
-	request.setAttribute("course_id", homework.getCourseId());
-	request.setAttribute("task_id", taskId);
-	request.setAttribute("origin_homework", homework);
-	request.setAttribute("task", task);
-	mav.addObject("homework", new Homework());
+	User user = (User) session.getAttribute("user");
+	if (user != null) {
+	    String homeworkId = request.getParameter("homework_id");
+	    Homework homework = hdi.findHomeworkById(homeworkId);
+	    Group group = gdi.findGroupById(homework.getGroupId());
+	    String taskId = homework.getTaskId();
+	    Task task = (Task) tdi.findTaskById(taskId);
+	    request.setAttribute("homework_id", homeworkId);
+	    request.setAttribute("course_id", homework.getCourseId());
+	    request.setAttribute("task_id", taskId);
+	    request.setAttribute("origin_homework", homework);
+	    request.setAttribute("task", task);
+	    request.setAttribute("group", group);
+	    mav.addObject("homework", new Homework());
+	} else {
+	    mav.setViewName("login");
+	}
 	return mav;
     }
 
@@ -406,6 +430,14 @@ public class RedirectController {
 
     public void setRdi(ResourceDaoImpl rdi) {
 	this.rdi = rdi;
+    }
+
+    public void setGdi(GroupDaoImpl gdi) {
+	this.gdi = gdi;
+    }
+
+    public void setSgdi(StudentGroupDaoImpl sgdi) {
+	this.sgdi = sgdi;
     }
 
 }

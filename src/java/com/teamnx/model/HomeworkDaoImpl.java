@@ -311,4 +311,12 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	    }
 	}
     }
+
+    @Override
+    public ArrayList<Homework> findAllGroupHomeworks(String courseId, String studentId) {
+	ArrayList<Homework> groupHomeworks = new ArrayList<Homework>();
+	Connection connection = dbcpBean.getConnection();
+	String sql = "SELECT * FROM student_group WHERE student_id = ?,group_id = ? ";
+	return groupHomeworks;
+    }
 }

@@ -39,14 +39,17 @@
             <div class="container">
                 <div class="row clearfix">
                     <div class="col-md-10 column">
-                        <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href = 'te_homework.htm?course_id=<%=courseId%>'">
+                        <button class="btn btn-success" type="button" data-target="#myModal5" data-toggle="modal"
+                            style="background: #33ccff; border:0px;"
+                            onclick="javascript:location.href = 'te_homework.htm?course_id=<%=courseId%>'">
+                        <i class="glyphicon glyphicon-chevron-left" style="margin-right: 3px" ></i>返回列表</button>
                     </div>
                 </div>
                 <mvc:form action="changeTask.htm" modelAttribute="task" method="post" cssClass="form">
-                    <div class="row clearfix">
+                    <div class="row clearfix" style="padding-top: 20px">
                         <div class="col-md-10 column">
                             <div class="form-group">
-                                <label for="name">作业名称</label>
+                                <label for="name" style="padding-bottom: 5px; padding-left: 3px">作业名称</label>
                                 <input type="text" class="form-control" placeholder="文本输入" name="name" value="<%= task.getName()%>">
                             </div>
                         </div>
@@ -54,7 +57,7 @@
                     <div class="row clearfix">
                         <div class="col-md-10 column">
                             <div class="form-group">
-                                <label for="name">作业介绍</label>
+                                <label for="name" style="padding-bottom: 5px; padding-left: 3px">作业介绍</label>
                                 <input type="textarea" class="form-control" name="description" value="<%= task.getDescription()%>">
                             </div>
                         </div>
@@ -89,7 +92,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row clearfix">
+                    <div class="row clearfix" style="padding-top: 5px">
                         <div class="col-md-10 column">
                             <div class="input-group">
                                 <span class="input-group-addon">
@@ -100,18 +103,13 @@
                         </div>
                     </div>
                     <div class="row clearfix">
-                        <div class="col-md-6 column">
-                        </div>
-                        <div class="col-md-2 column">
-                        </div>
+                        <div class="col-md-10 column">
                         <input type="text" hidden="true" value="<%= courseId%>" name="courseId"/>
                         <input type="text" hidden="true" value="<%= user.getId()%>" name="teacherId"/>
                         <input type="text" hidden="true"value="<%= user.getName()%>" name="teacherName"/>
                         <input type="text" hidden="true" value="<%= task.getId()%>" name="id"/>
-                        <div class="col-md-2 column">
-                            <input type="submit" value="提交" class="btn btn-primary" />
+                        <div style="padding-top: 20px"><input type="submit" value="提交" class="btn btn-primary" /></div>
                         </div>
-                    </div>
                 </mvc:form>
             </div>
         </div>
