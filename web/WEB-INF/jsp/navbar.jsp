@@ -3,12 +3,9 @@
     Created on : 2016-7-3, 12:21:47
     Author     : coco
 --%>
-<<<<<<< HEAD
 <%@page import="com.teamnx.model.User"%>
-=======
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.teamnx.model.Message"%>
->>>>>>> 195bd494db41951887b465d9386c800636e14166
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
