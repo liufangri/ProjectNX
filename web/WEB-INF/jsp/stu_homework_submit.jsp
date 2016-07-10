@@ -4,6 +4,7 @@
     Author     : coco
 --%>
 
+<%@page import="com.teamnx.model.Group"%>
 <%@page import="java.io.File"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.sql.Timestamp"%>
@@ -21,7 +22,11 @@
     Homework origin_homework = (Homework) request.getAttribute("origin_homework");
     Homework homework = (Homework) request.getAttribute("homework");
     Timestamp currentTimestamp = new Timestamp(new Date().getTime());
-    boolean hide = currentTimestamp.before(task.getStartTime()) || currentTimestamp.after(task.getDeadline());
+    Course course = (Course) request.getAttribute("course");
+    Group group = (Group) request.getAttribute("group");
+    boolean inGroup = (Boolean) request.getAttribute("in_group");
+    boolean courseHide = course.isCategory() && !inGroup;
+    boolean hide = courseHide || currentTimestamp.before(task.getStartTime()) || currentTimestamp.after(task.getDeadline());
 %>
 <html lang="zh-CN">
     <jsp:include page="header.jsp"/>
@@ -61,9 +66,8 @@
                     <h1>作业描述</h1>   
                 </div>
                 <div class="form-group">
-                    <label for="name" <%if (hide) {%>hidden="hidden"<%}%>>当前作业目前可以更改</label>
-                    <label class="text-danger" for="name"<%if (!hide) {%>hidden="hidden"<%}%>>作业已超过可提交时间</label>
-
+                    <label for="name" <%if (hide) {%>hidden="hidden"<%}%>>当前作业目前可以更改，您的小组名：</label><label class="text-success"><%= group.getName()%></label>
+                    <label class="text-danger" for="name"<%if (!hide) {%>hidden="hidden"<%}%>><% if (!courseHide) { %>不在提交时间范围内<%} else {%>您还没有加入队伍，或者队伍还没有通过审核，无法提交作业<%}%></label>
                 </div> 
                 <div class="form-group">
                     <textarea rows="8" class="form-control" readonly ><%= task.getDescription()%></textarea>
@@ -71,7 +75,7 @@
 
                 <div class="form-group">
                     <label for="name">文本作业</label>
-                    <textarea class="form-control" rows="8" name="text" value="${homework.text}" <%if (hide) {%>disabled="disabled"<%};%>></textarea>
+                    <textarea class="form-control" rows="8" name="text" <%if (hide) {%>disabled="disabled"<%};%>><%= homework.getText()%></textarea>
                 </div> 
 
                 <%if (!task.isText()) {
@@ -96,8 +100,8 @@
                 <input type="text" hidden="hidden" name="courseId" value="<%=courseId%>"/>
                 <input type="text" hidden="hidden" name="taskId" value="<%=task.getId()%>"/>
                 <input type="text" hidden="hidden" name="studentId" value="<%=user.getId()%>"/>
-                <input type="text"hidden="hidden"name="studentName"value="<%=user.getName()%>"/>
-
+                <input type="text" hidden="hidden" name="studentName"value="<%=user.getName()%>"/>
+                <input type="text" hidden="hidden" name="groupId" value="<%= group.getId()%>">
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary" 
                            <%if (hide) {%>disabled="disabled"<%}%>

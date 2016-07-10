@@ -16,6 +16,7 @@
         ArrayList<Task> tasks = (ArrayList<Task>) request.getAttribute("tasks");
         ArrayList<ShowHomework> showHomeworks = (ArrayList<ShowHomework>) request.getAttribute("show_homeworks");
         String courseId = (String) request.getAttribute("course_id");
+        boolean inGroup = (Boolean) request.getAttribute("in_group");
         SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm");
     %>
     <jsp:include page="header.jsp"/>

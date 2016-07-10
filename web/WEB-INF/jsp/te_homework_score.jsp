@@ -4,6 +4,7 @@
     Author     : tmc
 --%>
 
+<%@page import="com.teamnx.model.Group"%>
 <%@page import="com.teamnx.model.Task"%>
 <%@page import="java.io.File"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,6 +17,7 @@
     Homework originHomework = (Homework) request.getAttribute("origin_homework");
     Task task = (Task) request.getAttribute("task");
     String courseId = (String) request.getAttribute("course_id");
+    Group group = (Group) request.getAttribute("group");
 %>
 <html lang="zh-CN">
     <jsp:include page="header.jsp"/>
@@ -35,9 +37,11 @@
                 <button class="btn btn-default" onclick="javascript:location.href = 'te_homework_list.htm?task_id=<%=taskId%>'"> <span class="glyphicon glyphicon-chevron-left"></span>返回列表</button>
             </div>
             <h1>作业评分</h1>
-
+            <% if (group != null) {%>
+            <h3>小组：<%= group.getName()%></h3>
+            <%}%>
             <div class="form-group">
-                <textarea class="form-control" readonly rows="15"><%= originHomework.getText() %></textarea>
+                <textarea class="form-control" readonly rows="15"><%= originHomework.getText()%></textarea>
             </div>  
             <%
                 if (originHomework.getFilePath() != null && originHomework.getFilePath() != "") {
