@@ -25,22 +25,25 @@
                 </jsp:include>
             </div>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <div style="display:table">
-                <div style="display:table-cell">
-                    <button class="btn btn-default" onclick="javascript:location.href = 'te_homework.htm?course_id=<%=courseId%>'"> <span class="glyphicon glyphicon-chevron-left"></span>返回列表</button>
-                </div>
-                <div style="padding-left: 12px;display:table-cell">
-                    <h1><%= task.getName()%></h1>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2" style="padding-left: 40px; padding-top: 20px">
+            <div>
+                <div>
+                    <button class="btn btn-success" type="button" data-target="#myModal5" data-toggle="modal"
+                            style="background: #33ccff; border:0px"
+                            onclick="javascript:location.href = 'te_homework.htm?course_id=<%=courseId%>'">
+                        <i class="glyphicon glyphicon-chevron-left" style="margin-right: 3px" ></i>返回列表</button>
                 </div>
             </div>
-
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2" style="padding-left: 40px">
+            <h1><%= task.getName()%></h1>
             <div class="table-responsive">
                 <table class="table table-striped" cellspacing="0" cellpadding="0">
                     <thead>
                         <tr>
                             <th>学号</th>
                             <th>姓名</th>  
+                            <th>提交作业名</th>  
                             <th>分数</th>  
                         </tr>
                     </thead>
@@ -51,6 +54,7 @@
                         <tr>
                             <td><a href="scoreHomework.htm?homework_id=<%=h.getId()%>"><%=h.getStudentId()%></a></td>
                             <td><%=h.getStudentName()%></td>   
+                            <td></td>  
                             <td><%=h.getScore()%></td>  
 
                         </tr>

@@ -35,6 +35,9 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
         <property name="maxUploadSize" value="20485760"/>
         <property name="maxInMemorySize" value="524288"/>
     </bean>
+    <bean id="messageController" class="com.teamnx.controller.MessageController">
+        <property name="mdi" ref="messageDaoImpl"/>
+    </bean>
     <!--注册一个下载控制器-->
     <bean id="downloadController" class="com.teamnx.controller.DownloadController">
         <property name="hdi" ref="homeworkDaoImpl"/>
@@ -115,6 +118,10 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     </bean>
     <!--注册一个studentGroup的数据库操作-->
     <bean id="studentGroupDaoImpl" class="com.teamnx.model.StudentGroupDaoImpl">
+        <property name="dbcpBean" ref="dbcpBean"/>
+    </bean>
+    <!--注册一个message的数据库操作-->
+    <bean id="messageDaoImpl" class="com.teamnx.model.MessageDaoImpl">
         <property name="dbcpBean" ref="dbcpBean"/>
     </bean>
 
