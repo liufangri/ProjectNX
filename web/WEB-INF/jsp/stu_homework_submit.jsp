@@ -21,7 +21,7 @@
     Homework origin_homework = (Homework) request.getAttribute("origin_homework");
     Homework homework = (Homework) request.getAttribute("homework");
     Timestamp currentTimestamp = new Timestamp(new Date().getTime());
-    boolean hide = currentTimestamp.after(task.getDeadline());
+    boolean hide = currentTimestamp.before(task.getStartTime()) || currentTimestamp.after(task.getDeadline());
 %>
 <html lang="zh-CN">
     <jsp:include page="header.jsp"/>
@@ -67,12 +67,16 @@
 
                 </div> 
                 <div class="form-group">
-                    <textarea  class="form-control" readonly rows="12" ><%= task.getDescription()%></textarea>
+                    <textarea rows="8" class="form-control" readonly ><%= task.getDescription()%></textarea>
                 </div>  
 
                 <div class="form-group">
                     <label for="name">文本作业</label>
+<<<<<<< HEAD
                     <textarea class="form-control" rows="5" name="text" <%if (hide) {%>disabled="disabled"<%};%>>${homework.text}</textarea>
+=======
+                    <textarea class="form-control" rows="8" name="text" value="${homework.text}" <%if (hide) {%>disabled="disabled"<%};%>></textarea>
+>>>>>>> 2ccae8ede2ca5a5b440af31c8aed91d695f1c05d
                 </div> 
 
                 <%if (!task.isText()) {

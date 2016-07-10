@@ -169,7 +169,7 @@ public class LoginFilter implements Filter {
 
 		}
 		//测试用
-		session.setAttribute("is_login", Boolean.TRUE);
+		session.setAttribute("is_login", Boolean.FALSE);
 	    }
 
 	    chain.doFilter(wrappedRequest, wrappedResponse);

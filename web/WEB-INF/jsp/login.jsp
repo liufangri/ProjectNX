@@ -18,7 +18,7 @@
         <title>课程中心 - 登录</title>
     </head>
     <body>
-        <div style="background-image:url('<%=path%>/images/login_background.png')" class="bg"></div>
+        <div style="background-image:url('<%=path%>/images/login_background.jpg')" class="bg"></div>
         <div class="login">
             <div class="container">
                 <div class="login-box" >
