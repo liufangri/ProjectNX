@@ -149,9 +149,9 @@
                                                     </button>
                                                     <ul class="dropdown-menu" role="menu">
                                                         <li><a href="#" onclick="deleteResource('<%= r.getId()%>');" data-toggle="modal"><i class="icon-remove"></i>删除</a></li>
-                                                        <%if (!r.isFolder()){%>
+                                                            <%if (!r.isFolder()) {%>
                                                         <li><a href="download.htm?resourceId=<%=r.getId()%>" ><i class="icon-remove"></i>下载</a></li>
-                                                        <%}%>
+                                                            <%}%>
                                                         <li><a href="#" onclick="renameResource('<%= r.getId()%>');"><i class="icon-remove"></i>重命名</a></li>
                                                         <li><a href="#" onclick="$('#sid').val('<%= r.getId()%>');modalTrans('<%= r.getCourseId()%>', '<%= r.getId()%>');" data-toggle="modal"><i class="icon-remove"></i>移动到</a></li>
                                                     </ul>
@@ -202,20 +202,20 @@
                         </div>
                     </div>
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal2" class="modal fade in" style="display: none;">
-                        <form method="post" action="renameResource.htm" >
+                        <form method="post" onsubmit="return check($('#rename'));" action="renameResource.htm" >
                             <div class="modal-dialog">
                                 <input type="text" name="course_id" value="<%= currentFolder.getCourseId()%>" hidden="hidden">
                                 <input type="text" name="resource_id" value="" id="rename_resource_id" hidden="hidden" >
                                 <div class="modal-content">
                                     <div class="modal-header pull-left">
-                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                        <button aria-hidden="true"  data-dismiss="modal" class="close" type="button">×</button>
                                         <h4 class="modal-title">重命名</h4>
                                     </div>
                                     <div class="modal-body pull-left">
                                         <div>
                                             <div class="modalTitleSmall pull-left">名称：</div>
                                             <div class="col-lg-10 marginB10 pull-left">
-                                                <input class="form-control" type="text" placeholder="请输入名称" name="name">
+                                                <input id="rename" class="form-control" type="text" placeholder="请输入名称" name="name">
                                             </div>
                                         </div>
                                     </div>
@@ -273,7 +273,7 @@
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal5" class="modal fade in" style="display: none;">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="addNewFolder.htm" onsubmit="return check();" method="post">
+                                <form action="addNewFolder.htm" onsubmit="return check($('#folderName'));" method="post">
                                     <div class="modal-header pull-left">
                                         <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
                                         <h4 class="modal-title">新建文件夹</h4>
@@ -315,41 +315,29 @@
                 father.prepend(" <input id=\"upload\" type=\"file\"  class=\"file-loading\" name=\"uploadFile\">");
                 father.prepend("<script> $(\"#upload\").fileinput({language: \"zh\", fileActionSettings: {showZoom: false}, });<\/script>")
             });
-            function check()
+            function check(obj)
             {
-                if ($.trim($('#folderName').val()) === '') {
+                if ($.trim(obj.val()) === '') {
                     var oTimer = null;
                     var i = 0;
                     oTimer = setInterval(function () {
                         i++;
-                        i == 5 ? clearInterval(oTimer) : (i % 2 === 0 ? $('#folderName').css("background-color", "#ffffff") : $('#folderName').css("background-color", "#ffd4d4"));
+                        i == 5 ? clearInterval(oTimer) : (i % 2 == 0 ? obj.css("background-color", "#ffffff") : obj.css("background-color", "#ffd4d4"));
                     }, 200);
                     return false;
-                } else
-                    return true;
+                }
+                return true;
             }
 
             function renameResource(resource_id)
             {
-                $('#sid').val(190);
                 $('#myModal2').modal('show');
                 document.getElementById("rename_resource_id").value = resource_id;
             }
             function deleteResource(resource_id)
             {
-                $('#sid').val(190);
                 $('#myModal4').modal('show');
                 document.getElementById("delete_resource_id").value = resource_id;
-            }
-            function downloadResource()
-            {
-                var sid = $('#sid').val();
-                alert(sid);
-                if (sid) {
-//                  加入下载操作
-                } else {
-//                   加入复选框操作
-                }
             }
             function transResource()
             {
@@ -364,13 +352,9 @@
                 document.getElementById("trans_resource_resource_id").value = sid;
                 document.getElementById("trans_resource_aim_id").value = dir;
                 return true;
-                //移动操作
-//                var form = document.getElementById("trans_resource_form");
-//                form.onsubmit();
+
             }
 
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~我是一条分界线 ~~~~~~~~~~~ 
             function modalTrans(courseId, resourceId) {
                 $('#myModal3').modal('show');
                 $.ajax({
@@ -386,50 +370,13 @@
                         $('#tree').treeview({data: data});
                         $('#tree').on('nodeSelected', function (event, data) {
                             $('#dirId').val(data.mapId);
-//                            $('#dpath').val(data.path);
+// 
                         });
                         $('#tree').on('nodeUnselected', function (event, data) {
                             $('#dirId').val('');
                         });
                     }
                 });
-            }
-            function modalName() {
-                if (!id) {
-                    if ($('input[name="squaredCheckbox"]:checked').length > 1) {
-                        alert(file.lang('一次只能重命名一个资料'));
-                        return false;
-                    }
-                    $('input[name="squaredCheckbox"]:checked').each(function () {
-                        id = $(this).val();
-                    });
-                    if (!id) {
-                        alert(file.lang('请选择要重命名的资料'));
-                        return false;
-                    }
-                    name = $('#aname_' + id).val();
-                }
-                $('#newName').val(name.replace(/\.\w+$/, ''));
-                $('#aname').val(name);
-                $('#fileId').val(id);
-                $('#myModal2').modal('show');
-            }
-            function down() {
-                if (Cookies.get('show') == 'block') {
-                    name = 'squaredCheckbox';
-                } else {
-                    name = 'classLists';
-                }
-                var ids = new Array();
-                $('input[name="' + name + '"]:checked').each(function () {
-                    ids.push($(this).val());
-                });
-                var idstr = ids.join(',');
-                if (!idstr) {
-                    alert(file.lang('请选择要下载的文件'));
-                    return false;
-                }
-                return true;
             }
         </script> 
 
