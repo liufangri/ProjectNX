@@ -94,21 +94,39 @@ public class GroupController {
     public void establishGroup(Group group, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = (User) session.getAttribute("user");
         String courseId = group.getCourseId();
-        String groupId = MD5.Md5_16(user.getName() + new Date().getTime());
-        group.setId(groupId);
-        group.setManagerId(user.getId());
-        gdi.insert(group);
+        if (user.getCharacter() == 1) {
+            String groupId = MD5.Md5_16(user.getName() + new Date().getTime());
+            group.setId(groupId);
+            group.setManagerId(user.getId());
+            gdi.insert(group);
 //        插入studentGroup数据
-        StudentGroup studentGroup = new StudentGroup();
-        String sgId = MD5.Md5_16(user.getName() + new Date().getTime());
-        studentGroup.setId(sgId);
-        studentGroup.setStudentId(user.getId());
-        studentGroup.setCourseId(courseId);
-        studentGroup.setGroupId(groupId);
-        studentGroup.setStudentName(user.getName());
-        studentGroup.setStatus(true);
-        sgdi.insert(studentGroup);
-        response.sendRedirect("toMyGroup.htm?course_id=" + courseId);
+            StudentGroup studentGroup = new StudentGroup();
+            String sgId = MD5.Md5_16(user.getName() + new Date().getTime());
+            studentGroup.setId(sgId);
+            studentGroup.setStudentId(user.getId());
+            studentGroup.setCourseId(courseId);
+            studentGroup.setGroupId(groupId);
+            studentGroup.setStudentName(user.getName());
+            studentGroup.setStatus(true);
+            sgdi.insert(studentGroup);
+            response.sendRedirect("toMyGroup.htm?course_id=" + courseId);
+        } else if (user.getCharacter() == 2) {
+            User student = udi.findUserById(group.getManagerId());
+            String groupId = MD5.Md5_16(user.getName() + new Date().getTime());
+            group.setId(groupId);
+            gdi.insert(group);
+            //        插入studentGroup数据
+            StudentGroup studentGroup = new StudentGroup();
+            String sgId = MD5.Md5_16(user.getName() + new Date().getTime());
+            studentGroup.setId(sgId);
+            studentGroup.setStudentId(group.getManagerId());
+            studentGroup.setCourseId(courseId);
+            studentGroup.setGroupId(groupId);
+            studentGroup.setStudentName(student.getName());
+            studentGroup.setStatus(true);
+            sgdi.insert(studentGroup);
+            response.sendRedirect("teacherGroupList.htm?course_id=" + courseId);
+        }
     }
 
     @RequestMapping(value = "/studentGroupList")
@@ -236,29 +254,46 @@ public class GroupController {
     }
 
     @RequestMapping(value = "/removeMember")
-    public void removeMember(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void removeMember(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String sgId = request.getParameter("sg_id");
+        StudentGroup sg = sgdi.findById(sgId);
+        String groupId = sg.getGroupId();
         String courseId = request.getParameter("course_id");
         sgdi.delete(sgId);
-        response.sendRedirect("toMyGroup.htm?course_id=" + courseId);
+        User user = (User) session.getAttribute("user");
+        if (user.getCharacter() == 1) {
+            response.sendRedirect("toMyGroup.htm?course_id=" + courseId);
+        } else {
+            response.sendRedirect("passedGroupInfo.htm?course_id=" + courseId + "&group_id=" + groupId);
+        }
     }
 
     @RequestMapping(value = "/dissolution")
-    public void dissolution(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void dissolution(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String groupId = request.getParameter("group_id");
+        User user = (User) session.getAttribute("user");
         sgdi.deleteByGroupId(groupId);
         gdi.delete(groupId);
         String course_id = request.getParameter("course_id");
+        if (user.getCharacter()==1){
         response.sendRedirect("toMyGroup.htm?course_id=" + course_id);
+        }else{
+            response.sendRedirect("teacherGroupList.htm?course_id="+course_id);
+        }
     }
 
     @RequestMapping(value = "/setManager")
-    public void setManager(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void setManager(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String courseId = request.getParameter("course_id");
         String groupId = request.getParameter("group_id");
         String studentId = request.getParameter("student_id");
+        User user = (User) session.getAttribute("user");
         gdi.setManager(groupId, studentId);
-        response.sendRedirect("toMyGroup.htm?course_id=" + courseId);
+        if (user.getCharacter() == 1) {
+            response.sendRedirect("toMyGroup.htm?course_id=" + courseId);
+        } else {
+            response.sendRedirect("passedGroupInfo.htm?course_id=" + courseId + "&group_id=" + groupId);
+        }
     }
 
     @RequestMapping(value = "/finishForming")
@@ -324,6 +359,8 @@ public class GroupController {
             showGroup.setStatus("未知");
             formingShowGroups.add(showGroup);
         }
+        ArrayList<User> users = udi.findStudentsNotInGroup(courseId);
+        mav.addObject("users", users);
         mav.addObject("course", course);
         mav.addObject("passedGroups", passedShowGroups);
         mav.addObject("waitingGroups", waitingShowGroups);
@@ -342,7 +379,18 @@ public class GroupController {
         response.sendRedirect("teacherGroupList.htm?course_id=" + courseId);
     }
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "/passedGroupInfo")
+    public ModelAndView passedGroupInfo(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("te_teampassed");
+        String courseId = request.getParameter("course_id");
+        String groupId = request.getParameter("group_id");
+        Group group = gdi.findGroupById(groupId);
+        ArrayList<StudentGroup> studentGroups = sgdi.findstudentGroupsByGroupId(groupId);
+        mav.addObject("group", group);
+        mav.addObject("studentGroups", studentGroups);
+        mav.addObject("course_id", courseId);
+        return mav;
+    }
 
     /**
      * @param gdi the gdi to set
