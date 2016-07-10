@@ -48,7 +48,7 @@
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="commentList.htm?course_id=<%= courseId%>">
                 <i class="fa  fa-fw fa-lg fa-comments"></i>
                 <span>学生留言</span>
             </a>
