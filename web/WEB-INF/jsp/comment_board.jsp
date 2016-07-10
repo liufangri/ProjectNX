@@ -20,9 +20,15 @@
         <jsp:include page="navbar.jsp"/>
         <div class="container-fluid">
             <div class="row">
+                <%if (user.getCharacter() == 2) {%>
                 <jsp:include page="navteachercolumn.jsp">
                     <jsp:param name="type" value="comment"/>
                 </jsp:include>
+                <%} else {%>
+                <jsp:include page="navstudentcolumn.jsp">
+                    <jsp:param name="type" value="comment"/>
+                </jsp:include>
+                <%}%>
             </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

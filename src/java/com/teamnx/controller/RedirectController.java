@@ -55,7 +55,6 @@ public class RedirectController {
      * @return
      */
     @RequestMapping(value = "usercenter")
-
     public ModelAndView toUserCenter(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 	User user = (User) session.getAttribute("user");
 	ModelAndView mav = new ModelAndView("usercenter");
@@ -71,6 +70,7 @@ public class RedirectController {
 		    request.setAttribute("courses", courses);
 		    break;
 		case User.ADMIN:
+                    mav = new ModelAndView("admin");
 		    break;
 	    }
 	} else {
