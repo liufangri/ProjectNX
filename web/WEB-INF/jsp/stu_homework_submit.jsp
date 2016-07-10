@@ -44,6 +44,22 @@
                     showUpload: false,
                 });
             });
+
+            function checkNull() {
+                var errorMessage = document.getElementById("errorMessage");
+                var formGroup = document.getElementById("text_homework_div_id");
+                if (<%= task.isText()%>) {
+                    if ($.trim($("#home_input_text").val()) === "") {
+                        errorMessage.style.visibility = "visible";
+                        formGroup.className = "form-group has-error";
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            }
         </script>
     </head>
     <body>
@@ -51,8 +67,8 @@
         <jsp:include page="navbar.jsp"></jsp:include>
 
 
-        <div class="container-fluid">
-            <div class="row">
+            <div class="container-fluid">
+                <div class="row">
                 <jsp:include page="navstudentcolumn.jsp">
                     <jsp:param name="type" value="homework"/>
                 </jsp:include>
@@ -74,11 +90,11 @@
                 </div>
 
                 <div class="form-group">
-                    
+
                     <% if (inGroup && origin_homework != null && origin_homework.getStudentName() != null && !origin_homework.getStudentName().equals("")) {%>
                     <label>上次提交者：</label>
                     <label class="text-info" style="margin-right: 20px"><%= homework.getStudentName()%></label>
-                    
+
                     <label>您的队伍：</label><label class="text-info">${group.name}</label>
                     <br/>
                     <%}%>
@@ -88,9 +104,10 @@
                     <textarea rows="8" class="form-control" readonly ><%= task.getDescription()%></textarea>
                 </div>  
 
-                <div class="form-group">
+                <div class="form-group" id="text_homework_div_id">
                     <label for="name">文本作业</label>  
-                    <textarea class="form-control" rows="5" name="text" <%if (hide) {%>disabled="disabled"<%};%>>${homework.text}</textarea>
+                    <textarea id="home_input_text" class="form-control" rows="5" name="text" <%if (hide) {%>disabled="disabled"<%};%>>${homework.text}</textarea>
+                    <label class="form-control" style="visibility: hidden" id="errorMessage">提交作业不能为空</label>
                 </div> 
 
                 <%if (!task.isText()) {
@@ -123,7 +140,7 @@
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary" 
                            <%if (hide) {%>disabled="disabled"<%}%>
-                           value="提交">
+                           onclick="return checkNull();" value="提交">
                     <button type="button" class="btn btn-primary" onclick="javascript:location.href = 'stu_homework.htm?course_id=<%= task.getCourseId()%>'">
                         返回
                     </button>

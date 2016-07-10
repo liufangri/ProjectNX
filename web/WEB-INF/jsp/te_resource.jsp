@@ -20,7 +20,7 @@
         ArrayList<Resource> resources = (ArrayList<Resource>) request.getAttribute("resources");
         User teacher = (User) session.getAttribute("user");
         SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm");
-        String fullPath = currentFolder.getPath();
+        String fullPath = (String) request.getAttribute("full_path");
         String[] folders = fullPath.split("\\\\");
     %>
 
@@ -58,7 +58,7 @@
             <section>
                 <section>
                     <!--state overview start-->
-                   
+
                     <div class="row state-overview">
                         <ul class="buttons pull-left">
                             <li>
@@ -71,7 +71,7 @@
                                 <button class="btn btn-success" type="button" data-target="#myModal5" data-toggle="modal">
                                     <i class="fa fa-plus-circle fa-lg" style="margin-right: 7px"></i>新建文件夹</button>
                             </li>
-                            
+
                         </ul>   
                         <input type="hidden" id="path" name="path" value="">
                         <input type="hidden" id="dpath" name="dpath">
@@ -87,14 +87,23 @@
                                     <%}%>
                                 <li><a href="resource.htm?course_id=<%= currentFolder.getCourseId()%>">所有资料</a></li>
                                     <%
-                                        for (int i = 3; i < folders.length - 1 && i < 10; i++) {
+                                        for (int i = 2; i < folders.length - 2 && i < 8; i++) {
+                                            if (!(folders.length == 9 && i == 6)) {
                                     %>
-                                <li><%= folders[i]%>
-                                    <%if (i == 9) {%>
+
+                                <li><%= folders[i]%></li><%}%>
+                                    <%if (i == 6) {%>
                                 <li>...</li>
-                                    <%}
+                                    <%i++;
+					    }
 					}%>
-                                <li class="active"><%=folders.length > 3 ? folders[folders.length - 1] : ""%>
+                                    <% if (folders.length > 3) {%>
+                                <li class="active"><%=folders[folders.length - 2]%></li>
+                                    <%}%>
+                                    <% if (folders.length >= 3) {%>
+                                <li class="active"><%=folders[folders.length - 1]%></li>
+                                    <%}%>
+
                             </ul>
                             <!--breadcrumbs end -->
                         </div>
@@ -107,13 +116,13 @@
                                 <li style="list-style-type:none;" id="fileList">
                                     <div class="listTableTop pull-left">
                                         <div class="listTableTopL pull-left">
-                                            <div class="name" id="name">名称<div class="seq"></div></div>
+                                            <div class="name" id="name">名称</div>
                                         </div>
 
                                         <div class="listTableTopR pull-right">
                                             <div class="updateTime" id="ctime">上传时间</div>
                                             <div class="publisher" id="publisher">发布人</div>
-                                            <div class="menu" id="menu">操作<div class="seq"></div></div>
+                                            <div class="menu" id="menu">操作</div>
                                         </div>
                                     </div>
                                 </li>
@@ -147,9 +156,9 @@
                                                     </button>
                                                     <ul class="dropdown-menu" role="menu">
                                                         <li><a href="#" onclick="deleteResource('<%= r.getId()%>');" data-toggle="modal"><i class="icon-remove"></i>删除</a></li>
-                                                        <%if (!r.isFolder()){%>
+                                                            <%if (!r.isFolder()) {%>
                                                         <li><a href="download.htm?resourceId=<%=r.getId()%>" ><i class="icon-remove"></i>下载</a></li>
-                                                        <%}%>
+                                                            <%}%>
                                                         <li><a href="#" onclick="renameResource('<%= r.getId()%>');"><i class="icon-remove"></i>重命名</a></li>
                                                         <li><a href="#" onclick="$('#sid').val('<%= r.getId()%>');modalTrans('<%= r.getCourseId()%>', '<%= r.getId()%>');" data-toggle="modal"><i class="icon-remove"></i>移动到</a></li>
                                                     </ul>

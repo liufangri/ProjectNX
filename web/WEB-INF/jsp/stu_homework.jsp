@@ -62,10 +62,9 @@
                                 未提交<%}%>
                             </td>
                             <td>
-                                <% if (sh.getScore() == -1) {%>
-                                <label class="primary">暂时没有评分</label>
-                                <%} else {%>
-                            <a href="stu_homework_score.htm?homework_id=<%= sh.getHomeworkId()%>"><%= sh.getScore()%></a></td> 
+                                <% if (sh.getScore() != -1) {%>
+
+                                <a href="stu_homework_score.htm?homework_id=<%= sh.getHomeworkId()%>"><%= sh.getScore()%></a></td> 
                                 <%}%>
                         </tr>
                         <%

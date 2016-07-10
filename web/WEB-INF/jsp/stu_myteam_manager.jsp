@@ -74,15 +74,9 @@
                             </td>  
                             <td>
                                 <div  class="btn-group" >
-                                    <%if (!sg.getStudentId().equals(managerId)) {%>
-                                    <button type="button" class="btn dropdown-toggle " 
-                                            data-toggle="dropdown">
-                                        选择操作 <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="removeMember.htm?course_id=${course_id}&sg_id=<%=sg.getId()%>">移除</a></li>
-                                        <li><a href="setManager.htm?course_id=${course_id}&group_id=<%=sg.getGroupId()%>&student_id=<%=sg.getStudentId()%>">设为负责人</a></li>
-                                    </ul>
+                                    <%if (!sg.getStudentId().equals(managerId)) {%>                                    
+                                    <li><button class="btn btn-danger" onclick="location.href='removeMember.htm?course_id=${course_id}&sg_id=<%=sg.getId()%>'">移除</button></li>
+                                    <li><button class="btn btn-success" onclick="location.href='setManager.htm?course_id=${course_id}&group_id=<%=sg.getGroupId()%>&student_id=<%=sg.getStudentId()%>'">设为负责人</button></li>                                    
                                     <%}%>
                                 </div>
                             </td> 

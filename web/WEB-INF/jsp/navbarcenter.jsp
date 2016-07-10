@@ -17,12 +17,34 @@
 
 %>
 <link href="<%=path%>/lib/css/navbar.css" rel="stylesheet">
+<link href="<%=path%>/lib/css/AdminLTE.min.css" rel="stylesheet"/>
 <script>
     $(document).ready(function ()
     {
         var myDate = new Date();
         document.getElementById("time").innerHTML = myDate.getFullYear() + "年" + (myDate.getMonth() + 1) + "月" + myDate.getDate() + "日";
     })
+    function isRead()
+    {
+        var checkInput = document.getElementById("check_for_read");
+        if (checkInput === "readed") {
+        } else {
+
+            checkInput.value = "readed";
+            $.ajax({
+                url: 'isread.htm',
+                data: {
+                    'user_id': ('<%= user.getId()%>'),
+                },
+                type: 'POST',
+                dataType: 'json',
+                timeout: 8000,
+                success: function (data) {
+
+                }
+            });
+        }
+    }
     function goTopEx() {
         var obj = document.getElementById("goTopBtn");
         function getScrollTop() {
@@ -82,8 +104,9 @@
                         </ul>
                     </div>
                 </li>
+                <li><a><%= user.getName()%></a></li>
                 <li class="dropdown messages-menu" onclick="isRead()">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%= user.getName()%>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">系统消息
 
                         <i class="fa fa-bell-o"></i>
                         <%if (num != 0) {%><span class="label label-success"><%= num%></span><%}%>

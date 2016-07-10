@@ -18,7 +18,7 @@
         ArrayList<Resource> resources = (ArrayList<Resource>) request.getAttribute("resources");
         String courseId = (String) request.getAttribute("course_id");
         SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm");
-        String fullPath = currentFolder.getPath();
+        String fullPath = (String) request.getAttribute("full_path");
         String[] folders = fullPath.split("\\\\");
     %>
 
@@ -56,7 +56,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <section>
                 <section>
-                    
+
                     <!--state overview start-->
                     <div class="row state-overview">
                         <input type="hidden" id="path" name="path" value="">
@@ -75,15 +75,23 @@
                                     <%}%>
                                 <li><a href="resource.htm?course_id=<%= currentFolder.getCourseId()%>">所有资料</a></li>
                                     <%
-                                        for (int i = 3; i < folders.length - 1 && i < 10; i++) {
+                                        for (int i = 2; i < folders.length - 2 && i < 8; i++) {
+                                            if(!(folders.length == 9 &&i==6)){
                                     %>
-                                <li><%= folders[i]%>
-                                    <%if (i == 9) {%>
+                                
+                                <li><%= folders[i]%></li><%}%>
+                                    <%if (i == 6) {%>
                                 <li>...</li>
-                                    <%}
+                                    <%i++;
+                                            }
                                         }%>
-                                <li class="active"><%=folders.length > 3 ? folders[folders.length - 1] : ""%>
-                                </li>
+                                    <% if (folders.length > 3) {%>
+                                <li class="active"><%=folders[folders.length - 2]%></li>
+                                    <%}%>
+                                    <% if (folders.length >= 3) {%>
+                                <li class="active"><%=folders[folders.length - 1]%></li>
+                                    <%}%>
+
                             </ul>
                             <!--breadcrumbs end -->
                         </div>

@@ -18,10 +18,9 @@
     <jsp:include page="header.jsp"/>
     <script type="text/javascript">
         function checkNull() {
-            var comment = document.getElementById("comment_input_text");
             var errorMessage = document.getElementById("error_text");
             var formGroup = document.getElementById("submit_form");
-            if (comment.value === null || comment.value ==="") {
+            if ($.trim($("#comment_input_text").val()) === "") {
                 errorMessage.style.visibility = "visible";
                 formGroup.className = "form-group has-error";
                 return false;

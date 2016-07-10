@@ -48,8 +48,16 @@ public class LoginController {
 		session.setAttribute("unread_message_list", unreadMessageList);
 		session.setAttribute(password, mav);
 		session.setAttribute("user", findedUser);
-		response.sendRedirect("usercenter.htm");
 
+		switch (findedUser.getCharacter()) {
+		    case User.STUDENT:
+		    case User.TEACHER:
+			response.sendRedirect("usercenter.htm");
+			break;
+		    case User.ADMIN:
+			response.sendRedirect("admin.htm");
+			break;
+		}
 	    } else {
 		mav.addObject("error_message", "用户名或密码错误");
 	    }
@@ -57,6 +65,12 @@ public class LoginController {
 	} else {
 	    mav.addObject("error_message", "用户名或密码错误");
 	}
+	return mav;
+    }
+
+    @RequestMapping(value = "/admin")
+    public ModelAndView toAdmin(HttpServletRequest request, HttpSession session) {
+	ModelAndView mav = new ModelAndView("admin");
 	return mav;
     }
 

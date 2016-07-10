@@ -3,6 +3,7 @@
     Created on : 2016-7-3, 12:21:47
     Author     : coco
 --%>
+<%@page import="java.lang.Integer"%>
 <%@page import="com.teamnx.model.User"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.teamnx.model.Message"%>
@@ -13,8 +14,11 @@
     String path = request.getContextPath();
     User user = (User) session.getAttribute("user");
     ArrayList<Message> unreadMessageList = (ArrayList<Message>) session.getAttribute("unread_message_list");
+    String courseId = (String) request.getParameter("course_id");
     int num = unreadMessageList.size();
-
+    int week = (Integer) session.getAttribute("current_week");
+    int semester = (Integer) session.getAttribute("current_semester");
+    boolean inUsercenter = courseId == null;
 %>
 <!--如果没有未读 就不用发信息给服务器-->
 
@@ -91,15 +95,37 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
 
-                <li><a href="#">教学周次</a></li>
+                <li><a>教学周次</a></li>
                 <li><a id="time"></a></li>
+                    <% if (!inUsercenter) { %>
                 <li>
                     <a id="backtocenter" href="usercenter.htm">返回课程页面</a>
                 </li>
-
-                <!--                <li><a href="#">系统消息</a></li>-->
+                <%} else {%>
+                <li>
+                    <div  class="btn-group" >
+                        <button id="semester" type="button" class="btn dropdown-toggle " 
+                                data-toggle="dropdown">
+                            2015年春季 <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <!--                            TODO-->
+                            <li><a href="#">2015年春季</a></li>
+                            <li><a href="#">2015年夏季</a></li>
+                            <li><a href="#">2015年秋季</a></li>
+                            <li><a href="#">2016年春季</a></li>
+                            <li><a href="#">2016年夏季</a></li>
+                            <li><a href="#">2016年秋季</a></li>
+                            <li><a href="#">2017年春季</a></li>
+                            <li><a href="#">2017年夏季</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <%}%>
+                <li><a><%= user.getName()%></a></li>
+                        <% if (user.getCharacter() == User.STUDENT) {%>
                 <li class="dropdown messages-menu" onclick="isRead();">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%= user.getName()%>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">系统消息
 
                         <i class="fa fa-bell-o"></i>
                         <%if (num != 0) {%><span class="label label-success"><%= num%></span><%}%>
@@ -137,7 +163,7 @@
                         <li class="footer"><a href="allMessage.htm">查看所有消息</a></li>
                     </ul>
                 </li>
-
+                <%}%>
                 <li><a href="logout.htm">注销</a></li>
             </ul>
         </div>
