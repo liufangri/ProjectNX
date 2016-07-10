@@ -275,10 +275,10 @@ public class GroupController {
         sgdi.deleteByGroupId(groupId);
         gdi.delete(groupId);
         String course_id = request.getParameter("course_id");
-        if (user.getCharacter()==1){
-        response.sendRedirect("toMyGroup.htm?course_id=" + course_id);
-        }else{
-            response.sendRedirect("teacherGroupList.htm?course_id="+course_id);
+        if (user.getCharacter() == 1) {
+            response.sendRedirect("toMyGroup.htm?course_id=" + course_id);
+        } else {
+            response.sendRedirect("teacherGroupList.htm?course_id=" + course_id);
         }
     }
 
@@ -390,6 +390,39 @@ public class GroupController {
         mav.addObject("studentGroups", studentGroups);
         mav.addObject("course_id", courseId);
         return mav;
+    }
+
+    @RequestMapping(value = "/addMember")
+    public ModelAndView addMember(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("te_teampassed_add");
+        String courseId = request.getParameter("course_id");
+        String groupId = request.getParameter("group_id");
+        Group group = gdi.findGroupById(groupId);
+        String managerName = udi.findUserById(group.getManagerId()).getName();
+        ArrayList<User> users = udi.findStudentsNotInGroup(courseId);
+        mav.addObject("users", users);
+        mav.addObject("group", group);
+        mav.addObject("manager_name", managerName);
+        mav.addObject("course_id", courseId);
+        return mav;
+    }
+
+    @RequestMapping(value = "/addIntoGroup")
+    public void addIntoGroup(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String courseId = request.getParameter("course_id");
+        String groupId = request.getParameter("group_id");
+        String studentId = request.getParameter("student_id");
+        User student = udi.findUserById(studentId);
+        String sgId = MD5.Md5_16(studentId + new Date().getTime());
+        StudentGroup sg = new StudentGroup();
+        sg.setId(sgId);
+        sg.setCourseId(courseId);
+        sg.setGroupId(groupId);
+        sg.setStudentId(studentId);
+        sg.setStudentName(student.getName());
+        sg.setStatus(true);
+        sgdi.insert(sg);
+        response.sendRedirect("addMember.htm?course_id=" + courseId + "&group_id=" + groupId);
     }
 
     /**
