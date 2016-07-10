@@ -16,6 +16,20 @@
         ArrayList<Comment> comments = (ArrayList<Comment>) request.getAttribute("comments");
     %>
     <jsp:include page="header.jsp"/>
+    <script type="text/javascript">
+        function checkNull() {
+            var comment = document.getElementById("comment_input_text");
+            var errorMessage = document.getElementById("error_text");
+            var formGroup = document.getElementById("submit_form");
+            if (comment.value === null || comment.value ==="") {
+                errorMessage.style.visibility = "visible";
+                formGroup.className = "form-group has-error";
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
     <body>
         <jsp:include page="navbar.jsp"/>
         <div class="container-fluid">
@@ -58,11 +72,14 @@
             </div>        
             <mvc:form action="addComment.htm" method="post" modelAttribute="comment">
                 <div class="clearfix">
-                    <textarea class="form-control" rows="5" name="comment"></textarea>
+                    <div class="form-group" id="submit_form">
+                        <input type="text" id="comment_input_text" class="form-control" name="comment">
+                        <label class="control-label" id="error_text" style="visibility: hidden">评论不能为空(｡・`ω´･)</label>
+                    </div>
                     <input name="course_id" hidden="hidden" value="${course_id}"/>
                     <input name="user_name" hidden="hidden" value="<%=user.getName()%>"/>
                     <input name="character" hidden="hidden" value="<%=user.getCharacter()%>"/>
-                    <button type="submit" class="btn btn-primary">留言</button>
+                    <button type="submit" class="btn btn-primary" onclick="return checkNull();">留言</button>
                 </div>
             </mvc:form>
         </div>

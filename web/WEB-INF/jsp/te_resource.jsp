@@ -343,13 +343,11 @@
             function transResource()
             {
                 dir = $('#dirId').val();
-                alert(dir);
                 if (dir === '') {
                     alert('请选择要转入的目录');
                     return false;
                 }
                 var sid = $('#sid').val();
-                alert(sid);
                 document.getElementById("trans_resource_resource_id").value = sid;
                 document.getElementById("trans_resource_aim_id").value = dir;
                 return true;

@@ -96,7 +96,6 @@
                                 <li style="list-style-type:none;" id="fileList">
                                     <div class="listTableTop pull-left">
                                         <div class="listTableTopL pull-left">
-                                            <div class="cBox"><input id="chkAll" name="chkAll" type="checkbox"></div>
                                             <div class="name" id="name">名称<div class="seq"></div></div>
                                         </div>
                                         <div class="listTableTopR pull-right">
@@ -110,7 +109,6 @@
                                 <li  style="list-style-type:none;" id="li_190">
                                     <div class="listTableIn pull-left">
                                         <div class="listTableInL pull-left">
-                                            <div class="cBox"><input name="classLists" id="classLists190" type="checkbox" value="190" class="classLists"></div>
                                             <div class="name">
                                                 <img src="<%=path%>/images/<%if (r.isFolder()) {%>folder.jpg<%} else {%>u247.png<%}%>"/> 
                                                 <a target="_self" id="a_190"   href="<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>">

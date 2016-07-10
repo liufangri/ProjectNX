@@ -52,7 +52,7 @@ public class HomeworkController {
 	    String originHomeworkId = request.getParameter("origin_homework_id");
 	    Homework originHomework = hdi.findHomeworkById(originHomeworkId);
 
-	    if (!uploadFile.isEmpty()) {
+	    if (uploadFile != null && !uploadFile.isEmpty()) {
 		if (originHomework != null) {
 		    File oldFile = new File(session.getServletContext().getRealPath("/WEB-INF") + originHomework.getFilePath());
 		    if (oldFile.delete()) {
