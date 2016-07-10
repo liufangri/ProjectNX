@@ -74,6 +74,10 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
         <property name="udi" ref="userDaoImpl"/>
         <property name="tdi" ref="taskDaoImpl"/>
     </bean>
+    <!--注册一个评论控制器-->
+    <bean id="commentController" class="com.teamnx.controller.CommentController">
+        <property name="cdi" ref="commentDaoImpl"/>
+    </bean>
     <!--
         注册一个跳转控制器
         控制的跳转包括：
@@ -122,6 +126,10 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     </bean>
     <!--注册一个message的数据库操作-->
     <bean id="messageDaoImpl" class="com.teamnx.model.MessageDaoImpl">
+        <property name="dbcpBean" ref="dbcpBean"/>
+    </bean>
+    <!--注册一个comment的数据库操作-->
+    <bean id="commentDaoImpl" class="com.teamnx.model.CommentDaoImpl">
         <property name="dbcpBean" ref="dbcpBean"/>
     </bean>
 

@@ -39,8 +39,8 @@
                 <span>团队</span>
             </a>
         </li>
-        <li>
-            <a href="#">
+        <li id="comment">
+            <a href="commentList.htm?course_id=<%= courseId%>">
                 <i class="fa  fa-fw fa-lg fa-comments"></i>
                 <span>留言板</span>
             </a>
