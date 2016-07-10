@@ -5,8 +5,13 @@
  */
 package com.teamnx.controller;
 
+import com.teamnx.model.Semester;
 import com.teamnx.model.SemesterDaoImpl;
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *
@@ -14,6 +19,7 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class AdminController {
+
     private SemesterDaoImpl smdi;
 
     /**
@@ -22,6 +28,22 @@ public class AdminController {
     public void setSmdi(SemesterDaoImpl smdi) {
         this.smdi = smdi;
     }
-    
-    
+
+    @RequestMapping("/setSemester")
+    public void setSemester(Semester semester, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        switch (smdi.ifExit(semester)) {
+            case -1:
+                response.sendRedirect("usercenter.htm");
+                break;
+            case 0:
+                smdi.insert(semester);
+                response.sendRedirect("usercenter.htm");
+                break;
+            default:
+                smdi.update(semester);
+                response.sendRedirect("usercenter.htm");
+                break;
+        }
+    }
+
 }

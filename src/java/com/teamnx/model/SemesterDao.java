@@ -15,4 +15,6 @@ public interface SemesterDao {
     public boolean insert(Semester semester);
     
     public boolean update(Semester semester);
+    
+    public int ifExit(Semester semester);
 }

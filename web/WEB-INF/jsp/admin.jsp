@@ -32,7 +32,7 @@
                         </div>
                         <div class="bd">
                             <div class="box-1">
-                                <mvc:form action="loginAction.htm" modelAttribute="user" method="post" cssClass="form" onsubmit="return check()">
+                                <mvc:form action="setSemester.htm" modelAttribute="semester" method="post" cssClass="form" onsubmit="return check()">
                                     <div style="margin-top:40px">
                                         <span  class="glyphicon glyphicon-user"></span>本学期是
                                         <div class="row clearfix">
@@ -240,8 +240,9 @@
                         InputName: "Q",
                         ButtonName: "参考",
                         Items: [
-                            {ItemText: "春季", ItemData: "Demo1", Selected: true},
-                            {ItemText: "秋季", ItemData: "Demo2"},
+                            {ItemText: "秋季", ItemData: "Demo1", Selected: true},
+                            {ItemText: "春季", ItemData: "Demo2"},
+                            {ItemText: "夏季", ItemData: "Demo3"},
                         ]
                     });
         </script>
