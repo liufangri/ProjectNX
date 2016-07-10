@@ -58,7 +58,6 @@
             <section>
                 <section>
                     <!--state overview start-->
-                   
                     <div class="row state-overview">
                         <ul class="buttons pull-left">
                             <li>
@@ -69,12 +68,11 @@
                                 </div>
                             </li>
                             <li>
-                                <button class="btn btn-success" type="button" 
+                                <button class="btn btn-warning" type="button" 
                                         data-target="#myModal5" data-toggle="modal">新建文件夹
                                     <i class="icon-folder-close"></i>
                                 </button>
                             </li>
-                            
                         </ul>   
                         <input type="hidden" id="path" name="path" value="">
                         <input type="hidden" id="dpath" name="dpath">
@@ -96,7 +94,7 @@
                                     <%if (i == 9) {%>
                                 <li>...</li>
                                     <%}
-					}%>
+                                        }%>
                                 <li class="active"><%=folders.length > 3 ? folders[folders.length - 1] : ""%>
                             </ul>
                             <!--breadcrumbs end -->
@@ -151,9 +149,9 @@
                                                     </button>
                                                     <ul class="dropdown-menu" role="menu">
                                                         <li><a href="#" onclick="deleteResource('<%= r.getId()%>');" data-toggle="modal"><i class="icon-remove"></i>删除</a></li>
-                                                        <%if (!r.isFolder()){%>
+                                                            <%if (!r.isFolder()) {%>
                                                         <li><a href="download.htm?resourceId=<%=r.getId()%>" ><i class="icon-remove"></i>下载</a></li>
-                                                        <%}%>
+                                                            <%}%>
                                                         <li><a href="#" onclick="renameResource('<%= r.getId()%>');"><i class="icon-remove"></i>重命名</a></li>
                                                         <li><a href="#" onclick="$('#sid').val('<%= r.getId()%>');modalTrans('<%= r.getCourseId()%>', '<%= r.getId()%>');" data-toggle="modal"><i class="icon-remove"></i>移动到</a></li>
                                                     </ul>
@@ -196,10 +194,7 @@
                                     <input type="text" name="fatherId" value="<%= currentFolder.getId()%>" hidden="hidden">
                                     <input type="text" name="teacherId" value="<%= teacher.getId()%>" hidden="hidden">
                                     <input type="text" name="teacherName" value="<%= teacher.getName()%>" hidden="hidden">
-
-
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success" >上传</button>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                     </div>
                                 </div>
@@ -207,20 +202,20 @@
                         </div>
                     </div>
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal2" class="modal fade in" style="display: none;">
-                        <form method="post" action="renameResource.htm" >
+                        <form method="post" onsubmit="return check($('#rename'));" action="renameResource.htm" >
                             <div class="modal-dialog">
                                 <input type="text" name="course_id" value="<%= currentFolder.getCourseId()%>" hidden="hidden">
                                 <input type="text" name="resource_id" value="" id="rename_resource_id" hidden="hidden" >
                                 <div class="modal-content">
                                     <div class="modal-header pull-left">
-                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                        <button aria-hidden="true"  data-dismiss="modal" class="close" type="button">×</button>
                                         <h4 class="modal-title">重命名</h4>
                                     </div>
                                     <div class="modal-body pull-left">
                                         <div>
                                             <div class="modalTitleSmall pull-left">名称：</div>
                                             <div class="col-lg-10 marginB10 pull-left">
-                                                <input class="form-control" type="text" placeholder="请输入名称" name="name">
+                                                <input id="rename" class="form-control" type="text" placeholder="请输入名称" name="name">
                                             </div>
                                         </div>
                                     </div>
@@ -278,7 +273,7 @@
                     <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal5" class="modal fade in" style="display: none;">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="addNewFolder.htm" method="post">
+                                <form action="addNewFolder.htm" onsubmit="return check($('#folderName'));" method="post">
                                     <div class="modal-header pull-left">
                                         <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
                                         <h4 class="modal-title">新建文件夹</h4>
@@ -291,10 +286,10 @@
                                                 <input type="text" hidden="hidden" name="current_resource_id" value="<%= currentFolder.getId()%>">
                                                 <input type="text" hidden="hidden" name="course_id" value="<%= currentFolder.getCourseId()%>">
                                             </div>
-                                        </div>
+                                        </div>   
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success">确定</button>
+                                        <button type="submit"  class="btn btn-success">确定</button>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                     </div>
                                 </form>
@@ -320,29 +315,29 @@
                 father.prepend(" <input id=\"upload\" type=\"file\"  class=\"file-loading\" name=\"uploadFile\">");
                 father.prepend("<script> $(\"#upload\").fileinput({language: \"zh\", fileActionSettings: {showZoom: false}, });<\/script>")
             });
+            function check(obj)
+            {
+                if ($.trim(obj.val()) === '') {
+                    var oTimer = null;
+                    var i = 0;
+                    oTimer = setInterval(function () {
+                        i++;
+                        i == 5 ? clearInterval(oTimer) : (i % 2 == 0 ? obj.css("background-color", "#ffffff") : obj.css("background-color", "#ffd4d4"));
+                    }, 200);
+                    return false;
+                }
+                return true;
+            }
 
             function renameResource(resource_id)
             {
-                $('#sid').val(190);
                 $('#myModal2').modal('show');
                 document.getElementById("rename_resource_id").value = resource_id;
-
             }
             function deleteResource(resource_id)
             {
-                $('#sid').val(190);
                 $('#myModal4').modal('show');
                 document.getElementById("delete_resource_id").value = resource_id;
-            }
-            function downloadResource()
-            {
-                var sid = $('#sid').val();
-                alert(sid);
-                if (sid) {
-//                  加入下载操作
-                } else {
-//                   加入复选框操作
-                }
             }
             function transResource()
             {
@@ -357,15 +352,9 @@
                 document.getElementById("trans_resource_resource_id").value = sid;
                 document.getElementById("trans_resource_aim_id").value = dir;
                 return true;
-                //移动操作
-//                var form = document.getElementById("trans_resource_form");
-//                form.onsubmit();
-
 
             }
 
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~我是一条分界线 ~~~~~~~~~~~ 
             function modalTrans(courseId, resourceId) {
                 $('#myModal3').modal('show');
                 $.ajax({
@@ -381,294 +370,13 @@
                         $('#tree').treeview({data: data});
                         $('#tree').on('nodeSelected', function (event, data) {
                             $('#dirId').val(data.mapId);
-//                            $('#dpath').val(data.path);
+// 
                         });
                         $('#tree').on('nodeUnselected', function (event, data) {
                             $('#dirId').val('');
                         });
                     }
                 });
-            }
-            function modalName() {
-                if (!id) {
-                    if ($('input[name="squaredCheckbox"]:checked').length > 1) {
-                        alert(file.lang('一次只能重命名一个资料'));
-                        return false;
-                    }
-                    $('input[name="squaredCheckbox"]:checked').each(function () {
-                        id = $(this).val();
-                    });
-                    if (!id) {
-                        alert(file.lang('请选择要重命名的资料'));
-                        return false;
-                    }
-                    name = $('#aname_' + id).val();
-                }
-                $('#newName').val(name.replace(/\.\w+$/, ''));
-                $('#aname').val(name);
-                $('#fileId').val(id);
-                $('#myModal2').modal('show');
-            }
-            function down() {
-                if (Cookies.get('show') == 'block') {
-                    name = 'squaredCheckbox';
-                } else {
-                    name = 'classLists';
-                }
-                var ids = new Array();
-                $('input[name="' + name + '"]:checked').each(function () {
-                    ids.push($(this).val());
-                });
-                var idstr = ids.join(',');
-                if (!idstr) {
-                    alert(file.lang('请选择要下载的文件'));
-                    return false;
-                }
-                href = '';
-                if (idstr.indexOf(",") <= 0) {
-                    if (name == 'squaredCheckbox') {
-                        href = $('#ba_' + idstr).attr('href');
-                    } else {
-                        href = $('#a_' + idstr).attr('href');
-                    }
-                    info = href.match(/urlkey=([^&]+)/);
-                }
-                if (href && info) {
-                    window.location.href = 'index.php?a=down&id=' + idstr;
-                } else {
-                    window.location.href = 'index.php?a=mdown&ids=' + idstr;
-                }
-            }
-            var uploader = new plupload.Uploader({
-                runtimes: 'html5,flash,silverlight,html4',
-                browse_button: 'pickfiles',
-                container: document.getElementById('ucontainer'),
-                url: 'index.php?a=upload',
-                chunk_size: '1024kb',
-                flash_swf_url: 'lib/plupload/js/Moxie.swf',
-                silverlight_xap_url: 'lib/plupload/js/Moxie.xap',
-                filters: {
-                    //          max_file_size : '4096mb',
-                    mime_types: []
-                },
-                multipart_params: {path: $('#path').val()},
-                init: {
-                    FilesAdded: function (up, files) {
-                        plupload.each(files, function (file) {
-                            document.getElementById('progress').innerHTML +=
-                                    '<li><div class="uploadTitle pull-left">' + file.name + '</div>' +
-                                    '<div class="uploadSize pull-left">' + plupload.formatSize(file.size) + '</div>' +
-                                    '<div id="' + file.id + '" class="uploadProportion pull-right">' +
-                                    '</div></li>';
-                            var hash = new hashMe(file.getNative(), function OutputHash(data) {
-                                file.hash = data;
-                                var data = {
-                                    fileName: file.name,
-                                    fileSize: file.origSize,
-                                    hash: data,
-                                    size: up.settings.chunk_size,
-                                    maxFileCount: Math.ceil(file.origSize / up.settings.chunk_size)
-                                };
-                                $.post("index.php?a=uploadCheck", data, function (dy) {
-                                    file.loaded = dy.data;
-                                    setTimeout(function () {
-                                        Message.init();
-                                        uploader.start();
-                                    }, 10);
-                                }, 'json');
-                            });
-                        });
-                    },
-                    UploadComplete: function (up, files) {
-                        if (Cookies.get('show') == 'block') {
-                            type = 1;
-                        } else {
-                            type = 0;
-                        }
-                        plupload.each(files, function (f) {
-                            var data = {
-                                name: f.name,
-                                hash: f.hash,
-                                path: $('#path').val(),
-                                size: f.origSize,
-                                mime: f.type,
-                                type: type
-                            };
-                            $.post("index.php?a=putFile", data, function (ret) {
-                                if (ret.code == 1) {
-                                    document.getElementById(f.id).innerHTML = file.lang('上传成功');
-                                    if (!type) {
-                                        $('#fileList').after($("<div></div>").html(ret.data).text());
-                                        var ps = $(".listTableIn").position();
-                                        if (ps) {
-                                            $(".float_box").css("position", "absolute");
-                                            $(".float_box").css("right", ps.left); //距离左边距
-                                            $(".float_box").css("top", +7); //距离上边距
-                                        }
-                                    } else {
-                                        $('.listType').prepend($("<div></div>").html(ret.data).text());
-                                    }
-                                    setTimeout('Message.close()', 4000);
-                                } else {
-                                    document.getElementById(f.id).innerHTML = file.lang(ret.data);
-                                }
-                            }, 'json');
-                        });
-                        uploader.splice();
-                        uploader.refresh();
-                    },
-                    UploadProgress: function (up, file) {
-                        document.getElementById(file.id).innerHTML = '<div class="progress progress-xs"><div style="width: ' + file.percent + '%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="' + file.percent + '" role="progressbar" class="progress-bar progress-bar-info"></div></div></div>';
-                    }
-                }
-            });
-            uploader.init();
-
-            $(document).ready(function () {
-                var ps = $(".listTableIn").position();
-                if (ps) {
-                    $(".float_box").css("position", "absolute");
-                    $(".float_box").css("right", ps.left); //距离左边距
-                    $(".float_box").css("top", +7); //距离上边距
-                }
-                $(".listTable.pull-left").on('click', 'li', function () {
-                    if ($(this).attr('id') != 'fileList') {
-                        if ($(this).hasClass("selected")) {
-                            $(this).removeClass("selected").find(":checkbox").prop("checked", false);
-                        } else {
-                            $(this).addClass("selected").find(":checkbox").prop("checked", true);
-                        }
-                    }
-                });
-                $(".toggle button").click(function () {
-                    if ($(this).hasClass("active")) {
-                        return false;
-                    } else {
-                        $(this).addClass("active");
-                        $(this).siblings().removeClass("active");
-                        if ($(this).hasClass('listBtn')) {
-                            $('#list').show();
-                            $('#block').hide();
-                            Cookies.set('show', 'list');
-                            $('#rename').hide();
-                            window.location.reload();
-                        } else {
-                            $('#list').hide();
-                            $('#block').show();
-                            Cookies.set('show', 'block');
-                            $('#rename').show();
-                            window.location.reload();
-                        }
-                    }
-                });
-                $('#suser').typeahead({
-                    source: function (query, process) {
-                        $.ajax({
-                            url: 'index.php?m=user&a=getUsersByName',
-                            type: 'post',
-                            data: {name: query},
-                            dataType: 'json',
-                            success: function (ret) {
-                                return process(ret);
-                            }
-                        });
-                    }
-                });
-            })
-            $("#chkAll").click(function () {
-                if (this.checked) {
-                    $('input:checkbox[name="classLists"]').prop("checked", true);
-                } else {
-                    $('input:checkbox[name="classLists"]').prop("checked", false);
-                }
-            });
-            window.onload = function () {
-                $('input:checkbox[name="classLists"]').prop("checked", false);
-            }
-            $('input[name="classLists"]').click(function () {
-                $('#chkAll').attr('checked', $('input[name="classLists"]:checked').length == $('input[name="classLists"]').length);
-            });
-
-            var i = 0;
-            var j = 0;
-            $('#editPwd').click(function () {
-                i++ % 2 == 0 ? $('#editPwdIpt').show() : $('#editPwdIpt').hide();
-            });
-            $('#editDate').click(function () {
-                j++ % 2 == 0 ? $('#editDateIpt').show() : $('#editDateIpt').hide();
-            });
-
-            $("#name, #size, #ctime").click(function () {
-                var by;
-                if ($(this).children().hasClass("downward")) {
-                    $(this).children().removeClass("downward");
-                    $(this).children().addClass("descending");
-                    by = 'desc';
-                } else {
-                    if ($(this).children().hasClass("descending")) {
-                        $(this).children().removeClass("descending");
-                        $(this).children().addClass("downward");
-                        by = 'asc';
-                    } else {
-                        $(this).children().addClass("downward");
-                        by = 'asc';
-                    }
-                }
-                $(this).parent().siblings().children().removeClass("downward");
-                $(this).parent().siblings().children().removeClass("descending");
-                $('#order').val($(this).attr('id'));
-                $('#by').val(by);
-                $.ajax({
-                    url: 'index.php',
-                    type: 'POST',
-                    data: {
-                        path: encodeURIComponent($('#path').val()),
-                        order: $(this).attr('id'),
-                        by: by,
-                        search: encodeURIComponent($('#search').val()),
-                        type: $('#type').val(),
-                        res: 1,
-                        curPage: 1},
-                    dataType: 'html',
-                    timeout: 8000,
-                    success: function (data) {
-                        if (data) {
-                            $(".listTable.pull-left li").not(":first").remove();
-                            $('#fileList').after(data);
-                            var ps = $(".listTableIn").position();
-                            if (ps) {
-                                $(".float_box").css("position", "absolute");
-                                $(".float_box").css("right", ps.left); //距离左边距
-                                $(".float_box").css("top", +7); //距离上边距
-                            }
-                        }
-                    }
-                });
-            });
-            function show() {
-                if ($('#shareType').val() == 1) {
-                    $('#showPub').show();
-                    $('#showSid').hide();
-                } else {
-                    $('#showPub').hide();
-                    $('#showSid').show();
-                }
-            }
-            function page(type) {
-                order = $('#order').val();
-                by = $('#by').val();
-                if (!order) {
-                    order = '';
-                }
-                if (!by) {
-                    by = '';
-                }
-                if (type == -1) {
-                    href = 'index.php?path=&search=&curPage=1&type=0&order=' + order + '&by=' + by;
-                } else if (type == 0) {
-                    href = 'index.php?path=&search=&curPage=0&type=0&order=' + order + '&by=' + by;
-                }
-                window.location.href = href;
             }
         </script> 
 

@@ -39,8 +39,8 @@
                 <table class="table table-striped" cellspacing="0" cellpadding="0">
                     <thead>
                         <tr>
-                            <th>学号</th>
-                            <th>姓名</th>  
+                            <th>组名</th>
+                            <th>负责人</th>  
                             <th>分数</th>  
                         </tr>
                     </thead>

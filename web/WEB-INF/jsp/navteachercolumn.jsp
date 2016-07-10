@@ -29,7 +29,7 @@
                 <span>作业</span>
             </a>
         </li>
-        <li>
+        <li id="resource">
             <a href="resource.htm?course_id=<%= courseId%>">
                 <i class="fa  fa-fw fa-lg fa-folder-open"></i>
                 <span>课程资源</span>
