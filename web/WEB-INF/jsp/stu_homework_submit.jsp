@@ -72,11 +72,7 @@
 
                 <div class="form-group">
                     <label for="name">文本作业</label>
-<<<<<<< HEAD
                     <textarea class="form-control" rows="5" name="text" <%if (hide) {%>disabled="disabled"<%};%>>${homework.text}</textarea>
-=======
-                    <textarea class="form-control" rows="8" name="text" value="${homework.text}" <%if (hide) {%>disabled="disabled"<%};%>></textarea>
->>>>>>> 2ccae8ede2ca5a5b440af31c8aed91d695f1c05d
                 </div> 
 
                 <%if (!task.isText()) {

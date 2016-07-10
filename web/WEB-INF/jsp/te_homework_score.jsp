@@ -44,8 +44,11 @@
 
                     File file = new File(originHomework.getFilePath());
             %>
-            <div class="clearfix">
-                <label style="margin-right: 20px"><%= file.getName()%></label><button class="btn btn-info" onclick="javascript:location.href = 'download.htm?homeworkId=<%= originHomework.getId()%>'">附件下载</button>
+            <div class="clearfix" >
+                <label class="control-label">附件下载</label>
+            </div>
+            <div class="clearfix" style="margin-bottom:20px"> 
+                <button class="btn btn-info" onclick="javascript:location.href = 'download.htm?homeworkId=<%= originHomework.getId()%>'"><%= file.getName()%></button>
             </div>
             <%}%>
             <mvc:form action="setHomeworkScore.htm" modelAttribute="homework" method="post" cssClass="form">
@@ -58,12 +61,13 @@
                     </div>
                 </div>
                 <div class="clearfix">
-                    <textarea  name="comment" class="form-control" rows="5"></textarea>>
+                    <textarea  name="comment" class="form-control" rows="5"></textarea>
                 </div>
                 <div class="col-md-4 col-md-push-10 column" style="margin: 5px 0 0 0">
                     <button type="submit" class="btn btn-primary">提交</button>
-                </div><input type="text" hidden="true" value="<%=taskId%>" name="task_id">
-                <input type="text" hidden="true" value="<%=homework_id%>" name="homework_id">
+                </div>
+                <input type="text" hidden value="<%=taskId%>" name="task_id">
+                <input type="text" hidden value="<%=homework_id%>" name="homework_id">
             </mvc:form>
             <button onclick="javascript:location.href = 'te_homework_list.htm?task_id=<%=taskId%>'" class="btn btn-default">返回</button>
         </div>
