@@ -88,6 +88,10 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="commentController" class="com.teamnx.controller.CommentController">
         <property name="cdi" ref="commentDaoImpl"/>
     </bean>
+    <!--注册一个教务控制器-->
+    <bean id="adminController" class="com.teamnx.controller.AdminController">
+        <property name="smdi" ref="semesterDaoImpl"/>
+    </bean>
     <!--
         注册一个跳转控制器
         控制的跳转包括：
@@ -141,6 +145,10 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
 
     <!--注册一个comment的数据库操作-->
     <bean id="commentDaoImpl" class="com.teamnx.model.CommentDaoImpl">
+        <property name="dbcpBean" ref="dbcpBean"/>
+    </bean>
+    <!--注册一个semester的数据库操作-->
+    <bean id="semesterDaoImpl" class="com.teamnx.model.SemesterDaoImpl">
         <property name="dbcpBean" ref="dbcpBean"/>
     </bean>
 
