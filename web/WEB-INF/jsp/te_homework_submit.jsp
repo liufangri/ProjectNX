@@ -55,7 +55,7 @@
                         <div class="col-md-10 column">
                             <div class="form-group">
                                 <label for="name">作业介绍</label>
-                                <input type="textarea" class="form-control" name="description"/>
+                                <textarea class="form-control" name="description" rows="8"></textarea>
                             </div>
                         </div>
                     </div>

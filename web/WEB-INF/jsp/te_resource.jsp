@@ -58,10 +58,7 @@
             <section>
                 <section>
                     <!--state overview start-->
-                    <div class="row">
-                        <label cl   ass="text-info">目前位置:</label>
-                        <label class="text-info"><%= currentFolder.getPath()%></label> 
-                    </div>
+                   
                     <div class="row state-overview">
                         <ul class="buttons pull-left">
                             <li>
@@ -77,26 +74,7 @@
                                     <i class="icon-folder-close"></i>
                                 </button>
                             </li>
-                            <li>
-                                <button class="btn btn-danger" type="button" data-target="#myModal4" data-toggle="modal">
-                                    <i class="icon-remove"></i>
-                                    删除                            </button>
-                            </li>
-                            <li id="down">
-                                <button class="btn btn-success" type="button" onclick="down();">
-                                    <i class="icon-download"></i>
-                                    下载                            </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-warning" type="button" onclick="modalTrans();$('#sid').val('');" data-toggle="modal">
-                                    <i class="icon-random"></i>
-                                    移动                            </button>
-                            </li>
-                            <li id="rename" style="display: none;" >
-                                <button class="btn btn-danger" type="button" onclick="modalName(0, '');" data-toggle="modal">
-                                    <i class="icon-edit"></i>
-                                    重命名                            </button>
-                            </li>
+                            
                         </ul>   
                         <input type="hidden" id="path" name="path" value="">
                         <input type="hidden" id="dpath" name="dpath">
@@ -132,7 +110,7 @@
                                 <li style="list-style-type:none;" id="fileList">
                                     <div class="listTableTop pull-left">
                                         <div class="listTableTopL pull-left">
-                                            <div class="cBox"><input id="chkAll" name="chkAll" type="checkbox"></div>
+
                                             <div class="name" id="name">名称<div class="seq"></div></div>
                                         </div>
 
@@ -150,7 +128,7 @@
 
                                     <div class="listTableIn pull-left">
                                         <div class="listTableInL pull-left">
-                                            <div class="cBox"><input name="classLists" id="classLists190" type="checkbox" value="190" class="classLists"></div>
+
                                             <div class="name">
                                                 <img src="<%=path%>/images/<%if (r.isFolder()) {%>folder.jpg<%} else {%>u247.png<%}%>"/> 
                                                 <a target="_self" id="a_190"   href="<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>">
@@ -173,7 +151,9 @@
                                                     </button>
                                                     <ul class="dropdown-menu" role="menu">
                                                         <li><a href="#" onclick="deleteResource('<%= r.getId()%>');" data-toggle="modal"><i class="icon-remove"></i>删除</a></li>
+                                                        <%if (!r.isFolder()){%>
                                                         <li><a href="download.htm?resourceId=<%=r.getId()%>" ><i class="icon-remove"></i>下载</a></li>
+                                                        <%}%>
                                                         <li><a href="#" onclick="renameResource('<%= r.getId()%>');"><i class="icon-remove"></i>重命名</a></li>
                                                         <li><a href="#" onclick="$('#sid').val('<%= r.getId()%>');modalTrans('<%= r.getCourseId()%>', '<%= r.getId()%>');" data-toggle="modal"><i class="icon-remove"></i>移动到</a></li>
                                                     </ul>

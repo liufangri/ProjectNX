@@ -352,16 +352,20 @@ public class RedirectController {
 	request.setAttribute("course_id", courseId);
 	request.setAttribute("current_folder", currentFolder);
 	request.setAttribute("resources", resources);
-	switch (user.getCharacter()) {
-	    case User.STUDENT:
-		mav.setViewName("stu_resource");
-		break;
-	    case User.TEACHER:
-		mav.setViewName("te_resource");
-		mav.addObject("new_resource", new Resource());
-		break;
-	    case User.ADMIN:
-		break;
+	if (user != null) {
+	    switch (user.getCharacter()) {
+		case User.STUDENT:
+		    mav.setViewName("stu_resource");
+		    break;
+		case User.TEACHER:
+		    mav.setViewName("te_resource");
+		    mav.addObject("new_resource", new Resource());
+		    break;
+		case User.ADMIN:
+		    break;
+	    }
+	} else {
+	    mav.setViewName("login");
 	}
 	return mav;
     }
