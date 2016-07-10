@@ -3,10 +3,14 @@
     Created on : 2016-7-3, 12:21:47
     Author     : coco
 --%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.teamnx.model.Message"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
     String path = request.getContextPath();
+    ArrayList<Message> unreadMessageList = (ArrayList<Message>) session.getAttribute("unread_message");
+    
 %>
 <link href="<%=path%>/lib/css/navbar.css" rel="stylesheet">
 <link href="<%=path%>/lib/css/AdminLTE.min.css" rel="stylesheet"/>
@@ -117,7 +121,7 @@
                                     </li>
                                     <li>
                                         <a href="#">
-                                            
+
                                             <h4>
                                                 Reviewers
                                                 <small><i class="fa fa-clock-o"></i> 2 days</small>
