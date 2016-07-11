@@ -61,7 +61,7 @@
                         <h4>作业评语：</h4>
                     </div>
                     <div class="col-md-4 column">
-                        <h4>作业评分：<input type="number" name="score" min="0" max="100" /></h4>                    
+                        <h4>作业评分：<input type="number" name="score" min="0" max="100" required="required" /></h4>                    
                     </div>
                 </div>
                 <div class="clearfix">

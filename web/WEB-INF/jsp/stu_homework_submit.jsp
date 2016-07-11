@@ -76,18 +76,17 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <mvc:form action="submitHomework.htm" modelAttribute="homework" method="post" cssClass="form" enctype="multipart/form-data">
                 <div style="display:table">
-                    <div style="display:table-cell">
-                        <input type="button" class="btn btn-default" value="返回列表" onclick="javascript:location.href = 'stu_homework.htm?course_id=<%= task.getCourseId()%>'">
+                    <div>
+                        <button class="btn btn-info" type="button" data-target="#myModal5" data-toggle="modal"
+                                onclick="javascript:location.href = 'stu_homework.htm?course_id=<%= task.getCourseId()%>'">
+                            <i class="glyphicon glyphicon-chevron-left" style="margin-right: 3px" ></i>返回列表</button>
                     </div>
-                    <div style="padding-left: 12px;display:table-cell">
-                        <h1><%= task.getName()%></h1>
+                    <div>
+                        <h2><span class="fa-border" style="border-radius: 5px"><%= task.getName()%></span></h2>
                     </div>
 
                 </div>
-                <div>
-                    <h1>作业描述</h1>   
-                </div>
-
+                 
                 <div class="form-group">
 
                     <% if (group.getStatus() == 2 && origin_homework != null && origin_homework.getStudentName() != null && !origin_homework.getStudentName().equals("")) {%>
@@ -99,6 +98,7 @@
                     <%}%>
                     <label class="text-danger" for="name"<%if (!hide) {%>hidden="hidden"<%}%>><% if (!courseHide) { %>不在提交时间范围内<%} else {%>您还没有加入队伍，或者队伍还没有通过审核，无法提交作业<%}%></label>
                 </div> 
+                <label for="name">作业描述</label>
                 <div class="form-group">
                     <textarea rows="8" class="form-control" readonly ><%= task.getDescription()%></textarea>
                 </div>  
@@ -131,7 +131,7 @@
                 <div class="clearfix" >
                     <label class="control-label">附件下载</label>
                 </div>
-                <div class="clearfix" style="margin-bottom:20px">
+                <div class="clearfix">
                     <a href="download.htm?homeworkId=<%= origin_homework.getId()%>"><button type="button" class="btn btn-info" > <%= file.getName()%></button></a>
                 </div>
                 <%}%>
@@ -139,9 +139,6 @@
                     <input type="submit" class="btn btn-primary" 
                            <%if (hide) {%>disabled="disabled"<%}%>
                            onclick="return checkNull();" value="提交">
-                    <button type="button" class="btn btn-primary" onclick="javascript:location.href = 'stu_homework.htm?course_id=<%= task.getCourseId()%>'">
-                        返回
-                    </button>
                 </div> 
             </mvc:form>
         </div>

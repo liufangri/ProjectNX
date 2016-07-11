@@ -24,6 +24,16 @@
         <link rel="stylesheet" type="text/css" media="all" href="<%=path%>/lib/css/daterangepicker-bs3.css" />
         <script type="text/javascript" src="<%=path%>/lib/js/moment.js"></script>
         <script type="text/javascript" src="<%=path%>/lib/js/daterangepicker.js"></script>
+        <script type="text/javascript">
+            function checkNull() {
+                if (nx_check($("#homeworkName"), 45)) {
+                    return true;
+                } else {
+                    $("#homeworkName").popover("toggle");
+                    return false;
+                }
+            }
+        </script>
     </head>
     <body>
         <jsp:include page="navbar.jsp"/>
@@ -50,7 +60,8 @@
                         <div class="col-md-10 column">
                             <div class="form-group">
                                 <label for="name" style="padding-bottom: 5px; padding-left: 3px">作业名称</label>
-                                <input type="text" class="form-control" placeholder="文本输入" name="name"/>
+                                <input type="text" id="homeworkName" class="form-control" placeholder="文本输入" name="name" data-container="body" data-toggle="popover"
+                                       data-placement="top" data-content="作业名称长度应在1-45之间" required="required">
                             </div>
                         </div>
                     </div>
@@ -99,7 +110,7 @@
                                 </span>
                                 <label class="form-control" for="name" >是否包括附件</label>
                             </div> 
-                            <div style="padding-top: 10px"><input type="submit" value="提交" class="btn btn-primary" /></div>
+                            <div style="padding-top: 10px"><input type="submit" onclick="return checkNull();" value="提交" class="btn btn-primary" /></div>
                         </div>
                     </div>
                     <div class="row clearfix">

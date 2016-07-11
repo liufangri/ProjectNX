@@ -20,12 +20,12 @@
         function checkNull() {
             var errorMessage = document.getElementById("error_text");
             var formGroup = document.getElementById("submit_form");
-            if ($.trim($("#comment_input_text").val()) === "") {
+            if (nx_check($("#comment_input_text"), 128)) {
+                return true;
+            } else {
                 errorMessage.style.visibility = "visible";
                 formGroup.className = "form-group has-error";
                 return false;
-            } else {
-                return true;
             }
         }
     </script>
@@ -73,7 +73,7 @@
                 <div class="clearfix">
                     <div class="form-group" id="submit_form">
                         <input type="text" id="comment_input_text" class="form-control" name="comment">
-                        <label class="control-label" id="error_text" style="visibility: hidden">评论不能为空(｡・`ω´･)</label>
+                        <label class="control-label" id="error_text" style="visibility: hidden">留言长度应在1-128之间(不包含空格)</label>
                     </div>
                     <input name="course_id" hidden="hidden" value="${course_id}"/>
                     <input name="user_name" hidden="hidden" value="<%=user.getName()%>"/>

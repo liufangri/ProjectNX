@@ -75,10 +75,13 @@
                                 </div>
                                 <div class="submit-box clearfix">
                                     <input id="type" type="hidden" value="ldap"/>
-                                    <button id="submitButton" type="submit">提交</button>
+                                    <button id="submitButton" type="submit" style="border-radius:3px">提交</button>
                                 </div>
                             </mvc:form>
-                            <button id="upload_database" onclick="javascrtpt:window.location.href = 'uploadPage.htm'" >数据库导入</button>
+                            <div class="clearfix">
+                                <button class="btn btn-info" type="button" style="margin-left:70px"
+                                        onclick="javascrtpt:window.location.href = 'uploadPage.htm'">数据库导入</button>
+                            </div>
                         </div>
                     </div>
                 </div>

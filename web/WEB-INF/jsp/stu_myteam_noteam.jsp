@@ -9,14 +9,22 @@
     <%
         String path = request.getContextPath();
         String course_id = (String) request.getAttribute("course_id");
-        boolean in_group = false;
-        in_group = (Boolean) request.getAttribute("in_group");
     %>
     <jsp:include page="header.jsp"/>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="<%=path%>/lib/css/dashboard.css" rel="stylesheet">
         <link href="<%=path%>/lib/css/resourceindex.css" rel="stylesheet" />
+        <script type="text/javascript">
+            function checkNull() {
+                if (nx_check($("#folderName"), 45)) {
+                    return true;
+                } else {
+                    $("#folderName").popover("toggle");
+                    return false;
+                }
+            }
+        </script>
     </head>
     <body>
         <jsp:include page="navbar.jsp"/>
@@ -28,20 +36,18 @@
             </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <div class="clearfix">
-                <h3 style="color: red"><span class="glyphicon glyphicon-exclamation-sign"></span>你还不属于任何团队</h3>
+            <div class="alert alert-warning">
+                <i class="fa fa-warning fa-lg"></i>
+                <strong style="padding-left: 6px">你还没有所属的团队</strong>
             </div>
-            <% if (!in_group) {%>
             <div>
                 <button type="button" class="btn btn-default" data-target="#myModal1" data-toggle="modal">组建新的团队</button>
                 <a href="studentGroupList.htm?course_id=<%=course_id%>" />
                 <button type="button" class="btn btn-default">申请加入团队</button>
                 </a>
             </div>
-            <%}else{%>
-            <label class="text-info">您正在申请队伍中</label>
-            <%}%>
-            <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal1" class="modal fade in" style="display: none;">
+            <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+                  id="myModal1" class="modal fade in" style="display: none;">
                 <div class="modal-dialog">
                     <mvc:form action="establishGroup.htm" method="post" modelAttribute="group">
                         <div class="modal-content">
@@ -53,7 +59,8 @@
                                 <div class="clearfix">
                                     <div class="modalTitleSmall pull-left">名称：</div>
                                     <div class="col-lg-10 marginB10 pull-right">
-                                        <input class="form-control" name="name" id="folderName" type="text" placeholder="请输入团队名称">
+                                        <input class="form-control" data-container="body" data-toggle="popover" data-placement="top" 
+                                               data-content="团队名称长度应在1-45之间" name="name" id="folderName" type="text" required="required" placeholder="请输入团队名称">
                                         <input name="courseId" hidden="hidden" value="<%=course_id%>">
                                         <input name="status" hidden="hidden" value="0">
                                         <input name="maxMember" hidden="hidden" value="${max_member}">
@@ -63,7 +70,7 @@
                                 <div class="clearfix"><h4>负责人：${user_name}</h4></div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-success">确定</button>
+                                <button type="submit" class="btn btn-success" onclick="return checkNull();">确定</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                             </mvc:form> 
                         </div>
@@ -74,6 +81,7 @@
         <script type="text/javascript">
             $('#myModal1').on('hidden.bs.modal', function () {
                 $(this).find('input').val("");
+                $('#folderName').popover('hide');
             });
         </script>
     </body>

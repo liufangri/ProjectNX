@@ -21,10 +21,10 @@
             </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">${course.name}</h1>   
-            <h1 class="page-header">${course.position}</h1>
-            <h1 class="page-header">${course.schedule}</h1>    
-            <h1 class="page-header">${course.teachers}</h1>    
+            <h3 class="page-header">${course.name}</h3>   
+            <h1 class="page-header">${course.position}</h3>
+            <h3 class="page-header">${course.schedule}</h3>    
+            <h3 class="page-header">${course.teachers}</h3>    
 
         </div>
 

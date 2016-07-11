@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2" style="padding-left: 40px">
-            <h1><%= task.getName()%></h1>
+            <h2><span class="fa-border" style="border-radius: 5px "><%= task.getName()%></span></h2>
             <div class="table-responsive">
                 <table class="table table-striped" cellspacing="0" cellpadding="0">
                     <thead>

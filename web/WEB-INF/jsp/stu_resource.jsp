@@ -26,9 +26,6 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="iBarn">
-        <link rel="shortcut icon" href="img/favicon.png">
-        <title>iBarn</title>
         <link href="<%=path%>/lib/css/resourceindex.css" rel="stylesheet" />
         <script src="<%=path%>/lib/js/file.js"></script>
         <link href="<%=path%>/lib/css/fileinput.min.css" rel="stylesheet">
@@ -76,9 +73,9 @@
                                 <li><a href="resource.htm?course_id=<%= currentFolder.getCourseId()%>">所有资料</a></li>
                                     <%
                                         for (int i = 2; i < folders.length - 2 && i < 8; i++) {
-                                            if(!(folders.length == 9 &&i==6)){
+                                            if (!(folders.length == 9 && i == 6)) {
                                     %>
-                                
+
                                 <li><%= folders[i]%></li><%}%>
                                     <%if (i == 6) {%>
                                 <li>...</li>
@@ -107,9 +104,9 @@
                                             <div class="name" id="name">名称<div class="seq"></div></div>
                                         </div>
                                         <div class="listTableTopR pull-right">
-                                             <div class="updateTime" id="ctime">上传时间<div class="seq"></div></div>
                                             <div class="publisher" id="publisher">发布人<div class="seq"></div></div>
-                                           
+                                            <div class="updateTime" id="ctime">上传时间<div class="seq"></div></div>
+
                                         </div>
                                     </div>
                                 </li>
@@ -118,9 +115,9 @@
                                 <li  style="list-style-type:none;" id="li_190">
                                     <div class="listTableIn pull-left">
                                         <div class="listTableInL pull-left">
-                                            <div class="name">
-                                                <img src="<%=path%>/images/<%if (r.isFolder()) {%>folder.jpg<%} else {%>u247.png<%}%>"/> 
-                                                <a target="_self" id="a_190"   href="<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>">
+                                            <div class="name" onclick="location.href = '<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>'">
+                                                <i onclick="location.href = '<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>'" style="vertical-align: middle" class="fa fa-2x <%if (r.isFolder()) {%>  fa-folder  <%} else {%>fa-file-o  <%}%>" ></i>
+                                                <a style="padding-left:5px" target="_self" id="a_190"   href="<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>">
                                                     <em class="folder"></em>
                                                 </a>
                                                 <span class="div_pro">
@@ -130,15 +127,14 @@
 
                                         </div>
                                         <div class="listTableInR pull-right">
-                                            <div class="updateTime"><%= sdf.format(new Date(r.getLastChange()))%></div>
                                             <div class="publisher"><%= r.getTeacherName()%></div>
-                                            
+                                            <div class="updateTime"><%= sdf.format(new Date(r.getLastChange()))%></div>
                                             <div>
                                                 <%
                                                     if (!r.isFolder()) {
                                                 %>
                                                 <div class="btn-group">
-                                                    <a href="download.htm?resourceId=<%=r.getId()%>" ><button type="button" class="btn btn-primary">下载</button></a>
+                                                    <a href="download.htm?resourceId=<%=r.getId()%>" ><button type="button" class="btn btn-primary"><i class="fa fa-download"></i></button></a>
                                                 </div>
                                                 <%}%>
                                             </div>

@@ -75,7 +75,7 @@
                             <td>
                                 <div  class="btn-group" >
                                     <%if (!sg.getStudentId().equals(managerId)) {%>                                    
-                                    <button class="btn btn-danger" onclick="location.href='removeMember.htm?course_id=${course_id}&sg_id=<%=sg.getId()%>'">移除</button>
+                                    <button class="btn btn-warning" onclick="location.href='removeMember.htm?course_id=${course_id}&sg_id=<%=sg.getId()%>'">移除</button>
                                     <button class="btn btn-success" onclick="location.href='setManager.htm?course_id=${course_id}&group_id=<%=sg.getGroupId()%>&student_id=<%=sg.getStudentId()%>'">设为负责人</button>                                    
                                     <%}%>
                                 </div>

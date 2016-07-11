@@ -134,7 +134,7 @@
                                     <div class="listTableIn pull-left">
                                         <div class="listTableInL pull-left">
 
-                                            <div class="name">
+                                            <div class="name" onclick="location.href = '<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>'">
                                                 <i onclick="location.href = '<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>'" style="vertical-align: middle" class="fa fa-2x <%if (r.isFolder()) {%>  fa-folder  <%} else {%>fa-file-o  <%}%>" ></i>
                                                 <a style="padding-left:5px" target="_self" id="a_190"   href="<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>">
                                                     <em class="folder"></em>
@@ -195,7 +195,7 @@
                                         <h4 class="modal-title">上传文件</h4>
                                     </div>
                                     <div class="modal-body pull-left">
-                                        <input id="upload" type="file"  class="file-loading" name="uploadFile">
+                                        <input id="upload" type="file"  class="file-loading" required="required" name="uploadFile">
                                     </div>
                                     <input type="text" name="courseId" value="<%= currentFolder.getCourseId()%>" hidden="hidden">
                                     <input type="text" name="fatherId" value="<%= currentFolder.getId()%>" hidden="hidden">
@@ -292,14 +292,15 @@
                                         <div>
                                             <div class="modalTitleSmall pull-left">名称：</div>
                                             <div class="col-lg-10 marginB10 pull-left">
-                                                <input class="form-control" id="folderName" type="text" placeholder="请输入名称" name="name">
+                                                <input class="form-control" id="folderName" type="text" placeholder="请输入名称" required="required" name="name"
+                                                       data-container="body" data-toggle="popover" data-placement="top" data-content="文件夹名称长度应在1-45之间">
                                                 <input type="text" hidden="hidden" name="current_resource_id" value="<%= currentFolder.getId()%>">
                                                 <input type="text" hidden="hidden" name="course_id" value="<%= currentFolder.getCourseId()%>">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success">确定</button>
+                                        <button type="submit" class="btn btn-success" onclick="return checkNull();">确定</button>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                     </div>
                                 </form>
@@ -328,12 +329,7 @@
             function check(obj)
             {
                 if (!nx_check(obj,32)) {
-                    var oTimer = null;
-                    var i = 0;
-                    oTimer = setInterval(function () {
-                        i++;
-                        i == 5 ? clearInterval(oTimer) : (i % 2 == 0 ? obj.css("background-color", "#ffffff") : obj.css("background-color", "#ffd4d4"));
-                    }, 200);
+                    $("#folderName").popover("toggle");
                     return false;
                 }
                 return true;

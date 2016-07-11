@@ -24,7 +24,7 @@
         </li>
         <li id="homework">
             <a href="stu_homework.htm?course_id=<%=courseId%>">
-                <i class="fa fa-fw fa-lg fa-pencil-square-o"></i>
+                <i class="fa fa-fw fa-lg fa-pencil-square"></i>
                 <span>作业</span>
             </a>
         </li>

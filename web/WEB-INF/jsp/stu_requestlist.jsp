@@ -28,6 +28,10 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div>
+                <button class="btn btn-info" type="button"
+                        onclick="location.href = 'toMyGroup.htm?course_id=${course_id}'">
+                    <i class="glyphicon glyphicon-chevron-left" style="margin-right: 3px" ></i>返回列表</button></div>
+            <div>
                 <h3>申请名单：</h3>
             </div>
             <div class="table-responsive">
@@ -59,9 +63,6 @@
                         %>
                     </tbody>
                 </table>
-            </div>
-            <div>
-                <a href="toMyGroup.htm?course_id=${course_id}"><button type="button" class="btn btn-default">返回</button></a>
             </div>
         </div>
     </body>

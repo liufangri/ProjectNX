@@ -35,4 +35,5 @@
     <script src="<%=path%>/lib/js/jquery.min.js"></script>
     <script src="<%=path%>/lib/js/bootstrap.min.js"></script>
     <script src="<%=path%>/lib/js/check.js"></script>
+    <title>课程中心</title>
 </head>
