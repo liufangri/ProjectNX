@@ -63,6 +63,7 @@ public class LoginController {
         session.setAttribute("year", year);
         session.setAttribute("season", season);
         session.setAttribute("semester", semester.getSemester());
+        session.setAttribute("start_day", semester.getStart_day());
 	if (findedUser != null) {
 	    String password = MD5.Md5_16(user.getPassword());
 	    if (password.equals(findedUser.getPassword())) {

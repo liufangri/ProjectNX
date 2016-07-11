@@ -122,6 +122,7 @@ public class SemesterDaoImpl implements SemesterDao {
                 semester = new  Semester();
                 semester.setYear(rs.getInt("year"));
                 semester.setSemester(rs.getInt("semester"));
+                semester.setStart_day(rs.getDate("start_day"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
