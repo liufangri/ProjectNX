@@ -327,7 +327,7 @@
             });
             function check(obj)
             {
-                if ($.trim(obj.val()) === '') {
+                if (!nx_check(obj,32)) {
                     var oTimer = null;
                     var i = 0;
                     oTimer = setInterval(function () {
