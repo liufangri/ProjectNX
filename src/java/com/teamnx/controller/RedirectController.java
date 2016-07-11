@@ -55,7 +55,6 @@ public class RedirectController {
      * @return
      */
     @RequestMapping(value = "usercenter")
-
     public ModelAndView toUserCenter(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 	User user = (User) session.getAttribute("user");
 	ModelAndView mav = new ModelAndView("usercenter");
@@ -71,6 +70,7 @@ public class RedirectController {
 		    request.setAttribute("courses", courses);
 		    break;
 		case User.ADMIN:
+		    mav = new ModelAndView("admin");
 		    break;
 	    }
 	} else {
@@ -152,7 +152,7 @@ public class RedirectController {
     }
 
     /**
-     * 处理到学生作业页面的跳转
+     * 到学生作业页面的跳转
      *
      * @param request
      * @return
@@ -176,6 +176,7 @@ public class RedirectController {
 		sh.setTaskName(t.getName());
 		if (homework == null) {
 		    sh.setState(false);
+		    sh.setScore(-1);
 		} else {
 		    sh.setState(true);
 		    sh.setHomeworkId(homework.getId());
@@ -371,8 +372,11 @@ public class RedirectController {
 
 	} else {
 	    currentFolder = rdi.findResourceById(folderId);
+
 	    resources = rdi.findChildrenByFolderId(currentFolder.getId());
 	}
+	String fullPath = getFullPath(currentFolder);
+	request.setAttribute("full_path", fullPath);
 	request.setAttribute("course_id", courseId);
 	request.setAttribute("current_folder", currentFolder);
 	request.setAttribute("resources", resources);
@@ -418,6 +422,21 @@ public class RedirectController {
 	    return resource;
 	}
 
+    }
+
+    /**
+     * 获得文件夹的路径
+     *
+     * @param folder
+     * @return
+     */
+    private String getFullPath(Resource folder) {
+	if (folder.getFatherId() == null) {
+	    return "\\" + folder.getName();
+	} else {
+	    Resource father = rdi.findResourceById(folder.getFatherId());
+	    return getFullPath(father) + "\\" + folder.getName();
+	}
     }
 
     public void setTdi(TaskDaoImpl tdi) {

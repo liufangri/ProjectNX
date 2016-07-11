@@ -292,7 +292,7 @@ public class HomeworkDaoImpl implements HomeworkDao {
     @Override
     public boolean update(Homework homework) {
 	Connection connection = dbcpBean.getConnection();
-	String sql = "UPDATE homework SET file_path = ?,score = 0, text = ? WHERE id = ?";
+	String sql = "UPDATE homework SET file_path = ?,score = -1, text = ? WHERE id = ?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, homework.getFilePath());

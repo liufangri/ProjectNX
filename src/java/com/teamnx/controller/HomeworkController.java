@@ -51,8 +51,8 @@ public class HomeworkController {
 	    Course course = cdi.findCourseById(homework.getCourseId());
 	    String originHomeworkId = request.getParameter("origin_homework_id");
 	    Homework originHomework = hdi.findHomeworkById(originHomeworkId);
-
-	    if (!uploadFile.isEmpty()) {
+	    homework.setScore(-1);
+	    if (uploadFile != null && !uploadFile.isEmpty()) {
 		if (originHomework != null) {
 		    File oldFile = new File(session.getServletContext().getRealPath("/WEB-INF") + originHomework.getFilePath());
 		    if (oldFile.delete()) {
@@ -81,7 +81,6 @@ public class HomeworkController {
 		//尚未提交作业
 		String id = MD5.Md5_16(homework.getTaskId() + homework.getStudentName() + new Date().getTime());
 		homework.setId(id);
-
 		if (hdi.insert(homework)) {
 		    //添加作业成功
 		    response.sendRedirect("stu_homework.htm?course_id=" + course.getId());

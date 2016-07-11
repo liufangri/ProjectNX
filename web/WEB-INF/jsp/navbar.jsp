@@ -3,6 +3,7 @@
     Created on : 2016-7-3, 12:21:47
     Author     : coco
 --%>
+<%@page import="java.lang.Integer"%>
 <%@page import="com.teamnx.model.User"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.teamnx.model.Message"%>
@@ -12,13 +13,15 @@
     Boolean isread = false;
     String path = request.getContextPath();
     User user = (User) session.getAttribute("user");
-    ArrayList<Message> unreadMessageList = (ArrayList<Message>) session.getAttribute("unread_message");
+    ArrayList<Message> unreadMessageList = (ArrayList<Message>) session.getAttribute("unread_message_list");
+    String courseId = (String) request.getParameter("course_id");
+    int num = unreadMessageList.size();
+    int week = (Integer) session.getAttribute("current_week");
+    int semester = (Integer) session.getAttribute("current_semester");
+    boolean inUsercenter = courseId == null;
 %>
 <!--如果没有未读 就不用发信息给服务器-->
-<%if (false) {
-        isread = true;
-    }
-%>  
+
 
 <link href="<%=path%>/lib/css/navbar.css" rel="stylesheet">
 <link href="<%=path%>/lib/css/AdminLTE.min.css" rel="stylesheet"/>
@@ -27,21 +30,27 @@
     {
         var myDate = new Date();
         document.getElementById("time").innerHTML = myDate.getFullYear() + "年" + (myDate.getMonth() + 1) + "月" + myDate.getDate() + "日";
-    })
+    });
     function isRead()
     {
-    <%isread = true;%>
-        $.ajax({
-            url: 'isread.htm',
-            data: {
-                'user_id': ('<%= user.getId()%>'),
-            },
-            type: 'POST',
-            dataType: 'json',
-            timeout: 8000,
-            success: function (data) {
-            }
-        });
+        var checkInput = document.getElementById("check_for_read");
+        if (checkInput === "readed") {
+        } else {
+
+            checkInput.value = "readed";
+            $.ajax({
+                url: 'isread.htm',
+                data: {
+                    'user_id': ('<%= user.getId()%>'),
+                },
+                type: 'POST',
+                dataType: 'json',
+                timeout: 8000,
+                success: function (data) {
+
+                }
+            });
+        }
     }
 
     function goTopEx() {
@@ -70,6 +79,7 @@
     }
 
 </script>
+<input type="text" value="" id="check_for_read" hidden="true">
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -85,59 +95,75 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
 
-                <li><a href="#">教学周次</a></li>
+                <li><a>教学周次</a></li>
                 <li><a id="time"></a></li>
+                    <% if (!inUsercenter) { %>
                 <li>
                     <a id="backtocenter" href="usercenter.htm">返回课程页面</a>
                 </li>
+                <%} else {%>
+                <li>
+                    <div  class="btn-group" >
+                        <button id="semester" type="button" class="btn dropdown-toggle " 
+                                data-toggle="dropdown">
+                            2015年春季 <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <!--                            TODO-->
+                            <li><a href="#">2015年春季</a></li>
+                            <li><a href="#">2015年夏季</a></li>
+                            <li><a href="#">2015年秋季</a></li>
+                            <li><a href="#">2016年春季</a></li>
+                            <li><a href="#">2016年夏季</a></li>
+                            <li><a href="#">2016年秋季</a></li>
+                            <li><a href="#">2017年春季</a></li>
+                            <li><a href="#">2017年夏季</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <%}%>
+                <li><a><%= user.getName()%></a></li>
+                        <% if (user.getCharacter() == User.STUDENT) {%>
+                <li class="dropdown messages-menu" onclick="isRead();">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">系统消息
 
-                <!--                <li><a href="#">系统消息</a></li>-->
-                <li class="dropdown messages-menu" onclick="isRead()">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%= user.getName()%>
                         <i class="fa fa-bell-o"></i>
-                        <span class="label label-success">4</span>
+                        <%if (num != 0) {%><span class="label label-success"><%= num%></span><%}%>
                     </a>
                     <ul class="dropdown-menu">
-                        <%if (false) {%>
+                        <%if (num > 0) {%>
 
-                        <li class="header" style="text-align: center">您有 条新消息</li>
-                            <%} else {%>
-                        <li class="header" style="text-align: center">没有新消息</li>
-                            <%}%>
+                        <li class="header" style="text-align: center">您有<%= num%>条新消息</li>
+
                         <li>
                             <!-- inner menu: contains the actual data -->
 
                             <ul class="menu" style="overflow-y: auto; width: 100%; height: 200px;">
-                                <%if (true) {%>
 
-                                <%for (int i = 1; i <= 5; i++) {%>
-                                <li><!-- start message -->
+                                <%for (int i = 0; i <= 5 && i < num; i++) {%>
+                                <li>
                                     <a href="#">      
                                         <h4>
-                                            Support Team
+                                            <%= unreadMessageList.get(i).getText()%>
                                         </h4>
                                     </a>
                                 </li>       
                                 <%}%>
-                                <!--                                //else-->
-                                <%for (int i = 1; i <= 5; i++) {%>
-                                <!--                                <li> start message 
-                                                                    <a href="#">      
-                                                                        <h4>
-                                                                            Support Team
-                                                                        </h4>
-                                                                    </a>
-                                                                </li>     -->
-                                <%  }
-                                    }
-                                %>
+
+
                             </ul>
 
                         </li>
-                        <li class="footer"><a href="#">查看所有消息</a></li>
+
+
+                        <%} else {%>
+                        <li class="header" style="text-align: center">没有新消息</li>
+                            <%}%>
+
+                        <li class="footer"><a href="allMessage.htm">查看所有消息</a></li>
                     </ul>
                 </li>
-
+                <%}%>
                 <li><a href="logout.htm">注销</a></li>
             </ul>
         </div>

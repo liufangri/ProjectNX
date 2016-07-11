@@ -8,6 +8,7 @@
 <%
     Course course = (Course) request.getAttribute("current_course");
     String courseId = (String) request.getAttribute("course_id");
+    boolean isTeamCourse = courseId.charAt(courseId.length() - 1) == '1';
 %>
 <script>
     window.onload = function ()
@@ -35,12 +36,14 @@
                 <span>课程资源</span>
             </a>
         </li>
+        <% if (isTeamCourse) {%>
         <li id="team">
             <a href="teacherGroupList.htm?course_id=<%= courseId%>">
                 <i class="fa  fa-fw fa-lg fa-group"></i>
                 <span>团队管理</span>
             </a>
         </li>
+        <%}%>
         <li id="studentlist">
             <a href="te_studentlist.htm?course_id=<%= courseId%>">
                 <i class="fa  fa-fw fa-lg fa-file"></i>
@@ -48,7 +51,7 @@
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="commentList.htm?course_id=<%= courseId%>">
                 <i class="fa  fa-fw fa-lg fa-comments"></i>
                 <span>学生留言</span>
             </a>

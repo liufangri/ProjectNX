@@ -101,7 +101,7 @@ public class MessageDaoImpl implements MessageDao {
     public ArrayList<Message> getAllMessage(String receiverId) {
 	ArrayList<Message> messageList = new ArrayList<Message>();
 	Connection connection = dbcpBean.getConnection();
-	String sql = "SELECT * FROM message WHERE receicer_id = ?";
+	String sql = "SELECT * FROM message WHERE receiver_id = ?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, receiverId);
@@ -134,7 +134,7 @@ public class MessageDaoImpl implements MessageDao {
     public ArrayList<Message> getAllUnreadMessage(String receiverId) {
 	ArrayList<Message> messageList = new ArrayList<Message>();
 	Connection connection = dbcpBean.getConnection();
-	String sql = "SELECT * FROM message WHERE receicer_id = ? AND status = ?";
+	String sql = "SELECT * FROM message WHERE receiver_id = ? AND status = ?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, receiverId);
@@ -198,6 +198,28 @@ public class MessageDaoImpl implements MessageDao {
 		Logger.getLogger(MessageDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
 	    }
 	    return message;
+	}
+    }
+
+    @Override
+    public boolean setAllReaded(String receiverId) {
+	Connection connection = dbcpBean.getConnection();
+	String sql = "UPDATE message SET status = ? WHERE receiver_id = ?";
+	try {
+	    PreparedStatement ps = connection.prepareStatement(sql);
+	    ps.setBoolean(1, true);
+	    ps.setString(2, receiverId);
+	    ps.executeUpdate();
+	    return true;
+	} catch (SQLException ex) {
+	    Logger.getLogger(MessageDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    return false;
+	} finally {
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(MessageDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	}
     }
 

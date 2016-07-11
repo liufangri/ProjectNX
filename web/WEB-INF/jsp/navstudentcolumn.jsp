@@ -6,6 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     String courseId = (String) request.getAttribute("course_id");
+    boolean isTeamCourse = courseId.charAt(courseId.length() - 1) == '1';
 %>
 <script>
     window.onload = function ()
@@ -27,20 +28,22 @@
                 <span>作业</span>
             </a>
         </li>
-        <li>
+        <li id="resource">
             <a href="resource.htm?course_id=<%=courseId%>">
                 <i class="fa  fa-fw fa-lg fa-folder-open"></i>
                 <span>课程资源</span>
             </a>
         </li>
+        <% if (isTeamCourse) {%>
         <li id="team">
             <a href="toMyGroup.htm?course_id=<%=courseId%>">
                 <i class="fa  fa-fw fa-lg fa-group"></i>
                 <span>团队</span>
             </a>
         </li>
-        <li>
-            <a href="#">
+        <%}%>
+        <li id="comment">
+            <a href="commentList.htm?course_id=<%= courseId%>">
                 <i class="fa  fa-fw fa-lg fa-comments"></i>
                 <span>留言板</span>
             </a>

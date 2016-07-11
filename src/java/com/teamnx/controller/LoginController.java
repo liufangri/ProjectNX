@@ -5,10 +5,13 @@
  */
 package com.teamnx.controller;
 
+import com.teamnx.model.Message;
+import com.teamnx.model.MessageDaoImpl;
 import com.teamnx.model.User;
 import com.teamnx.model.UserDaoImpl;
 import com.teamnx.util.MD5;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController {
 
     private UserDaoImpl udi;
+    private MessageDaoImpl mdi;
 
     /**
      * 处理登录操作
@@ -40,9 +44,20 @@ public class LoginController {
 	    String password = MD5.Md5_16(user.getPassword());
 	    if (password.equals(findedUser.getPassword())) {
 		session.setAttribute("is_login", Boolean.TRUE);
+		ArrayList<Message> unreadMessageList = mdi.getAllUnreadMessage(findedUser.getId());
+		session.setAttribute("unread_message_list", unreadMessageList);
+		session.setAttribute(password, mav);
 		session.setAttribute("user", findedUser);
-		response.sendRedirect("usercenter.htm");
 
+		switch (findedUser.getCharacter()) {
+		    case User.STUDENT:
+		    case User.TEACHER:
+			response.sendRedirect("usercenter.htm");
+			break;
+		    case User.ADMIN:
+			response.sendRedirect("admin.htm");
+			break;
+		}
 	    } else {
 		mav.addObject("error_message", "用户名或密码错误");
 	    }
@@ -50,6 +65,12 @@ public class LoginController {
 	} else {
 	    mav.addObject("error_message", "用户名或密码错误");
 	}
+	return mav;
+    }
+
+    @RequestMapping(value = "/admin")
+    public ModelAndView toAdmin(HttpServletRequest request, HttpSession session) {
+	ModelAndView mav = new ModelAndView("admin");
 	return mav;
     }
 
@@ -89,5 +110,9 @@ public class LoginController {
 
     public void setUdi(UserDaoImpl udi) {
 	this.udi = udi;
+    }
+
+    public void setMdi(MessageDaoImpl mdi) {
+	this.mdi = mdi;
     }
 }

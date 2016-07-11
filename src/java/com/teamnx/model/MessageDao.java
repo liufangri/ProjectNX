@@ -28,4 +28,7 @@ public interface MessageDao {
     public ArrayList<Message> getAllUnreadMessage(String receiverId);
 
     public boolean delete(Message message);
+
+    public boolean setAllReaded(String receiverId);
+
 }
