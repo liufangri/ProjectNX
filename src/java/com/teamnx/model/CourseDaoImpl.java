@@ -64,18 +64,21 @@ public class CourseDaoImpl implements CourseDao {
     }
 
     @Override
-    public ArrayList<Course> findCoursesByStudentId(String id) {
+    public ArrayList<Course> findCoursesByStudentId(String id, int year, int semester) {
 	ArrayList<Course> courses = new ArrayList<Course>();
 	Connection connection = dbcpBean.getConnection();
 	String sql = "SELECT course.* FROM (\n"
 		+ "SELECT * FROM student_course\n"
 		+ "WHERE student_id = ?\n"
 		+ ")AS course_list INNER JOIN course\n"
-		+ "ON course_list.course_id = course.id";
+		+ "ON course_list.course_id = course.id "
+                + "WHERE year = ? AND semester = ?";
 	PreparedStatement ps;
 	try {
 	    ps = connection.prepareStatement(sql);
 	    ps.setString(1, id);
+            ps.setInt(2, year);
+            ps.setInt(3, semester);
 	    ResultSet rs = ps.executeQuery();
 	    while (rs.next()) {
 		Course course = new Course();
@@ -87,6 +90,7 @@ public class CourseDaoImpl implements CourseDao {
 		course.setName(rs.getString("name"));
 		course.setPosition(rs.getString("position"));
 		course.setSchedule(rs.getString("schedule"));
+                course.setYear(rs.getInt("year"));
 		course.setSemester(rs.getInt("semester"));
 		course.setStart_time(rs.getInt("start_time"));
 		course.setYear(rs.getInt("year"));
@@ -109,17 +113,20 @@ public class CourseDaoImpl implements CourseDao {
     }
 
     @Override
-    public ArrayList<Course> findCoursesByTeacherId(String id) {
+    public ArrayList<Course> findCoursesByTeacherId(String id, int year, int semester) {
 	ArrayList<Course> courses = new ArrayList<Course>();
 	Connection connection = dbcpBean.getConnection();
 	String sql = "SELECT course.* FROM (\n"
 		+ "SELECT * FROM teacher_course\n"
 		+ "WHERE teacher_id = ?\n"
 		+ ")AS course_list INNER JOIN course\n"
-		+ "ON course_list.course_id = course.id";
+		+ "ON course_list.course_id = course.id "
+                + "WHERE year = ? AND semester = ?";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, id);
+            ps.setInt(2, year);
+            ps.setInt(3, semester);
 	    ResultSet rs = ps.executeQuery();
 	    while (rs.next()) {
 		Course course = new Course();
@@ -130,6 +137,7 @@ public class CourseDaoImpl implements CourseDao {
 		course.setName(rs.getString("name"));
 		course.setPosition(rs.getString("position"));
 		course.setSchedule(rs.getString("schedule"));
+                course.setYear(rs.getInt("year"));
 		course.setSemester(rs.getInt("semester"));
 		course.setStart_time(rs.getInt("start_time"));
 		course.setYear(rs.getInt("year"));

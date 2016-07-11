@@ -7,6 +7,7 @@ package com.teamnx.controller;
 
 import com.teamnx.model.Message;
 import com.teamnx.model.MessageDaoImpl;
+import com.teamnx.model.Semester;
 import com.teamnx.model.SemesterDaoImpl;
 import com.teamnx.model.User;
 import com.teamnx.model.UserDaoImpl;
@@ -42,6 +43,26 @@ public class LoginController {
     public ModelAndView loginAction(User user, HttpSession session, HttpServletResponse response, HttpServletRequest request) throws IOException {
 	ModelAndView mav = new ModelAndView("login");
 	User findedUser = udi.findUserById(user.getId());
+        
+        
+//        设置学期信息
+        Semester semester = sdi.getThisSemester();
+        String season = "";
+        int year = semester.getYear();
+        switch(semester.getSemester()){
+            case 1:
+                season = "秋季";
+                break;
+            case 2:
+                season = "春季";
+                break;
+            case 3:
+                season = "夏季";
+                break;
+        }
+        session.setAttribute("year", year);
+        session.setAttribute("season", season);
+        session.setAttribute("semester", semester.getSemester());
 	if (findedUser != null) {
 	    String password = MD5.Md5_16(user.getPassword());
 	    if (password.equals(findedUser.getPassword())) {

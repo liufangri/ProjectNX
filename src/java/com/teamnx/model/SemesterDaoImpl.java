@@ -111,7 +111,6 @@ public class SemesterDaoImpl implements SemesterDao {
     }
 
     @Override
-<<<<<<< HEAD
     public Semester getThisSemester() {
         Connection connection = dbcpBean.getConnection();
         String sql = "SELECT * FROM semester";
@@ -133,7 +132,11 @@ public class SemesterDaoImpl implements SemesterDao {
             } catch (SQLException ex) {
                 Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
                 return semester;
-=======
+            }
+        }
+    }
+    
+    @Override
     public boolean deleteAll() {
         Connection connection = dbcpBean.getConnection();
         String sql = "DELETE FROM semester";
@@ -149,7 +152,6 @@ public class SemesterDaoImpl implements SemesterDao {
                 connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
->>>>>>> 21d92ea569a097c9e8b74f340e5fd4fd2b007537
             }
         }
     }

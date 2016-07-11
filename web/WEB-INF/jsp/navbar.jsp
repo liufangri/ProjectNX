@@ -17,9 +17,9 @@
     ArrayList<Message> unreadMessageList = (ArrayList<Message>) session.getAttribute("unread_message_list");
     String courseId = (String) request.getParameter("course_id");
     int num = unreadMessageList.size();
-    Semester semester = (Semester) session.getAttribute("semester");
     int week = (Integer) session.getAttribute("current_week");
-//    int semester = (Integer) session.getAttribute("current_semester");
+    int year = (Integer) session.getAttribute("year");
+    String season = (String) session.getAttribute("season");
     boolean inUsercenter = courseId == null;
 %>
 <!--如果没有未读 就不用发信息给服务器-->
@@ -108,18 +108,18 @@
                     <div  class="btn-group" >
                         <button id="semester" type="button" class="btn dropdown-toggle " 
                                 data-toggle="dropdown">
-                            2015年春季 <span class="caret"></span>
+                            ${year}年${season} <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <!--                            TODO-->
-                            <li><a href="#">2015年春季</a></li>
-                            <li><a href="#">2015年夏季</a></li>
-                            <li><a href="#">2015年秋季</a></li>
-                            <li><a href="#">2016年春季</a></li>
-                            <li><a href="#">2016年夏季</a></li>
-                            <li><a href="#">2016年秋季</a></li>
-                            <li><a href="#">2017年春季</a></li>
-                            <li><a href="#">2017年夏季</a></li>
+                            <li><a href="changeSemester.htm?&year=2015&semester=春季">2015年春季</a></li>
+                            <li><a href="changeSemester.htm?&year=2015&semester=夏季">2015年夏季</a></li>
+                            <li><a href="changeSemester.htm?&year=2015&semester=秋季">2015年秋季</a></li>
+                            <li><a href="changeSemester.htm?&year=2016&semester=春季">2016年春季</a></li>
+                            <li><a href="changeSemester.htm?&year=2016&semester=夏季">2016年夏季</a></li>
+                            <li><a href="changeSemester.htm?&year=2016&semester=秋季">2016年秋季</a></li>
+                            <li><a href="changeSemester.htm?&year=2017&semester=春季">2017年春季</a></li>
+                            <li><a href="changeSemester.htm?&year=2017&semester=夏季">2017年夏季</a></li>
                         </ul>
                     </div>
                 </li>
