@@ -41,7 +41,7 @@ public class CourseDaoImpl implements CourseDao {
 		course.setName(rs.getString("name"));
 		course.setPosition(rs.getString("position"));
 		course.setSchedule(rs.getString("schedule"));
-                course.setMax_member(rs.getInt("max_member"));
+		course.setMax_member(rs.getInt("max_member"));
 		course.setSemester(rs.getInt("semester"));
 		course.setStart_time(rs.getInt("start_time"));
 		course.setYear(rs.getInt("year"));
@@ -145,6 +145,53 @@ public class CourseDaoImpl implements CourseDao {
 	    }
 	    return courses;
 	}
+    }
+
+    @Override
+    public boolean insertMulty(ArrayList<Course> courseList) {
+	Connection connection = dbcpBean.getConnection();
+	String sql = "INSERT INTO COURSE "
+		+ "(id,name,department_id,"
+		+ "start_time,end_time,position,schedule,"
+		+ "category,year,semester,max_member,description)"
+		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+	try {
+	    connection.setAutoCommit(false);
+	    PreparedStatement ps = connection.prepareStatement(sql);
+	    for (Course course : courseList) {
+		ps.setString(1, course.getId());
+		ps.setString(2, course.getName());
+		ps.setInt(3, course.getDepartment_id());
+		ps.setInt(4, course.getStart_time());
+		ps.setInt(5, course.getEnd_time());
+		ps.setString(6, course.getPosition());
+		ps.setString(7, course.getSchedule());
+		ps.setBoolean(8, course.isCategory());
+		ps.setInt(9, course.getYear());
+		ps.setInt(10, course.getSemester());
+		ps.setInt(11, course.getMax_member());
+		ps.setString(12, course.getDescription());
+		ps.executeUpdate();
+	    }
+	    connection.commit();
+	    connection.setAutoCommit(true);
+	    return true;
+	} catch (SQLException ex) {
+	    Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    try {
+		connection.rollback();
+	    } catch (SQLException ex1) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex1);
+	    }
+	    return false;
+	} finally {
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+	}
+
     }
 
 }

@@ -165,24 +165,44 @@ public class RedirectController {
 	if (user != null) {
 	    ArrayList<Task> tasks;
 	    tasks = tdi.findTasksByCourseId(courseId);
-	    Group group = gdi.findGroupByStudentId(courseId, user.getId());
 	    ArrayList<ShowHomework> showHomeworks = new ArrayList<ShowHomework>();
-	    for (Task t : tasks) {
-		Homework homework = hdi.findStudentHomework(t.getId(), user.getId());
-		ShowHomework sh = new ShowHomework();
-		sh.setDeadLine(t.getDeadline().toString());
-		sh.setStartTime(t.getStartTime().toString());
-		sh.setTaskId(t.getId());
-		sh.setTaskName(t.getName());
-		if (homework == null) {
-		    sh.setState(false);
-		    sh.setScore(-1);
-		} else {
-		    sh.setState(true);
-		    sh.setHomeworkId(homework.getId());
-		    sh.setScore(homework.getScore());
+	    if (courseId.charAt(courseId.length() - 1) == '1') {
+		for (Task t : tasks) {
+		    Homework homework = hdi.findGroupHomework(t.getId(), user.getId());
+		    ShowHomework sh = new ShowHomework();
+		    sh.setDeadLine(t.getDeadline().toString());
+		    sh.setStartTime(t.getStartTime().toString());
+		    sh.setTaskId(t.getId());
+		    sh.setTaskName(t.getName());
+		    if (homework == null) {
+			sh.setState(false);
+			sh.setScore(-1);
+		    } else {
+			sh.setState(true);
+			sh.setHomeworkId(homework.getId());
+			sh.setScore(homework.getScore());
+		    }
+		    showHomeworks.add(sh);
 		}
-		showHomeworks.add(sh);
+	    } else {
+
+		for (Task t : tasks) {
+		    Homework homework = hdi.findStudentHomework(t.getId(), user.getId());
+		    ShowHomework sh = new ShowHomework();
+		    sh.setDeadLine(t.getDeadline().toString());
+		    sh.setStartTime(t.getStartTime().toString());
+		    sh.setTaskId(t.getId());
+		    sh.setTaskName(t.getName());
+		    if (homework == null) {
+			sh.setState(false);
+			sh.setScore(-1);
+		    } else {
+			sh.setState(true);
+			sh.setHomeworkId(homework.getId());
+			sh.setScore(homework.getScore());
+		    }
+		    showHomeworks.add(sh);
+		}
 	    }
 	    request.setAttribute("tasks", tasks);
 	    request.setAttribute("show_homeworks", showHomeworks);

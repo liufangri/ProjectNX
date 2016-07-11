@@ -5,18 +5,24 @@
  */
 package com.teamnx.controller;
 
+import com.teamnx.model.Course;
 import com.teamnx.model.CourseDaoImpl;
+import com.teamnx.model.Department;
 import com.teamnx.model.DepartmentDaoImpl;
 import com.teamnx.model.Semester;
 import com.teamnx.model.SemesterDaoImpl;
+import com.teamnx.model.StudentCourse;
 import com.teamnx.model.StudentCourseDaoImpl;
+import com.teamnx.model.TeacherCourse;
 import com.teamnx.model.TeacherCourseDaoImpl;
+import com.teamnx.model.User;
 import com.teamnx.model.UserDaoImpl;
 import com.teamnx.util.CSVToDateBase;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,7 +91,7 @@ public class AdminController {
 		    response.sendRedirect("usercenter.htm");
 		    break;
 		default:
-                    smdi.deleteAll();
+		    smdi.deleteAll();
 		    smdi.insert(semester);
 		    response.sendRedirect("usercenter.htm");
 		    break;
@@ -97,35 +103,97 @@ public class AdminController {
 
     @RequestMapping(value = "/setDataBase")
     public ModelAndView setDataBase(MultipartFile fileUser, MultipartFile fileCourse,
-	    MultipartFile fileDepartment, MultipartFile fileStudentCourse, MultipartFile fileTeacherCourse, HttpSession session) throws IOException {
-	ModelAndView mav = new ModelAndView("admin");
+	    MultipartFile fileDepartment, MultipartFile fileStudentCourse,
+	    MultipartFile fileTeacherCourse,
+	    HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+	ModelAndView mav = new ModelAndView("upload_database");
 	String pathPre = session.getServletContext().getRealPath("/WEB-INF") + "\\Database\\";
-	File userCsv = new File(pathPre + "user.csv");
+	String userFilePath = pathPre + "user.csv";
+	File userCsv = new File(userFilePath);
 	if (!userCsv.exists()) {
 	    userCsv.mkdirs();
 	}
 	fileUser.transferTo(userCsv);
-	File departmentCsv = new File(pathPre + "department.csv");
+	String departmentFilePath = pathPre + "department.csv";
+	File departmentCsv = new File(departmentFilePath);
 	if (!departmentCsv.exists()) {
 	    departmentCsv.mkdirs();
 	}
 	fileDepartment.transferTo(departmentCsv);
-	File courseCsv = new File(pathPre + "course.csv");
+	String courseFilePath = pathPre + "course.csv";
+	File courseCsv = new File(courseFilePath);
 	if (!courseCsv.exists()) {
 	    courseCsv.mkdirs();
 	}
 	fileCourse.transferTo(courseCsv);
-	File studentCourseCsv = new File(pathPre + "student_course.csv");
+	String studentCourseFilePath = pathPre + "student_course.csv";
+	File studentCourseCsv = new File(studentCourseFilePath);
 	if (!studentCourseCsv.exists()) {
 	    studentCourseCsv.mkdirs();
 	}
 	fileStudentCourse.transferTo(studentCourseCsv);
-	File teacherCourseCsv = new File(pathPre + "teacher_course.csv");
+	String teacherCourseFilePath = pathPre + "teacher_course.csv";
+	File teacherCourseCsv = new File(teacherCourseFilePath);
 	if (!teacherCourseCsv.exists()) {
 	    teacherCourseCsv.mkdirs();
 	}
 	fileTeacherCourse.transferTo(teacherCourseCsv);
 
+	/**
+	 * 导入数据库的过程：
+	 */
+	//department:
+	ArrayList<Department> departmentList;
+	ArrayList<Course> courseList;
+	ArrayList<User> userList;
+	ArrayList<TeacherCourse> teacherCourseList;
+	ArrayList<StudentCourse> studentCourseList;
+	csvTool.setFile_header(Department.HEADER);
+	departmentList = (ArrayList<Department>) csvTool.readCsvFile(departmentFilePath, CSVToDateBase.DEPARTMENT);
+	csvTool.setFile_header(Course.HEADER);
+	courseList = (ArrayList<Course>) csvTool.readCsvFile(courseFilePath, CSVToDateBase.COURSE);
+	csvTool.setFile_header(User.HEADER);
+	userList = (ArrayList<User>) csvTool.readCsvFile(userFilePath, CSVToDateBase.USER);
+	csvTool.setFile_header(TeacherCourse.HEADER);
+	teacherCourseList = (ArrayList<TeacherCourse>) csvTool.readCsvFile(teacherCourseFilePath, CSVToDateBase.TEACHER_COURSE);
+	csvTool.setFile_header(StudentCourse.HEADER);
+	studentCourseList = (ArrayList<StudentCourse>) csvTool.readCsvFile(studentCourseFilePath, CSVToDateBase.STUDENT_COURSE);
+
+	mav.addObject("message", "数据库导入失败");
+	if (!ddi.insertMulty(departmentList)) {
+	    //批量插入学院失败
+	    mav.addObject("message", "department导入失败");
+	    return mav;
+	}
+	if (!cdi.insertMulty(courseList)) {
+	    //批量插入课程失败
+	    mav.addObject("message", "course导入失败");
+	    return mav;
+	}
+	if (!udi.insertMulty(userList)) {
+	    //批量插入用户失败
+	    mav.addObject("message", "user导入失败");
+	    return mav;
+	}
+	if (!tcdi.insertMulty(teacherCourseList)) {
+	    //批量插入教师授课表失败
+	    mav.addObject("message", "teacher_course导入失败");
+	    return mav;
+	}
+	if (!scdi.insertMulty(studentCourseList)) {
+	    //批量插入学生选课表成功
+	    mav.addObject("message", "student_course导入失败");
+
+	    return mav;
+	}
+	mav.addObject("message", "数据库导入成功");
+	mav.setViewName("admin");
+	return mav;
+    }
+
+    @RequestMapping(value = "/uploadPage")
+    public ModelAndView toUploadPage(HttpServletRequest request, HttpSession session) {
+	ModelAndView mav = new ModelAndView("upload_database");
 	return mav;
     }
 

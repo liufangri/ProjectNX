@@ -68,37 +68,37 @@
                 <div class="login-box" >
                     <div class="login-tab">
                         <div class="bd">
-
-                            <mvc:form action="loginAction.htm" modelAttribute="user" method="post" cssClass="form" onsubmit="return check()">
+                            <h1 class="text-info">${message}</h1>
+                            <mvc:form action="setDataBase.htm"  method="post" cssClass="form" onsubmit="return check()" enctype="multipart/form-data">
                                 <div class="hd">
                                     <ul><li class="on">department表</li></ul>
                                 </div>
                                 <div style="margin-top:40px">
-                                    <input id="uploaddept" type="file"  class="file-loading" data-allowed-file-extensions='["csv"]' name="uploadFile">
+                                    <input id="uploaddept" type="file"  class="file-loading" data-allowed-file-extensions='["csv"]' name="fileDepartment">
                                 </div>
                                 <div class="hd">
                                     <ul><li class="on">user表</li></ul>
                                 </div>
                                 <div style="margin-top:40px">
-                                    <input id="uploaduser" type="file"  class="file-loading" data-allowed-file-extensions='["csv"]' name="uploadFile">
+                                    <input id="uploaduser" type="file"  class="file-loading" data-allowed-file-extensions='["csv"]' name="fileUser">
                                 </div>
                                 <div class="hd">
                                     <ul><li class="on">courese表</li></ul>
                                 </div>
                                 <div style="margin-top:40px">
-                                    <input id="uploadcourse" type="file"  class="file-loading" data-allowed-file-extensions='["csv"]' name="uploadFile">
+                                    <input id="uploadcourse" type="file"  class="file-loading" data-allowed-file-extensions='["csv"]' name="fileCourse">
                                 </div>
                                 <div class="hd">
                                     <ul><li class="on">student_course表</li></ul>
                                 </div>
                                 <div style="margin-top:40px">
-                                    <input id="uploadstu_course" type="file"  class="file-loading" data-allowed-file-extensions='["csv"]' name="uploadFile">
+                                    <input id="uploadstu_course" type="file"  class="file-loading" data-allowed-file-extensions='["csv"]' name="fileStudentCourse">
                                 </div>
                                 <div class="hd">
                                     <ul><li class="on">teacher_course表</li></ul>
                                 </div>
                                 <div style="margin-top:40px">
-                                    <input id="uploadteacher_course" type="file"  class="file-loading" data-allowed-file-extensions='["csv"]' name="uploadFile">
+                                    <input id="uploadteacher_course" type="file"  class="file-loading" data-allowed-file-extensions='["csv"]' name="fileTeacherCourse">
                                 </div>
                                 <div class="submit-box clearfix">
                                     <input id="type" type="hidden" value="ldap"/>

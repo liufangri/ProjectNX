@@ -20,4 +20,6 @@ public interface CourseDao {
     public ArrayList<Course> findCoursesByStudentId(String id);
 
     public ArrayList<Course> findCoursesByTeacherId(String id);
+
+    public boolean insertMulty(ArrayList<Course> courseList);
 }

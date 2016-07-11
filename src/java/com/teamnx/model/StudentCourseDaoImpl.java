@@ -51,7 +51,37 @@ public class StudentCourseDaoImpl implements StudentCourseDao {
 
     @Override
     public boolean insertMulty(ArrayList<StudentCourse> studentCourseList) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	Connection connection = dbcpBean.getConnection();
+	String sql = "INSERT INTO student_course(id,student_id,course_id) VALUES (?,?,?)";
+	try {
+	    connection.setAutoCommit(false);
+	    PreparedStatement ps = connection.prepareStatement(sql);
+	    for (StudentCourse studentCourse : studentCourseList) {
+		ps.setString(1, studentCourse.getId());
+		ps.setString(2, studentCourse.getStudentId());
+		ps.setString(3, studentCourse.getCourseId());
+		ps.executeUpdate();
+	    }
+	    connection.commit();
+	    connection.setAutoCommit(true);
+	    return true;
+	} catch (SQLException ex) {
+	    Logger.getLogger(StudentCourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    try {
+		connection.rollback();
+	    } catch (SQLException ex1) {
+		Logger.getLogger(StudentCourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex1);
+
+	    } finally {
+		return false;
+	    }
+	} finally {
+	    try {
+		connection.close();
+	    } catch (SQLException ex) {
+		Logger.getLogger(StudentCourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+	}
     }
 
 }

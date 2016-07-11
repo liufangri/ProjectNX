@@ -77,6 +77,7 @@ public class HomeworkController {
 		    Logger.getLogger(HomeworkController.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	    }
+
 	    if (originHomework == null) {
 		//尚未提交作业
 		String id = MD5.Md5_16(homework.getTaskId() + homework.getStudentName() + new Date().getTime());
@@ -98,6 +99,7 @@ public class HomeworkController {
 		    response.sendRedirect("stu_homework.htm?course_id=" + course.getId());
 		}
 	    }
+
 	} else {
 	    response.sendRedirect("login.htm");
 	}

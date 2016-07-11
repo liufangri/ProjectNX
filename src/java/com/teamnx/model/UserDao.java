@@ -18,7 +18,9 @@ public interface UserDao {
     public ArrayList<User> findStudentsByCourseId(String courseId);
 
     public ArrayList<String> findTeachersByCourseId(String courseId);
-    
+
     public ArrayList<User> findStudentsNotInGroup(String courseId);
+
+    public boolean insertMulty(ArrayList<User> userList);
 
 }

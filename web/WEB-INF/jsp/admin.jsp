@@ -76,12 +76,9 @@
                                 <div class="submit-box clearfix">
                                     <input id="type" type="hidden" value="ldap"/>
                                     <button id="submitButton" type="submit">提交</button>
-                                </mvc:form>
-
-                                <button id="upload_database" onclick="javascrtpt:window.location.href = 'upload_database.htm'" >数据库导入</button>
-                            </div>
-
-
+                                </div>
+                            </mvc:form>
+                            <button id="upload_database" onclick="javascrtpt:window.location.href = 'uploadPage.htm'" >数据库导入</button>
                         </div>
                     </div>
                 </div>

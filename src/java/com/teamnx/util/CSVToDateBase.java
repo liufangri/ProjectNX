@@ -66,7 +66,7 @@ public class CSVToDateBase {
 			user.setDepartment_id(Integer.parseInt(record.get("department_id")));
 			user.setCharacter(Integer.parseInt(record.get("character")));
 			user.setClass_id(record.get("class_id"));
-			user.setDepartment_name("department_name");
+			user.setDepartment_name(record.get("department_name"));
 			userList.add(user);
 		    }
 		    list = userList;
@@ -91,9 +91,9 @@ public class CSVToDateBase {
 			Course course = new Course();
 			course.setId(record.get("id"));
 			course.setName(record.get("name"));
-			course.setDepartment_id(Integer.parseInt("department_id"));
+			course.setDepartment_id(Integer.parseInt(record.get("department_id")));
 			course.setStart_time(Integer.parseInt(record.get("start_time")));
-			course.setEnd_time(Integer.parseInt("end_time"));
+			course.setEnd_time(Integer.parseInt(record.get("end_time")));
 			course.setPosition(record.get("position"));
 			course.setSchedule(record.get("schedule"));
 			course.setYear(Integer.parseInt(record.get("year")));
@@ -123,8 +123,8 @@ public class CSVToDateBase {
 			CSVRecord record = csvRecords.get(i);
 			TeacherCourse teacherCourse = new TeacherCourse();
 			teacherCourse.setId(record.get("id"));
-			teacherCourse.setCourseId(record.get("course_id"));
 			teacherCourse.setTeacherId(record.get("teacher_id"));
+			teacherCourse.setCourseId(record.get("course_id"));
 			teacherCourseList.add(teacherCourse);
 		    }
 		    list = teacherCourseList;
@@ -144,6 +144,10 @@ public class CSVToDateBase {
 		return list;
 	    }
 	}
+    }
+
+    public void setFile_header(String[] file_header) {
+	this.file_header = file_header;
     }
 
 }

@@ -9,6 +9,8 @@
     <%
         String path = request.getContextPath();
         String course_id = (String) request.getAttribute("course_id");
+        boolean in_group = false;
+        in_group = (Boolean) request.getAttribute("in_group");
     %>
     <jsp:include page="header.jsp"/>
     <head>
@@ -29,12 +31,16 @@
             <div class="clearfix">
                 <h3 style="color: red"><span class="glyphicon glyphicon-exclamation-sign"></span>你还不属于任何团队</h3>
             </div>
+            <% if (!in_group) {%>
             <div>
                 <button type="button" class="btn btn-default" data-target="#myModal1" data-toggle="modal">组建新的团队</button>
                 <a href="studentGroupList.htm?course_id=<%=course_id%>" />
                 <button type="button" class="btn btn-default">申请加入团队</button>
                 </a>
             </div>
+            <%}else{%>
+            <label class="text-info">您正在申请队伍中</label>
+            <%}%>
             <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal1" class="modal fade in" style="display: none;">
                 <div class="modal-dialog">
                     <mvc:form action="establishGroup.htm" method="post" modelAttribute="group">
