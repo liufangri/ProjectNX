@@ -31,8 +31,9 @@
                             <ul><li class="on">设置学期周次</li></ul>
                         </div>
                         <div class="bd">
-                            <div class="box-1">
-                                <mvc:form action="loginAction.htm" modelAttribute="user" method="post" cssClass="form" onsubmit="return check()">
+                            <mvc:form action="setSemester.htm" method="post" cssClass="form" onsubmit="return check()">
+                                <div class="box-1">
+
                                     <div style="margin-top:40px">
                                         <span  class="glyphicon glyphicon-user"></span>本学期是
                                         <div class="row clearfix">

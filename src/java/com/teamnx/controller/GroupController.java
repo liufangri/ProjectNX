@@ -137,6 +137,7 @@ public class GroupController {
     public ModelAndView studentGroupList(HttpSession session, HttpServletRequest request) {
 	ModelAndView mav = new ModelAndView("stu_teamlist");
 	String courseId = request.getParameter("course_id");
+        User user = (User) session.getAttribute("user");
 	ArrayList<Group> groups = gdi.findGroupsByCourseId(courseId);
 	ArrayList<ShowGroup> showgroups = new ArrayList<ShowGroup>();
 	for (Group g : groups) {
@@ -164,6 +165,8 @@ public class GroupController {
 	}
 	Course course = cdi.findCourseById(courseId);
 	int maxNumber = course.getMax_member();
+        boolean inGroup = sgdi.ifInGroup(user.getId(), courseId);
+        mav.addObject("in_group", inGroup);
 	mav.addObject("max_number", maxNumber);
 	mav.addObject("groups", showgroups);
 	mav.addObject("course_id", courseId);
