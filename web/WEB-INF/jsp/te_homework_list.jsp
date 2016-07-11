@@ -51,8 +51,7 @@
                         %>
                         <tr>
                             <td><a href="scoreHomework.htm?homework_id=<%=h.getId()%>"><%=h.getStudentId()%></a></td>
-                            <td><%=h.getStudentName()%></td>   
-
+                            <td><%=h.getStudentName()%></td> 
                             <% if (h.getScore() == -1) {%>
 
                             <td>未批改</td>  
