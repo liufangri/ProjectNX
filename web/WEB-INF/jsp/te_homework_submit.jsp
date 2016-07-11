@@ -37,8 +37,7 @@
             <div class="container">
                 <div class="row clearfix">
                     <div class="col-md-10 column">
-                        <button class="btn btn-success" type="button" data-target="#myModal5" data-toggle="modal"
-                            style="background: #33ccff; border:0px;"
+                        <button class="btn btn-info" type="button" data-target="#myModal5" data-toggle="modal"
                             onclick="javascript:location.href = 'te_homework.htm?course_id=<%=courseId%>'">
                         <i class="glyphicon glyphicon-chevron-left" style="margin-right: 3px" ></i>返回列表</button>
                     </div>

@@ -19,7 +19,6 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-
             </props>
         </property>
     </bean>
@@ -173,9 +172,6 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="semesterDaoImpl" class="com.teamnx.model.SemesterDaoImpl">
         <property name="dbcpBean" ref="dbcpBean"/>
     </bean>
-    <bean name="upload_databaseController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="upload_database" />
     <context:component-scan base-package="com.teamnx.controller"/>
     <context:annotation-config/>
     <mvc:annotation-driven/>
