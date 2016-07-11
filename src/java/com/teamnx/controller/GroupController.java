@@ -346,7 +346,9 @@ public class GroupController {
     public void finishForming(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String courseId = request.getParameter("course_id");
         String groupId = request.getParameter("group_id");
-        gdi.setStatus(groupId, 1);
+        if(!sgdi.applyleft(groupId)){
+            gdi.setStatus(groupId, 1);
+        }
         response.sendRedirect("toMyGroup.htm?course_id=" + courseId);
     }
 
