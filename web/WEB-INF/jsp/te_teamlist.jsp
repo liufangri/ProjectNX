@@ -167,7 +167,7 @@
                                         <input class="form-control" name="name" id="folderName" type="text" placeholder="请输入团队名称">
                                         <input name="managerId" hidden="hidden" value="" id="student_id">
                                         <input name="courseId" hidden="hidden" value="${course_id}">
-                                        <input name="status" hidden="hidden" value="0">
+                                        <input name="status" hidden="hidden" value="2">
                                         <input name="maxMember" hidden="hidden" value="<%=course.getMax_member()%>">
                                     </div>
                                 </div>
