@@ -24,7 +24,9 @@
 
 
 <link href="<%=path%>/lib/css/navbar.css" rel="stylesheet">
+<% if (!inUsercenter) {%>
 <link href="<%=path%>/lib/css/AdminLTE.min.css" rel="stylesheet"/>
+<%}%>
 <script>
     $(document).ready(function ()
     {
@@ -79,7 +81,7 @@
     }
 
 </script>
-<input type="text" value="" id="check_for_read" hidden="true">
+<input type="text" value="" id="check_for_read" hidden>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
