@@ -44,7 +44,6 @@
                     showUpload: false,
                 });
             });
-
             function checkNull() {
                 var errorMessage = document.getElementById("errorMessage");
                 var formGroup = document.getElementById("text_homework_div_id");
@@ -111,7 +110,6 @@
                 </div> 
 
                 <%if (!task.isText()) {
-
                 %>
                 <div> 
                     <label class="control-label">提交附件</label>

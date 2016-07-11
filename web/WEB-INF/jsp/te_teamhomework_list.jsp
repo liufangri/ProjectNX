@@ -31,7 +31,7 @@
                     <button class="btn btn-default" onclick="javascript:location.href = 'te_homework.htm?course_id=<%=courseId%>'"> <span class="glyphicon glyphicon-chevron-left"></span>返回列表</button>
                 </div>
                 <div style="padding-left: 12px;display:table-cell">
-                    <h1><%= task.getName()%></h1>
+                    <h3><%= task.getName()%></h3>
                 </div>
             </div>
 

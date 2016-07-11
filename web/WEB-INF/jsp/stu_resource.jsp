@@ -107,8 +107,9 @@
                                             <div class="name" id="name">名称<div class="seq"></div></div>
                                         </div>
                                         <div class="listTableTopR pull-right">
+                                             <div class="updateTime" id="ctime">上传时间<div class="seq"></div></div>
                                             <div class="publisher" id="publisher">发布人<div class="seq"></div></div>
-                                            <div class="updateTime" id="ctime">上传时间<div class="seq"></div></div>
+                                           
                                         </div>
                                     </div>
                                 </li>
@@ -129,8 +130,9 @@
 
                                         </div>
                                         <div class="listTableInR pull-right">
-                                            <div class="publisher"><%= r.getTeacherName()%></div>
                                             <div class="updateTime"><%= sdf.format(new Date(r.getLastChange()))%></div>
+                                            <div class="publisher"><%= r.getTeacherName()%></div>
+                                            
                                             <div>
                                                 <%
                                                     if (!r.isFolder()) {

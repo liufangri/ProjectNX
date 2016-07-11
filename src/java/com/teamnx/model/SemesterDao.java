@@ -18,5 +18,9 @@ public interface SemesterDao {
     
     public int ifExit(Semester semester);
     
+<<<<<<< HEAD
     public Semester getThisSemester();
+=======
+    public boolean deleteAll();
+>>>>>>> 21d92ea569a097c9e8b74f340e5fd4fd2b007537
 }

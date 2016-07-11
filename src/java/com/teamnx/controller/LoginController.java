@@ -70,12 +70,6 @@ public class LoginController {
 	return mav;
     }
 
-    @RequestMapping(value = "/admin")
-    public ModelAndView toAdmin(HttpServletRequest request, HttpSession session) {
-	ModelAndView mav = new ModelAndView("admin");
-	return mav;
-    }
-
     /**
      * 处理跳转到登录页面的请求
      */

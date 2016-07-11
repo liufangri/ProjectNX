@@ -13,6 +13,7 @@
         Group group = (Group) request.getAttribute("group");
         String name = group.getName();
         String status = (String) request.getAttribute("status");
+        String inGroup = (String) request.getAttribute("in_group");
         String managerId = group.getManagerId();
         ArrayList<StudentGroup> studentGroups = (ArrayList<StudentGroup>) request.getAttribute("studentGroups");
     %>
@@ -31,11 +32,13 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div>
-                <h3>团队名称：<b>${name}</b>  状态：<span class="glyphicon glyphicon-user"></span><i style="color: red">${status}</i></h3>
+                <h3>团队名称：<b><%=group.getName()%></b>  状态：<span class="glyphicon glyphicon-user"></span><i style="color: red">${status}</i></h3>
             </div>
+            <% if (inGroup.equals("False")) {%>
             <div>
-                <button onClick="location.href='groupApply.htm?course_id=${course_id}&group_id=<%=group.getId()%>'" type="button" class="btn btn-default">申请加入</button>
+                <button onClick="location.href = 'groupApply.htm?course_id=${course_id}&group_id=<%=group.getId()%>'" type="button" class="btn btn-default">申请加入</button>
             </div>
+            <%}%>
             <div class="table-responsive">
                 <table class="table table-striped" cellspacing="0" cellpadding="0">
                     <thead>
@@ -66,7 +69,7 @@
                 </table>
             </div>
             <div>
-                <button onClick="location.href='studentGroupList.htm?course_id=${course_id}'" type="button" class="btn btn-default">返回</button>
+                <button onClick="location.href = 'studentGroupList.htm?course_id=${course_id}'" type="button" class="btn btn-default">返回</button>
             </div>
         </div>
     </body>

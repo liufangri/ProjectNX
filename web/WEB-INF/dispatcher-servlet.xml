@@ -40,6 +40,8 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <context:annotation-config/>
     <mvc:annotation-driven/>
 
+    <bean id="csvToDateBase" class="com.teamnx.util.CSVToDateBase">
+    </bean>
     <!--注册一个数据库连接池bean-->
     <bean name="dbcpBean" class="com.teamnx.db.DbcpBean"/>
     <!--注册一个message控制器-->
@@ -92,6 +94,14 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <!--注册一个教务控制器-->
     <bean id="adminController" class="com.teamnx.controller.AdminController">
         <property name="smdi" ref="semesterDaoImpl"/>
+        <property name="csvTool" ref="csvToDateBase"/>
+        <property name="cdi" ref="courseDaoImpl"/>
+        <property name="udi" ref="userDaoImpl"/>
+        <property name="ddi" ref="departmentDaoImpl"/>
+        <property name="scdi" ref="studentCourseDaoImpl"/>
+        <property name="tcdi" ref="teacherCourseDaoImpl"/>
+        
+        
     </bean>
     <!--
         注册一个跳转控制器
@@ -114,9 +124,20 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="userDaoImpl" class="com.teamnx.model.UserDaoImpl">
         <property name="dbcpBean" ref="dbcpBean"/>
     </bean>
-
+    <!--注册一个学院的数据库操作-->
+    <bean id="departmentDaoImpl" class="com.teamnx.model.DepartmentDaoImpl">
+        <property name="dbcpBean" ref="dbcpBean"/>
+    </bean>
     <!--注册一个course的数据库操作-->
     <bean id="courseDaoImpl" class="com.teamnx.model.CourseDaoImpl">
+        <property name="dbcpBean" ref="dbcpBean"/>
+    </bean>
+    <!--注册一个学生选课表的数据库操作-->
+    <bean id="studentCourseDaoImpl" class="com.teamnx.model.StudentCourseDaoImpl">
+        <property name="dbcpBean" ref="dbcpBean"/>
+    </bean>
+    <!--注册一个教师授课表的数据库操作-->
+    <bean id="teacherCourseDaoImpl" class="com.teamnx.model.TeacherCourseDaoImpl">
         <property name="dbcpBean" ref="dbcpBean"/>
     </bean>
     <!--注册一个task的数据库操作-->
@@ -152,7 +173,6 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="semesterDaoImpl" class="com.teamnx.model.SemesterDaoImpl">
         <property name="dbcpBean" ref="dbcpBean"/>
     </bean>
-
     <context:component-scan base-package="com.teamnx.controller"/>
     <context:annotation-config/>
     <mvc:annotation-driven/>

@@ -120,8 +120,8 @@
                                         </div>
 
                                         <div class="listTableTopR pull-right">
-                                            <div class="updateTime" id="ctime">上传时间</div>
                                             <div class="publisher" id="publisher">发布人</div>
+                                            <div class="updateTime" id="ctime">上传时间</div>
                                             <div class="menu" id="menu">操作</div>
                                         </div>
                                     </div>
@@ -135,8 +135,8 @@
                                         <div class="listTableInL pull-left">
 
                                             <div class="name">
-                                                <img src="<%=path%>/images/<%if (r.isFolder()) {%>folder.jpg<%} else {%>u247.png<%}%>"/> 
-                                                <a target="_self" id="a_190"   href="<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>">
+                                                 <i onclick="location.href='<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>'" style="vertical-align: middle" class="fa fa-2x <%if (r.isFolder()) {%>  fa-folder  <%} else {%>fa-file-o  <%}%>" ></i>
+                                                <a style="padding-left:5px" target="_self" id="a_190"   href="<%if (r.isFolder()) {%>resource.htm?course_id=<%= r.getCourseId()%>&folder_id=<%=r.getId()%><%} else {%>download.htm?resourceId=<%=r.getId()%><%}%>">
                                                     <em class="folder"></em>
                                                 </a>
                                                 <span class="div_pro">
@@ -146,8 +146,8 @@
 
                                         </div>
                                         <div class="listTableInR pull-right">
-                                            <div class="updateTime"><%= sdf.format(new Date(r.getLastChange()))%></div>
                                             <div class="publisher"><%= r.getTeacherName()%></div>
+                                            <div class="updateTime"><%= sdf.format(new Date(r.getLastChange()))%></div>
                                             <div>
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-primary dropdown-toggle" 

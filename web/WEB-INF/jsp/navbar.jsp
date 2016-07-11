@@ -81,7 +81,7 @@
     }
 
 </script>
-<input type="text" value="" id="check_for_read" hidden="true">
+<input type="text" value="" id="check_for_read" hidden>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">

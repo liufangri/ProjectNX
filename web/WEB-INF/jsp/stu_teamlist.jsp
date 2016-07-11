@@ -10,7 +10,7 @@
 <html lang="zh-CN">
     <%
         String path = request.getContextPath();
-        boolean inGroup = (boolean) request.getAttribute("in_group");
+        String inGroup = (String) request.getAttribute("in_group");
         ArrayList<ShowGroup> showGroups = (ArrayList<ShowGroup>) request.getAttribute("groups");
     %>
     <jsp:include page="header.jsp"/>
@@ -50,7 +50,7 @@
                             <td><%=sg.getManager()%></td>   
                             <td><%=sg.getNumber()%>/${max_number}</td>  
                             <td><%=sg.getStatus()%></td>
-                            <td><%if (sg.getStatus().equals("组建中") && !inGroup) {%><mvc:form action="groupApply.htm" method="post"><button type="submit" class="btn btn-default">申请加入</button>
+                            <td><%if (sg.getStatus().equals("组建中") && inGroup.equals("False") ) {%><mvc:form action="groupApply.htm" method="post"><button type="submit" class="btn btn-default">申请加入</button>
                                     <input name="group_id" hidden="hidden" value="<%=sg.getGroupId()%>">
                                     <input name="course_id" hidden="hidden" value="${course_id}">
                                 </mvc:form><%}%></td> 

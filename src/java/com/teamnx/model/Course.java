@@ -11,6 +11,9 @@ package com.teamnx.model;
  */
 public class Course {
 
+    public static final String[] HEADER = {"id", "name", "department_id", "start_time",
+	"end_time", "position", "schedule", "category", "year",
+	"semester", "max_member", "description"};
     private String id;
     private String name;
     private int department_id;
@@ -23,6 +26,7 @@ public class Course {
     private int semester;
     private String teachers;
     private int max_member;
+    private String description;
 
     public String getId() {
 	return id;
@@ -116,13 +120,21 @@ public class Course {
      * @return the max_member
      */
     public int getMax_member() {
-        return max_member;
+	return max_member;
     }
 
     /**
      * @param max_member the max_member to set
      */
     public void setMax_member(int max_member) {
-        this.max_member = max_member;
+	this.max_member = max_member;
+    }
+
+    public String getDescription() {
+	return description;
+    }
+
+    public void setDescription(String description) {
+	this.description = description;
     }
 }
