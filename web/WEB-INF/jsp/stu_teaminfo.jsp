@@ -34,11 +34,7 @@
             <div>
                 <h3>团队名称：<b><%=group.getName()%></b>  状态：<span class="glyphicon glyphicon-user"></span><i style="color: red">${status}</i></h3>
             </div>
-            <% if (inGroup.equals("False")) {%>
-            <div>
-                <button onClick="location.href = 'groupApply.htm?course_id=${course_id}&group_id=<%=group.getId()%>'" type="button" class="btn btn-default">申请加入</button>
-            </div>
-            <%}%>
+
             <div class="table-responsive">
                 <table class="table table-striped" cellspacing="0" cellpadding="0">
                     <thead>
