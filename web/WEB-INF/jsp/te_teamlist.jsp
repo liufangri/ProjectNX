@@ -193,8 +193,11 @@
             function manager(id) {
                 $('#teammanager').text($('#112').text());
                 $('#myModal1').modal("show");
-                document.getElementById("student_id").value=id;
+                document.getElementById("student_id").value = id;
             }
+            $('#myModal1').on('hidden.bs.modal', function () {
+                $(this).find('input').val("");
+            });
         </script>
     </body>
 

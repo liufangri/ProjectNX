@@ -30,7 +30,7 @@
                 <span>作业</span>
             </a>
         </li>
-        <li>
+        <li id="resource">
             <a href="resource.htm?course_id=<%= courseId%>">
                 <i class="fa  fa-fw fa-lg fa-folder-open"></i>
                 <span>课程资源</span>
@@ -50,7 +50,7 @@
                 <span>学生名单</span>
             </a>
         </li>
-        <li>
+        <li id="comment">
             <a href="commentList.htm?course_id=<%= courseId%>">
                 <i class="fa  fa-fw fa-lg fa-comments"></i>
                 <span>学生留言</span>

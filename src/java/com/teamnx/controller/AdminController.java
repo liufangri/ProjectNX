@@ -194,12 +194,20 @@ public class AdminController {
     @RequestMapping(value = "/uploadPage")
     public ModelAndView toUploadPage(HttpServletRequest request, HttpSession session) {
 	ModelAndView mav = new ModelAndView("upload_database");
+	User user = (User) session.getAttribute("user");
+	if (user != null && user.getCharacter() != User.ADMIN) {
+	    mav.setViewName("login");
+	}
 	return mav;
     }
 
     @RequestMapping(value = "/admin")
     public ModelAndView toAdmin(HttpServletRequest request, HttpSession session) {
 	ModelAndView mav = new ModelAndView("admin");
+	User user = (User) session.getAttribute("user");
+	if (user != null && user.getCharacter() != User.ADMIN) {
+	    mav.setViewName("login");
+	}
 	return mav;
     }
 

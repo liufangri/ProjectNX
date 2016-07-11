@@ -20,7 +20,7 @@
     <link href="<%=path%>/lib/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="<%=path%>/lib/css/dashboard.css" rel="stylesheet">
-        <link href="<%=path%>/lib/css/font-awesome.css" rel="stylesheet">
+    <link href="<%=path%>/lib/css/font-awesome.css" rel="stylesheet">
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="<%=path%>/lib/js/ie-emulation-modes-warning.js"></script>
@@ -34,4 +34,5 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="<%=path%>/lib/js/jquery.min.js"></script>
     <script src="<%=path%>/lib/js/bootstrap.min.js"></script>
+    <script src="<%=path%>/lib/js/check.js"></script>
 </head>

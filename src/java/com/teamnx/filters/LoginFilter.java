@@ -188,6 +188,9 @@ public class LoginFilter implements Filter {
 			ArrayList<Message> unreadMessageList = mdi.getAllUnreadMessage(user.getId());
 			session.setAttribute("unread_message_list", unreadMessageList);
 		}
+	    } else {
+		RequestDispatcher rd = req.getRequestDispatcher("login.htm");
+		rd.forward(request, response);
 	    }
 
 	    chain.doFilter(wrappedRequest, wrappedResponse);
