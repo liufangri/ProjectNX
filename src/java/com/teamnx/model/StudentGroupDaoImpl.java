@@ -339,5 +339,31 @@ public class StudentGroupDaoImpl implements StudentGroupDao {
             return sg;
         }
     }
+
+    @Override
+    public boolean applyleft(String groupId) {
+        Connection connection = dbcpBean.getConnection();
+        boolean flag = true;
+        String sql = "SELECT COUNT(*) FROM student_group WHERE group_id = ? AND status = 0";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, groupId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                if(rs.getInt(1)==0){
+                    flag = false;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return flag;
+        }
+    }
     
 }

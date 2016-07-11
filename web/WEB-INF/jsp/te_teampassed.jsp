@@ -13,6 +13,7 @@
         ArrayList<StudentGroup> studentGroups = (ArrayList<StudentGroup>) request.getAttribute("studentGroups");
         Group group = (Group) request.getAttribute("group");
         String managerId = group.getManagerId();
+        String status = (String) request.getAttribute("status");
     %>
     <jsp:include page="header.jsp"/>
     <body>
@@ -30,7 +31,7 @@
                     <span class="glyphicon glyphicon-chevron-left"></span>返回</button>
             </div>
             <div>
-                <h3>团队名称：<b><%=group.getName()%></b>  状态：<span class="glyphicon glyphicon-user"></span><i style="color: red">已通过</i></h3>
+                <h3>团队名称：<b><%=group.getName()%></b>  状态：<span class="glyphicon glyphicon-user"></span><i style="color: red">${status}</i></h3>
             </div>
             <div>                
                 <button onClick="location.href='addMember.htm?course_id=${course_id}&group_id=<%=group.getId()%>'" type="button" class="btn btn-default">添加成员</button>
