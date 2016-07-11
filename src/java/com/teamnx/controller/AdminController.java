@@ -5,8 +5,14 @@
  */
 package com.teamnx.controller;
 
+import com.teamnx.model.CourseDaoImpl;
+import com.teamnx.model.DepartmentDaoImpl;
 import com.teamnx.model.Semester;
 import com.teamnx.model.SemesterDaoImpl;
+import com.teamnx.model.StudentCourseDaoImpl;
+import com.teamnx.model.TeacherCourseDaoImpl;
+import com.teamnx.model.UserDaoImpl;
+import com.teamnx.util.CSVToDateBase;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -30,7 +36,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class AdminController {
 
     private SemesterDaoImpl smdi;
-
+    private CSVToDateBase csvTool;
+    private UserDaoImpl udi;
+    private CourseDaoImpl cdi;
+    private DepartmentDaoImpl ddi;
+    private StudentCourseDaoImpl scdi;
+    private TeacherCourseDaoImpl tcdi;
     public static final String[] SEMESTERS = {"", "秋季", "春季", "夏季"};
     public static final String[] YEARS = {"2010年", "2011年", "2012年", "2013年", "2014年",
 	"2015年", "2016年", "2017年", "2018年", "2019年", "2020年",
@@ -85,9 +96,35 @@ public class AdminController {
 
     @RequestMapping(value = "/setDataBase")
     public ModelAndView setDataBase(MultipartFile fileUser, MultipartFile fileCourse,
-	    MultipartFile fileDepartment, MultipartFile fileStudentCourse, MultipartFile fileTeacherCourse, HttpSession session) {
+	    MultipartFile fileDepartment, MultipartFile fileStudentCourse, MultipartFile fileTeacherCourse, HttpSession session) throws IOException {
 	ModelAndView mav = new ModelAndView("admin");
-	File userCsv = new File(session.getServletContext().getRealPath(""))
+	String pathPre = session.getServletContext().getRealPath("/WEB-INF") + "\\Database\\";
+	File userCsv = new File(pathPre + "user.csv");
+	if (!userCsv.exists()) {
+	    userCsv.mkdirs();
+	}
+	fileUser.transferTo(userCsv);
+	File departmentCsv = new File(pathPre + "department.csv");
+	if (!departmentCsv.exists()) {
+	    departmentCsv.mkdirs();
+	}
+	fileDepartment.transferTo(departmentCsv);
+	File courseCsv = new File(pathPre + "course.csv");
+	if (!courseCsv.exists()) {
+	    courseCsv.mkdirs();
+	}
+	fileCourse.transferTo(courseCsv);
+	File studentCourseCsv = new File(pathPre + "student_course.csv");
+	if (!studentCourseCsv.exists()) {
+	    studentCourseCsv.mkdirs();
+	}
+	fileStudentCourse.transferTo(studentCourseCsv);
+	File teacherCourseCsv = new File(pathPre + "teacher_course.csv");
+	if (!teacherCourseCsv.exists()) {
+	    teacherCourseCsv.mkdirs();
+	}
+	fileTeacherCourse.transferTo(teacherCourseCsv);
+
 	return mav;
     }
 
@@ -95,5 +132,29 @@ public class AdminController {
     public ModelAndView toAdmin(HttpServletRequest request, HttpSession session) {
 	ModelAndView mav = new ModelAndView("admin");
 	return mav;
+    }
+
+    public void setCsvTool(CSVToDateBase csvTool) {
+	this.csvTool = csvTool;
+    }
+
+    public void setUdi(UserDaoImpl udi) {
+	this.udi = udi;
+    }
+
+    public void setCdi(CourseDaoImpl cdi) {
+	this.cdi = cdi;
+    }
+
+    public void setDdi(DepartmentDaoImpl ddi) {
+	this.ddi = ddi;
+    }
+
+    public void setScdi(StudentCourseDaoImpl scdi) {
+	this.scdi = scdi;
+    }
+
+    public void setTcdi(TeacherCourseDaoImpl tcdi) {
+	this.tcdi = tcdi;
     }
 }
