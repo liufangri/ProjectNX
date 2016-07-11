@@ -3,6 +3,7 @@
     Created on : 2016-7-3, 12:21:47
     Author     : coco
 --%>
+<%@page import="java.util.Date"%>
 <%@page import="com.teamnx.model.Semester"%>
 <%@page import="java.lang.Integer"%>
 <%@page import="com.teamnx.model.User"%>
@@ -97,7 +98,6 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
 
-                <li><a>教学周次</a></li>
                 <li><a id="time"></a></li>
                     <% if (!inUsercenter) { %>
                 <li>

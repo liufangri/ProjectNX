@@ -435,7 +435,21 @@ public class GroupController {
         String courseId = request.getParameter("course_id");
         String groupId = request.getParameter("group_id");
         Group group = gdi.findGroupById(groupId);
+        int status = group.getStatus();
+        String statusStr = "";
+        switch(status){
+            case 0:
+                statusStr = "组建中";
+                break;
+            case 1:
+                statusStr = "待审核";
+                break;
+            case 2:
+                statusStr = "已通过";
+                break;
+        }
         ArrayList<StudentGroup> studentGroups = sgdi.findstudentGroupsByGroupId(groupId);
+        mav.addObject("status", statusStr);
         mav.addObject("group", group);
         mav.addObject("studentGroups", studentGroups);
         mav.addObject("course_id", courseId);

@@ -86,7 +86,7 @@
                                     for (ShowGroup sg : waitingGroups) {
                                 %>
                                 <tr>
-                                    <td><a href=""><%=sg.getName()%></a></td>
+                                    <td><a href="passedGroupInfo.htm?course_id=${course_id}&group_id=<%=sg.getId()%>"><%=sg.getName()%></a></td>
                                     <td><%=sg.getManager()%></td>   
                                     <td><%=sg.getNumber()%>/<%=course.getMax_member()%></td>
                                     <td>
