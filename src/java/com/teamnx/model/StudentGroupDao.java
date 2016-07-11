@@ -36,4 +36,6 @@ public interface StudentGroupDao {
     public int countMember(String groudId);
     
     public boolean accpet(String sgId);
+    
+    public boolean applyleft(String groupId);
 }
