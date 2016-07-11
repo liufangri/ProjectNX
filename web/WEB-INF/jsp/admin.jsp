@@ -75,14 +75,14 @@
                                 <div class="submit-box clearfix">
                                     <input id="type" type="hidden" value="ldap"/>
                                     <button id="submitButton" type="submit">登 录</button>
+                                </mvc:form>
 
-                                    <img id="processing" style="display: none;" src="<%=path%>/images/processing.gif" />
-                                    <a id="errorMessage" style="color:red">${error_message}</a>
-                                </div>
-                            </mvc:form>
-                            <button id="submitButton2" onclick=" $(function () {
-                                        alert($('#Q1').val() + $('#Q2').val());
-                                    });">登 123123录</button>
+                                <button id="submitButton" >数据库导入</button>
+                                <img id="processing" style="display: none;" src="<%=path%>/images/processing.gif" />
+                                <a id="errorMessage" style="color:red">${error_message}</a>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
