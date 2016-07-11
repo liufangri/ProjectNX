@@ -57,6 +57,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
     <bean id="loginController" class="com.teamnx.controller.LoginController">
         <property name="udi" ref="userDaoImpl"/>
         <property name="mdi" ref="messageDaoImpl"/>
+        <property name="sdi" ref="semesterDaoImpl"/>
     </bean>
     <!--注册一个老师布置的作业控制器-->
     <bean id="taskController" class="com.teamnx.controller.TaskController">

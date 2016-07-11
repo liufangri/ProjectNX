@@ -17,7 +17,7 @@ public interface CourseDao {
 
     public ArrayList<Course> findCoursesByName(String name);
 
-    public ArrayList<Course> findCoursesByStudentId(String id);
+    public ArrayList<Course> findCoursesByStudentId(String id, int year, int semester);
 
-    public ArrayList<Course> findCoursesByTeacherId(String id);
+    public ArrayList<Course> findCoursesByTeacherId(String id, int year, int semester);
 }

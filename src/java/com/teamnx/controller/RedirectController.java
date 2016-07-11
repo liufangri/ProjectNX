@@ -5,6 +5,7 @@
  */
 package com.teamnx.controller;
 
+import static com.teamnx.controller.AdminController.SEMESTERS;
 import com.teamnx.model.Course;
 import com.teamnx.model.CourseDaoImpl;
 import com.teamnx.model.Group;
@@ -45,6 +46,7 @@ public class RedirectController {
     private ResourceDaoImpl rdi;
     private GroupDaoImpl gdi;
     private StudentGroupDaoImpl sgdi;
+    public static final String[] SEMESTERS = {"", "秋季", "春季", "夏季"};
 
     /**
      * 跳转到不同的usercenter
@@ -57,16 +59,18 @@ public class RedirectController {
     @RequestMapping(value = "usercenter")
     public ModelAndView toUserCenter(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 	User user = (User) session.getAttribute("user");
+        int year = (int) session.getAttribute("year");
+        int semester = (int) session.getAttribute("semester");
 	ModelAndView mav = new ModelAndView("usercenter");
 	ArrayList<Course> courses;
 	if (user != null) {
 	    switch (user.getCharacter()) {
 		case User.STUDENT:
-		    courses = cdi.findCoursesByStudentId(user.getId());
+		    courses = cdi.findCoursesByStudentId(user.getId(), year, semester);
 		    request.setAttribute("courses", courses);
 		    break;
 		case User.TEACHER:
-		    courses = cdi.findCoursesByTeacherId(user.getId());
+		    courses = cdi.findCoursesByTeacherId(user.getId(), year, semester);
 		    request.setAttribute("courses", courses);
 		    break;
 		case User.ADMIN:
@@ -397,6 +401,23 @@ public class RedirectController {
 	}
 	return mav;
     }
+    
+    //    选择不同学期
+    @RequestMapping(value = "/changeSemester")
+    public void changeSemester(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException{
+        int year = Integer.parseInt(request.getParameter("year"));
+        String semester = request.getParameter("semester");
+        int season = 0;
+        for (int i = 0; i < SEMESTERS.length; i++) {
+		if (semester.equals(SEMESTERS[i])) {
+		    season = i;
+		    break;
+		}
+	    }
+        session.setAttribute("year", year);
+        session.setAttribute("semester", season);
+        response.sendRedirect("usercenter.htm");
+}
 
     /**
      * 进入课程资源首页的处理
@@ -438,7 +459,7 @@ public class RedirectController {
 	    return getFullPath(father) + "\\" + folder.getName();
 	}
     }
-
+    
     public void setTdi(TaskDaoImpl tdi) {
 	this.tdi = tdi;
     }
