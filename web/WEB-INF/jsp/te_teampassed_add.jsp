@@ -28,10 +28,11 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div>
-                <button onClick="location.href='passedGroupInfo.htm?course_id=${course_id}&group_id=<%=group.getId()%>'" type="button" class="btn btn-default">返回</button>
+                <button onClick="location.href='passedGroupInfo.htm?course_id=${course_id}&group_id=<%=group.getId()%>'" type="button" class="btn btn-info">
+                    <span class="glyphicon glyphicon-chevron-left"></span>返回</button>
             </div>
             <div>
-                <h3>团队名称：<b><%=group.getName()%></b> 负责人： ${managerName}</h3>
+                <h3>团队名称：<b class="fa-border"><%=group.getName()%></b> <b ></b>负责人： ${managerName}</h3>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped">

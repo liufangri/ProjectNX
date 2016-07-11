@@ -47,13 +47,13 @@ public class AdminController {
 	    String yearStr = request.getParameter("Q1");
 	    String semesterStr = request.getParameter("Q2");
 	    String startTimeStr = request.getParameter("timeLimit");
-	    startTimeStr = startTimeStr + " 00:00:00";
-	    SimpleDateFormat sdf = new SimpleDateFormat("YY-MM-dd HH:mm:ss");
+//	    startTimeStr = startTimeStr + " 00:00:00";
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	    Date date = sdf.parse(startTimeStr);
 	    int year = Integer.parseInt(yearStr.substring(0, yearStr.length() - 1));
 	    int semesterNum = 0;
 	    for (int i = 0; i < SEMESTERS.length; i++) {
-		if (semesterStr.equals(YEARS[i])) {
+		if (semesterStr.equals(SEMESTERS[i])) {
 		    semesterNum = i;
 		    break;
 		}
@@ -72,7 +72,8 @@ public class AdminController {
 		    response.sendRedirect("usercenter.htm");
 		    break;
 		default:
-		    smdi.update(semester);
+                    smdi.deleteAll();
+		    smdi.insert(semester);
 		    response.sendRedirect("usercenter.htm");
 		    break;
 	    }

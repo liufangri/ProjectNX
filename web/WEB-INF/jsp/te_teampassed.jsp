@@ -26,6 +26,10 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div>
+                <button onClick="location.href='teacherGroupList.htm?course_id=${course_id}'" type="button" class="btn btn-info">
+                    <span class="glyphicon glyphicon-chevron-left"></span>返回</button>
+            </div>
+            <div>
                 <h3>团队名称：<b><%=group.getName()%></b>  状态：<span class="glyphicon glyphicon-user"></span><i style="color: red">已通过</i></h3>
             </div>
             <div>                
@@ -76,9 +80,7 @@
                     </tbody>
                 </table>
             </div>
-            <div>
-                <button onClick="location.href='teacherGroupList.htm?course_id=${course_id}'" type="button" class="btn btn-default">返回</button>
-            </div>
+            
         </div>
     </body>
 </html>

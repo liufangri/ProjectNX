@@ -25,15 +25,17 @@ public class SemesterDaoImpl implements SemesterDao {
     @Override
     public boolean insert(Semester semester) {
         Connection connection = dbcpBean.getConnection();
-        String sql = "INSERT INTO semester"
-                + "(year, semester, start_day"
+        String sql = "INSERT INTO semester "
+                + "(year, semester, start_day) "
                 + "VALUES(?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, semester.getYear());
             ps.setInt(2, semester.getSemester());
-            ps.setDate(3, (java.sql.Date) semester.getStart_day());
-            ps.executeUpdate();
+            java.sql.Date sqldate;
+            sqldate = new java.sql.Date(semester.getStart_day().getTime());
+            ps.setDate(3, sqldate);
+            ps.executeUpdate();     
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -50,13 +52,15 @@ public class SemesterDaoImpl implements SemesterDao {
     @Override
     public boolean update(Semester semester) {
         Connection connection = dbcpBean.getConnection();
-        String sql = "UPDATE semester SET start_date = ?"
+        String sql = "UPDATE semester SET start_day = ?"
                 + "WHERE year=? AND semester=?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(2, semester.getYear());
             ps.setInt(3, semester.getSemester());
-            ps.setDate(1, (java.sql.Date) semester.getStart_day());
+            java.sql.Date sqldate;
+            sqldate = new java.sql.Date(semester.getStart_day().getTime());
+            ps.setDate(1, sqldate);
             ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
@@ -81,7 +85,7 @@ public class SemesterDaoImpl implements SemesterDao {
     @Override
     public int ifExit(Semester semester) {
         Connection connection = dbcpBean.getConnection();
-        String sql = "SELECT COUNT(*) FROM semester"
+        String sql = "SELECT COUNT(*) FROM semester "
                 + "WHERE year=? AND semester=?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -97,6 +101,26 @@ public class SemesterDaoImpl implements SemesterDao {
         } catch (SQLException ex) {
             Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             return -1;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @Override
+    public boolean deleteAll() {
+        Connection connection = dbcpBean.getConnection();
+        String sql = "DELETE FROM semester";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.executeUpdate();     
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         } finally {
             try {
                 connection.close();

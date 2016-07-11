@@ -16,10 +16,13 @@
             </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="clearfix">
+                <button type="button" class="btn btn-info">返回</button>
+            </div>
             <div>
                 <h3>团队名称：<b>安拉胡阿克巴</b>  状态：<span class="glyphicon glyphicon-user"></span><i style="color: red">组建中</i>
-                <button class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove-sign"></span> 拒绝</button>
-                <button class="btn btn-success pull-right"><span class="glyphicon glyphicon-ok-sign"></span> 同意</button>
+                    <button class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove-sign"></span> 拒绝</button>
+                    <button class="btn btn-success pull-right"><span class="glyphicon glyphicon-ok-sign"></span> 同意</button>
                 </h3>
             </div>
             <div class="table-responsive">
@@ -45,9 +48,6 @@
                         %>
                     </tbody>
                 </table>
-            </div>
-            <div>
-                <button type="button" class="btn btn-default">返回</button>
             </div>
         </div>
     </body>
