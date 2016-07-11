@@ -106,4 +106,30 @@ public class SemesterDaoImpl implements SemesterDao {
         }
     }
 
+    @Override
+    public Semester getThisSemester() {
+        Connection connection = dbcpBean.getConnection();
+        String sql = "SELECT * FROM semester";
+        Semester semester = null;
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                semester = new  Semester();
+                semester.setYear(rs.getInt("year"));
+                semester.setSemester(rs.getInt("semester"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeworkDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+                return semester;
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+                return semester;
+            }
+        }
+    }
+
 }

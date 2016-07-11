@@ -3,6 +3,7 @@
     Created on : 2016-7-3, 12:21:47
     Author     : coco
 --%>
+<%@page import="com.teamnx.model.Semester"%>
 <%@page import="java.lang.Integer"%>
 <%@page import="com.teamnx.model.User"%>
 <%@page import="java.util.ArrayList"%>
@@ -16,8 +17,9 @@
     ArrayList<Message> unreadMessageList = (ArrayList<Message>) session.getAttribute("unread_message_list");
     String courseId = (String) request.getParameter("course_id");
     int num = unreadMessageList.size();
+    Semester semester = (Semester) session.getAttribute("semester");
     int week = (Integer) session.getAttribute("current_week");
-    int semester = (Integer) session.getAttribute("current_semester");
+//    int semester = (Integer) session.getAttribute("current_semester");
     boolean inUsercenter = courseId == null;
 %>
 <!--如果没有未读 就不用发信息给服务器-->

@@ -7,6 +7,7 @@ package com.teamnx.controller;
 
 import com.teamnx.model.Message;
 import com.teamnx.model.MessageDaoImpl;
+import com.teamnx.model.SemesterDaoImpl;
 import com.teamnx.model.User;
 import com.teamnx.model.UserDaoImpl;
 import com.teamnx.util.MD5;
@@ -28,6 +29,7 @@ public class LoginController {
 
     private UserDaoImpl udi;
     private MessageDaoImpl mdi;
+    private SemesterDaoImpl sdi;
 
     /**
      * 处理登录操作
@@ -114,5 +116,12 @@ public class LoginController {
 
     public void setMdi(MessageDaoImpl mdi) {
 	this.mdi = mdi;
+    }
+
+    /**
+     * @param sdi the sdi to set
+     */
+    public void setSdi(SemesterDaoImpl sdi) {
+        this.sdi = sdi;
     }
 }
