@@ -45,6 +45,7 @@ public class RedirectController {
     private ResourceDaoImpl rdi;
     private GroupDaoImpl gdi;
     private StudentGroupDaoImpl sgdi;
+    public static final String[] SEMESTERS = {"", "秋季", "春季", "夏季"};
 
     /**
      * 跳转到不同的usercenter
@@ -57,16 +58,18 @@ public class RedirectController {
     @RequestMapping(value = "usercenter")
     public ModelAndView toUserCenter(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 	User user = (User) session.getAttribute("user");
+	int year = (Integer) session.getAttribute("year");
+	int semester = (Integer) session.getAttribute("semester");
 	ModelAndView mav = new ModelAndView("usercenter");
 	ArrayList<Course> courses;
 	if (user != null) {
 	    switch (user.getCharacter()) {
 		case User.STUDENT:
-		    courses = cdi.findCoursesByStudentId(user.getId());
+		    courses = cdi.findCoursesByStudentId(user.getId(), year, semester);
 		    request.setAttribute("courses", courses);
 		    break;
 		case User.TEACHER:
-		    courses = cdi.findCoursesByTeacherId(user.getId());
+		    courses = cdi.findCoursesByTeacherId(user.getId(), year, semester);
 		    request.setAttribute("courses", courses);
 		    break;
 		case User.ADMIN:
@@ -281,17 +284,24 @@ public class RedirectController {
 	    String taskId = request.getParameter("task_id");
 	    Task task = tdi.findTaskById(taskId);
 	    Group group = gdi.findGroupByStudentId(user.getId(), task.getCourseId());
+	    boolean inGroup = sgdi.ifInGroup(user.getId(), task.getCourseId());
 	    Course course = cdi.findCourseById(task.getCourseId());
 	    request.setAttribute("task_id", taskId);
 	    request.setAttribute("course_id", task.getCourseId());
 	    request.setAttribute("task", task);
-	    request.setAttribute("in_group", group != null);
+	    request.setAttribute("in_group", inGroup);
 	    request.setAttribute("course", course);
 	    request.setAttribute("group", group);
-	    Homework homework = hdi.findStudentHomework(taskId, user.getId());
+	    Homework homework;
+	    if (task.isCategory()) {
+		homework = hdi.findGroupHomework(taskId, user.getId());
+	    } else {
+		homework = hdi.findStudentHomework(taskId, user.getId());
+	    }
 	    if (homework == null) {
 		homework = new Homework();
 	    }
+
 	    request.setAttribute("origin_homework", homework);
 	    mav.addObject("homework", homework);
 	} else {
@@ -416,6 +426,23 @@ public class RedirectController {
 	    mav.setViewName("login");
 	}
 	return mav;
+    }
+
+    //    选择不同学期
+    @RequestMapping(value = "/changeSemester")
+    public void changeSemester(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	int year = Integer.parseInt(request.getParameter("year"));
+	String semester = request.getParameter("semester");
+	int season = 0;
+	for (int i = 0; i < SEMESTERS.length; i++) {
+	    if (semester.equals(SEMESTERS[i])) {
+		season = i;
+		break;
+	    }
+	}
+	session.setAttribute("year", year);
+	session.setAttribute("semester", season);
+	response.sendRedirect("usercenter.htm");
     }
 
     /**

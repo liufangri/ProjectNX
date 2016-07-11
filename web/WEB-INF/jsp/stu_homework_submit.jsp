@@ -92,7 +92,7 @@
 
                     <% if (inGroup && origin_homework != null && origin_homework.getStudentName() != null && !origin_homework.getStudentName().equals("")) {%>
                     <label>上次提交者：</label>
-                    <label class="text-info" style="margin-right: 20px"><%= homework.getStudentName()%></label>
+                    <label class="text-info" style="margin-right: 20px"><%= origin_homework.getStudentName()%></label>
 
                     <label>您的队伍：</label><label class="text-info">${group.name}</label>
                     <br/>

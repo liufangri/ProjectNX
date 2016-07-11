@@ -3,6 +3,7 @@
     Created on : 2016-7-5, 20:37:13
     Author     : coco
 --%>
+<%@page import="com.teamnx.model.Homework"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.teamnx.model.User"%>
 <%@page import="com.teamnx.model.Task"%>
