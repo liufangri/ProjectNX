@@ -7,6 +7,7 @@ package com.teamnx.controller;
 
 import com.teamnx.model.Semester;
 import com.teamnx.model.SemesterDaoImpl;
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -79,6 +81,14 @@ public class AdminController {
 	} catch (ParseException ex) {
 	    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
 	}
+    }
+
+    @RequestMapping(value = "/setDataBase")
+    public ModelAndView setDataBase(MultipartFile fileUser, MultipartFile fileCourse,
+	    MultipartFile fileDepartment, MultipartFile fileStudentCourse, MultipartFile fileTeacherCourse, HttpSession session) {
+	ModelAndView mav = new ModelAndView("admin");
+	File userCsv = new File(session.getServletContext().getRealPath(""))
+	return mav;
     }
 
     @RequestMapping(value = "/admin")

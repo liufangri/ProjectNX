@@ -11,6 +11,8 @@ package com.teamnx.model;
  */
 public class User {
 
+    public static final String[] HEADER = {"id", "name", "password", "department_id", "department_name",
+	"class_id", "character"};
     static final public int STUDENT = 1;
     static final public int TEACHER = 2;
     static final public int ADMIN = 3;

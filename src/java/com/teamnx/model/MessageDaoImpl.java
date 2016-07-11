@@ -101,7 +101,7 @@ public class MessageDaoImpl implements MessageDao {
     public ArrayList<Message> getAllMessage(String receiverId) {
 	ArrayList<Message> messageList = new ArrayList<Message>();
 	Connection connection = dbcpBean.getConnection();
-	String sql = "SELECT * FROM message WHERE receiver_id = ?";
+	String sql = "SELECT * FROM message WHERE receiver_id = ? ORDER BY time DESC";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, receiverId);
@@ -134,7 +134,7 @@ public class MessageDaoImpl implements MessageDao {
     public ArrayList<Message> getAllUnreadMessage(String receiverId) {
 	ArrayList<Message> messageList = new ArrayList<Message>();
 	Connection connection = dbcpBean.getConnection();
-	String sql = "SELECT * FROM message WHERE receiver_id = ? AND status = ?";
+	String sql = "SELECT * FROM message WHERE receiver_id = ? AND status = ? ORDER BY time DESC";
 	try {
 	    PreparedStatement ps = connection.prepareStatement(sql);
 	    ps.setString(1, receiverId);
