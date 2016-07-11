@@ -38,8 +38,8 @@
                 <div class="row clearfix">
                     <div class="col-md-10 column">
                         <button class="btn btn-info" type="button" data-target="#myModal5" data-toggle="modal"
-                            onclick="javascript:location.href = 'te_homework.htm?course_id=<%=courseId%>'">
-                        <i class="glyphicon glyphicon-chevron-left" style="margin-right: 3px" ></i>返回列表</button>
+                                onclick="javascript:location.href = 'te_homework.htm?course_id=<%=courseId%>'">
+                            <i class="glyphicon glyphicon-chevron-left" style="margin-right: 3px" ></i>返回列表</button>
                     </div>
                 </div>
 
@@ -56,7 +56,7 @@
                     <div class="row clearfix">
                         <div class="col-md-10 column">
                             <div class="form-group">
-                                <label for="name"style="padding-bottom: 5px; padding-left: 3px">作业介绍</label>
+                                <label for="name" style="padding-bottom: 5px; padding-left: 3px">作业介绍</label>
                                 <textarea class="form-control" name="description" rows="8"></textarea>
                             </div>
                         </div>
@@ -107,9 +107,9 @@
                         </div>
                         <div class="col-md-2 column">
                         </div>
-                        <input type="text" hidden="true" value="<%= courseId%>" name="courseId"/>
-                        <input type="text" hidden="true" value="<%= user.getId()%>" name="teacherId"/>
-                        <input type="text" hidden="true"value="<%= user.getName()%>" name="teacherName"/>
+                        <input type="text" hidden value="<%= courseId%>" name="courseId"/>
+                        <input type="text" hidden value="<%= user.getId()%>" name="teacherId"/>
+                        <input type="text" hidden value="<%= user.getName()%>" name="teacherName"/>
                         <div class="col-md-2 column">
 
                         </div>

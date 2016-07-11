@@ -59,11 +59,16 @@
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">确定</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            </mvc:form>
+                            </mvc:form> 
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <script type="text/javascript">
+            $('#myModal1').on('hidden.bs.modal', function () {
+                $(this).find('input').val("");
+            });
+        </script>
     </body>
 </html>

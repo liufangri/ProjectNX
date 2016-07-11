@@ -42,7 +42,6 @@
                         <tr>
                             <th>学号</th>
                             <th>姓名</th>  
-                            <th>提交作业名</th>  
                             <th>分数</th>  
                         </tr>
                     </thead>
@@ -53,7 +52,7 @@
                         <tr>
                             <td><a href="scoreHomework.htm?homework_id=<%=h.getId()%>"><%=h.getStudentId()%></a></td>
                             <td><%=h.getStudentName()%></td>   
-                            <td></td>  
+
                             <% if (h.getScore() == -1) {%>
 
                             <td>未批改</td>  
