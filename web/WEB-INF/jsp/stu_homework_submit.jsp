@@ -28,7 +28,7 @@
         group = new Group();
     }
     boolean inGroup = (Boolean) request.getAttribute("in_group");
-    boolean courseHide = course.isCategory() && !inGroup;
+    boolean courseHide = course.isCategory() && group.getStatus() != 2;
     boolean hide = courseHide || currentTimestamp.before(task.getStartTime()) || currentTimestamp.after(task.getDeadline());
 %>
 <html lang="zh-CN">
@@ -90,7 +90,7 @@
 
                 <div class="form-group">
 
-                    <% if (inGroup && origin_homework != null && origin_homework.getStudentName() != null && !origin_homework.getStudentName().equals("")) {%>
+                    <% if (group.getStatus() == 2 && origin_homework != null && origin_homework.getStudentName() != null && !origin_homework.getStudentName().equals("")) {%>
                     <label>上次提交者：</label>
                     <label class="text-info" style="margin-right: 20px"><%= origin_homework.getStudentName()%></label>
 
