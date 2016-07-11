@@ -24,9 +24,7 @@
 
 
 <link href="<%=path%>/lib/css/navbar.css" rel="stylesheet">
-<% if (!inUsercenter) {%>
 <link href="<%=path%>/lib/css/AdminLTE.min.css" rel="stylesheet"/>
-<%}%>
 <script>
     $(document).ready(function ()
     {

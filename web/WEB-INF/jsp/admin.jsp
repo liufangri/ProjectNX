@@ -74,12 +74,10 @@
                                 </div>
                                 <div class="submit-box clearfix">
                                     <input id="type" type="hidden" value="ldap"/>
-                                    <button id="submitButton" type="submit">登 录</button>
+                                    <button id="submitButton" type="submit">提交</button>
                                 </mvc:form>
 
-                                <button id="submitButton" >数据库导入</button>
-                                <img id="processing" style="display: none;" src="<%=path%>/images/processing.gif" />
-                                <a id="errorMessage" style="color:red">${error_message}</a>
+                                <button id="upload_database" onclick="javascrtpt:window.location.href = 'upload_database.htm'" >数据库导入</button>
                             </div>
 
 

@@ -31,7 +31,7 @@
         <meta name="description" content="iBarn">
         <link rel="shortcut icon" href="img/favicon.png">
         <link href="<%=path%>/lib/css/resourceindex.css" rel="stylesheet" />
-        <script src="<%=path%>/lib/js/file.js"></script>
+       
         <script src="<%=path%>/lib/js/bootstrap-treeview.js"></script>
         <link href="<%=path%>/lib/css/fileinput.min.css" rel="stylesheet">
         <script src="<%=path%>/lib/js/fileinput.min.js"></script>
@@ -120,8 +120,9 @@
                                         </div>
 
                                         <div class="listTableTopR pull-right">
-                                            <div class="updateTime" id="ctime">上传时间</div>
                                             <div class="publisher" id="publisher">发布人</div>
+                                            <div class="updateTime" id="ctime">上传时间</div>
+
                                             <div class="menu" id="menu">操作</div>
                                         </div>
                                     </div>
@@ -146,8 +147,9 @@
 
                                         </div>
                                         <div class="listTableInR pull-right">
-                                            <div class="updateTime"><%= sdf.format(new Date(r.getLastChange()))%></div>
                                             <div class="publisher"><%= r.getTeacherName()%></div>
+                                            <div class="updateTime"><%= sdf.format(new Date(r.getLastChange()))%></div>
+
                                             <div>
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-primary dropdown-toggle" 
