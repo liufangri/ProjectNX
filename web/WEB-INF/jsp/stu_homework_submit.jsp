@@ -89,7 +89,8 @@
                 </div>  
 
                 <div class="form-group">
-                    <label for="name">文本作业</label>  
+                    <label for="name">文本作业</label>
+<<<<<<< HEAD
                     <textarea class="form-control" rows="5" name="text" <%if (hide) {%>disabled="disabled"<%};%>>${homework.text}</textarea>
                 </div> 
 
@@ -108,7 +109,7 @@
                 <input type="text" hidden="hidden" name="courseId" value="<%=courseId%>"/>
                 <input type="text" hidden="hidden" name="taskId" value="<%=task.getId()%>"/>
                 <input type="text" hidden="hidden" name="studentId" value="<%=user.getId()%>"/>
-                <input type="text" hidden="hidden" name="studentName"value="<%=user.getName()%>"/>
+                <input type="text" hidden="hidden" name="studentName" value="<%=user.getName()%>"/>
                 <input type="text" hidden="hidden" name="groupId" value="${group.id}">
                 <% if (origin_homework.getFilePath() != null) {
                         File file = new File(origin_homework.getFilePath());

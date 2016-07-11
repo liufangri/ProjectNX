@@ -75,10 +75,14 @@
                                 <div class="submit-box clearfix">
                                     <input id="type" type="hidden" value="ldap"/>
                                     <button id="submitButton" type="submit">登 录</button>
+
                                     <img id="processing" style="display: none;" src="<%=path%>/images/processing.gif" />
                                     <a id="errorMessage" style="color:red">${error_message}</a>
                                 </div>
                             </mvc:form>
+                            <button id="submitButton2" onclick=" $(function(){
+                                           alert($('#Q1').val()+$('#Q2').val());
+                                       });">登 123123录</button>
                         </div>
                     </div>
                 </div>
@@ -227,7 +231,7 @@
             })(jQuery);
             $("#DropDownList").DropDownList(
                     {
-                        InputName: "Q",
+                        InputName: "Q1",
                         ButtonName: "参考",
                         Items: [
                             {ItemText: "2014年", ItemData: "Demo1", Selected: true},
@@ -237,7 +241,7 @@
                     });
             $("#DropDownList2").DropDownList(
                     {
-                        InputName: "Q",
+                        InputName: "Q2",
                         ButtonName: "参考",
                         Items: [
                             {ItemText: "春季", ItemData: "Demo1", Selected: true},

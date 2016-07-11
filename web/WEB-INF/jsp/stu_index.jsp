@@ -4,10 +4,13 @@
     Author     : coco
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+    String path = request.getContextPath();
+%>
 <html lang="zh-CN">
     <jsp:include page="header.jsp"/>
-    
+
+
     <body>
         <jsp:include page="navbar.jsp"/>
         <div class="container-fluid">
@@ -22,6 +25,8 @@
             <h1 class="page-header">${course.position}</h1>
             <h1 class="page-header">${course.schedule}</h1>    
             <h1 class="page-header">${course.teachers}</h1>    
+
         </div>
+
     </body>
 </html>

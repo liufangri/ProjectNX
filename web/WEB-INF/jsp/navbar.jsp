@@ -18,7 +18,7 @@
 <%if (false) {
         isread = true;
     }
-%>
+%>  
 
 <link href="<%=path%>/lib/css/navbar.css" rel="stylesheet">
 <link href="<%=path%>/lib/css/AdminLTE.min.css" rel="stylesheet"/>
@@ -94,7 +94,6 @@
                 <!--                <li><a href="#">系统消息</a></li>-->
                 <li class="dropdown messages-menu" onclick="isRead()">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%= user.getName()%>
-
                         <i class="fa fa-bell-o"></i>
                         <span class="label label-success">4</span>
                     </a>
