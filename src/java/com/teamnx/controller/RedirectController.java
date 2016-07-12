@@ -45,7 +45,7 @@ public class RedirectController {
     private ResourceDaoImpl rdi;
     private GroupDaoImpl gdi;
     private StudentGroupDaoImpl sgdi;
-    public static final String[] SEMESTERS = {"", "秋季", "春季", "夏季"};
+    public static final String[] SEMESTERS = {"", "fall", "spring", "summer"};
 
     /**
      * 跳转到不同的usercenter

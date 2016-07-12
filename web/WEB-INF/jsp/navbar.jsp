@@ -112,14 +112,14 @@
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <!--                            TODO-->
-                            <li><a href="changeSemester.htm?&year=2015&semester=春季">2015年春季</a></li>
-                            <li><a href="changeSemester.htm?&year=2015&semester=夏季">2015年夏季</a></li>
-                            <li><a href="changeSemester.htm?&year=2015&semester=秋季">2015年秋季</a></li>
-                            <li><a href="changeSemester.htm?&year=2016&semester=春季">2016年春季</a></li>
-                            <li><a href="changeSemester.htm?&year=2016&semester=夏季">2016年夏季</a></li>
-                            <li><a href="changeSemester.htm?&year=2016&semester=秋季">2016年秋季</a></li>
-                            <li><a href="changeSemester.htm?&year=2017&semester=春季">2017年春季</a></li>
-                            <li><a href="changeSemester.htm?&year=2017&semester=夏季">2017年夏季</a></li>
+                            <li><a href="changeSemester.htm?&year=2015&semester=spring">2015年春季</a></li>
+                            <li><a href="changeSemester.htm?&year=2015&semester=summer">2015年夏季</a></li>
+                            <li><a href="changeSemester.htm?&year=2015&semester=fall">2015年秋季</a></li>
+                            <li><a href="changeSemester.htm?&year=2016&semester=spring">2016年春季</a></li>
+                            <li><a href="changeSemester.htm?&year=2016&semester=summer">2016年夏季</a></li>
+                            <li><a href="changeSemester.htm?&year=2016&semester=fall">2016年秋季</a></li>
+                            <li><a href="changeSemester.htm?&year=2017&semester=spring">2017年春季</a></li>
+                            <li><a href="changeSemester.htm?&year=2017&semester=summer">2017年夏季</a></li>
                         </ul>
                     </div>
                 </li>

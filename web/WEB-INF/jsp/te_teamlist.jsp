@@ -141,7 +141,7 @@
                                 %>
                                 <tr>
                                     <td><%=u.getId()%></td>
-                                    <td id="112"><%=u.getName()%></td>
+                                    <td id="<%= u.getId()%>_name"><%=u.getName()%></td>
                                     <td><button type="button" class="btn btn-success" onclick="manager('<%=u.getId()%>');" data-toggle="modal">新建团队</button></td>
                                 </tr>
                                 <%
@@ -165,10 +165,10 @@
                                     <div class="modalTitleSmall pull-left">名称：</div>
                                     <div class="col-lg-10 marginB10 pull-right">
                                         <input class="form-control" name="name" id="folderName" type="text" placeholder="请输入团队名称">
-                                        <input name="managerId" hidden="hidden" value="" id="student_id">
-                                        <input name="courseId" hidden="hidden" value="${course_id}">
-                                        <input name="status" hidden="hidden" value="2">
-                                        <input name="maxMember" hidden="hidden" value="<%=course.getMax_member()%>">
+                                        <input type="text" name="managerId" hidden="hidden" value="" id="student_id">
+                                        <input type="text" name="courseId" hidden="hidden" value="${course_id}">
+                                        <input type="number" name="status" hidden="hidden" value="2">
+                                        <input type="number" name="maxMember" hidden="hidden" value="<%=course.getMax_member()%>">
                                     </div>
                                 </div>
                                 <div class="clearfix"><h4>最大人数限制: <%=course.getMax_member()%></h4></div>
@@ -191,7 +191,7 @@
                 })
             })
             function manager(id) {
-                $('#teammanager').text($('#112').text());
+                $('#teammanager').text($('#' + id + '_name').text());
                 $('#myModal1').modal("show");
                 document.getElementById("student_id").value = id;
             }
